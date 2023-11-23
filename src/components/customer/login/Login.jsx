@@ -12,7 +12,8 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { styled } from "@mui/system";
 import Icon1 from "../../../assets/jpg/register.jpg";
-import { useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
@@ -73,10 +74,11 @@ const Login = () => {
     formState: { errors },
     setValue,
   } = useForm();
-  const navigate = useNavigation();
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     console.log(data);
-    navigate('/home');
+    navigate('/home')
     let userData = {
       email: data.email,
       password: data.password,
