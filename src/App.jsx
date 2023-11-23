@@ -11,19 +11,13 @@ import { useState, useEffect } from "react";
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      {/* <Routes> */}
-        {/* <Route path="/" element={<MainLanding />} />
+      <Routes>
+        <Route path="/" element={<MainLanding />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/LoginPage" element={<LoginPage />} />ge />
-        <LoginPage 
-        <Route path="/" element={<Home />} />
-        <Route path="/category/:category" component={BusinessListPage} /> */}
-        {/* <MainLanding /> */}
-         {/* <RegisterPage/> */}
-        {/* <LoginPage /> */}
-        {/* <Home /> */}
-        <BusinessListPage /> 
-      {/* </Routes> */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/home/category/:category" element={<BusinessListPage />} />
+      </Routes>
     </ThemeProvider>
   );
 }

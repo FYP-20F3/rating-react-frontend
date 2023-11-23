@@ -16,6 +16,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 
 import LogoBox from "./LogoBox";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 const navItems = ["Features", "Why us", "Reviews", "Register"];
@@ -33,7 +34,7 @@ export default function MainNavbar() {
         For Business
       </Button>
       <Divider />
-      <Button sx={{ color: "primary.main", mt: 2 }}>Login</Button>
+      <Link to="/login"><Button sx={{ color: "primary.main", mt: 2 }}>Login</Button></Link>
       <List>
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
@@ -71,7 +72,7 @@ export default function MainNavbar() {
                 sx={{ color: "text.primary", mr: 4 }}
                 variant="body2"
               >
-                {item}
+                {item === "Register" ? <Link to="/register">{item}</Link>: item}
               </Button>
             ))}
           </Box>
@@ -85,7 +86,7 @@ export default function MainNavbar() {
             <MenuIcon />
           </IconButton>
           <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <Button sx={{ color: "primary.main" }}>Login</Button>
+            <Link to="/login"><Button sx={{ color: "primary.main" }}>Login</Button></Link>
             <Button color="primary" variant="contained">
               For Business
             </Button>

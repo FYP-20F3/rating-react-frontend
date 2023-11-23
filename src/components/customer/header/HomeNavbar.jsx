@@ -181,11 +181,6 @@ export default function HomeNavbar() {
           >
             <MenuIcon />
           </IconButton>
-          <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <Button color="primary" variant="contained">
-              For Business
-            </Button>
-          </Box>
         </Toolbar>
       </AppBar>
       <nav>
