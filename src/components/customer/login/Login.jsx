@@ -8,8 +8,12 @@ import {
   Stack,
   Divider,
 } from "@mui/material";
+import { useForm } from "react-hook-form";
+import axios from 'axios';
 import { styled } from "@mui/system";
 import Icon1 from "../../../assets/jpg/register.jpg";
+import { useNavigation } from "react-router-dom";
+
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   display: "flex",
@@ -38,6 +42,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
+  
 const StyledButton = styled(Button)(({ theme }) => ({
   padding: theme.spacing(1, 2),
   backgroundColor: theme.palette.primary.main,
@@ -61,6 +66,48 @@ const description = [
   "Privacy Policy.",
 ];
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    setValue,
+  } = useForm();
+  const navigate = useNavigation();
+  const onSubmit = async (data) => {
+    console.log(data);
+    navigate('/home');
+    let userData = {
+      email: data.email,
+      password: data.password,
+    };
+  
+    let dataSet = JSON.stringify({
+      "email": "ahsanshah@gmail.com",
+      "password": "customer1"
+    });
+    
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'http://localhost:3001/auth/login/customer', // Change this to your backend URL
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : dataSet
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log
+      console.log(error);
+    });
+    
+  };
+  
   return (
     <StyledGrid container sx={{width:"100%"}}>
       <StyledGridInner item xs={12}>
@@ -87,25 +134,36 @@ const Login = () => {
           >
             Enter your details to get sign in to your account.
           </Typography>
-          <StyledTextField
-            label="Email"
-            variant="outlined"
-            type="email"
-            placeholder="example.email@gmail.com"
-            sx={{ mb: 2.6 }}
-          />
-          <StyledTextField
-            label="Password"
-            variant="outlined"
-            type="password"
-            placeholder="Enter your password"
-          />
-          <StyledButton
-            variant="contained"
-            sx={{ mt: 3, px: 10, alignSelf: "center", textAlign: "center" }}
-          >
-            Sign In
-          </StyledButton>
+          <form onSubmit={handleSubmit(onSubmit)} >
+            <Stack>
+              <StyledTextField
+                label="Email"
+                variant="outlined"
+                type="email"
+                {...register("email", {
+                  required: "This field is required",
+                })}
+                placeholder="example.email@gmail.com"
+                sx={{ mb: 2.6 }}
+              />
+              <StyledTextField
+                label="Password"
+                variant="outlined"
+                type="password"
+                {...register("password")}
+
+                placeholder="Enter your password"
+              />
+              <StyledButton
+                type="submit"
+                onClick = {handleSubmit(onSubmit)}
+                variant="contained"
+                sx={{ mt: 3, px: 10, alignSelf: "center", textAlign: "center" }}
+              >
+                Sign In
+              </StyledButton>
+            </Stack>
+          </form>
         </Box>
       </StyledGridInner>
     </StyledGrid>
