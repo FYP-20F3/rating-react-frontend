@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Box,
@@ -81,6 +81,29 @@ const StyledImage = styled("img")(({ theme }) => ({
 }));
 
 const HomeHero = () => {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const handleSearch = async () => {
+    try {
+      setLoading(true);
+
+      // Make an AJAX call to your search API
+      const response = await fetch(`https://api.example.com/search?q=${query}`);
+      const data = await response.json();
+
+      setResults(data);
+    } catch (error) {
+      console.error('Error searching:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (event) => {
+    setQuery(event.target.value);
+  };
   return (
     <StyledGrid container>
       <StyledGridInner item xs={12} md={6}>
@@ -112,6 +135,8 @@ const HomeHero = () => {
           <StyledTextField
             hiddenLabel
             variant="outlined"
+            value={query}
+            onChange={handleChange}
             placeholder="Search Company by name"
             size="medium"
             InputProps={{
@@ -125,6 +150,17 @@ const HomeHero = () => {
               width: { xs: "92%", sm: "78%", md: 470 },
             }}
           />
+          {loading && <p>Loading results...</p>}
+
+          {results.length > 0 && (
+            <ul>
+              {results.map(result => (
+                <li key={result.id}>{result.name}</li>
+              ))}
+            </ul>
+          )}
+
+          {results.length === 0 && !loading && <p>No results found.</p>}
         </Box>
       </StyledGridInner>
       <StyledGridInner item xs={12} md={6}>

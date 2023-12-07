@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Stack,
   Grid,
@@ -14,6 +15,10 @@ import Icon2 from "../../../assets/jpg/exploreIcon2.jpg";
 import Icon3 from "../../../assets/jpg/exploreIcon3.jpg";
 import Icon4 from "../../../assets/jpg/exploreIcon4.jpg";
 import { useNavigate } from "react-router-dom";
+import { getData } from "../../../store/apiData";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+
 
 const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -39,6 +44,14 @@ const StyledImage = styled("img")(({ theme }) => ({
 
 const Explore = () => {
   const navigate = useNavigate();
+  const { respdata } = useSelector((state) => state.respdata);
+
+  const handleCosmetics = () => {
+    
+                
+      navigate("/home/category/cosmetics");
+    
+  }
   return (
     <Stack spacing={3} sx={{ pl: { xs: 1, md: 4 } }}>
       <Typography variant="h3" sx={{ pl: 4.5 }}>
@@ -61,11 +74,13 @@ const Explore = () => {
         </StyledGridInner>
         <StyledGridInner item xs={11} sm={5.5} md={5} lg={2.7}>
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
-            <StyledCard>
+            <StyledCard onClick={() => {
+                navigate("/home/category/clothing");
+              }}>
               <StyledCardContent>
                 <StyledImage src={Icon2} width={23} />
                 <Typography variant="body3">
-                  <Link to="/home/category/clothing">Clothing Store</Link>
+                  Clothing Store
                 </Typography>
               </StyledCardContent>
             </StyledCard>
@@ -73,11 +88,11 @@ const Explore = () => {
         </StyledGridInner>
         <StyledGridInner item xs={11} sm={5.5} md={5} lg={2.7}>
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
-            <StyledCard>
+            <StyledCard onClick={handleCosmetics}>
               <StyledCardContent>
                 <StyledImage src={Icon3} width={23} />
                 <Typography variant="body3">
-                  <Link to="/home/category/cosmetics">Cosmetics</Link>
+                  Cosmetics
                 </Typography>
               </StyledCardContent>
             </StyledCard>
@@ -85,11 +100,13 @@ const Explore = () => {
         </StyledGridInner>
         <StyledGridInner item xs={11} sm={5.5} md={5} lg={2.7}>
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
-            <StyledCard>
+            <StyledCard onClick={() => {
+                navigate("/home/category/food");
+              }}> 
               <StyledCardContent>
                 <StyledImage src={Icon4} width={23} />
                 <Typography variant="body3">
-                  <Link to="/home/category/food">Food</Link>
+                  Food
                 </Typography>
               </StyledCardContent>
             </StyledCard>
