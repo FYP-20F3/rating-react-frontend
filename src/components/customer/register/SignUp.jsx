@@ -8,6 +8,8 @@ import {
   Stack,
   Divider,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 import { styled } from "@mui/system";
 import Icon1 from "../../../assets/jpg/register.jpg";
 import axios from 'axios';
@@ -68,6 +70,17 @@ const description = [
   "and ",
   "Privacy Policy.",
 ];
+  
+const SignUp = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    setValue,
+  } = useForm();
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     console.log(data);
   
@@ -97,22 +110,15 @@ const description = [
     axios.request(config)
     .then((response) => {
       console.log(JSON.stringify(response.data));
+      navigate('/login');
     })
+
     .catch((error) => {
       console.log
       console.log(error);
     });
     
   };
-const SignUp = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    setValue,
-  } = useForm();
-  const navigate = useNavigate();
   return (
     <StyledGrid container>
       <StyledGridInner item xs={12} md={6} xl={6}>

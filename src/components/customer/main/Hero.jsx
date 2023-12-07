@@ -1,8 +1,11 @@
 import React from "react";
 import { Box, Typography, Button, Container, Grid } from "@mui/material";
 import HeroIcon from "../../../assets/svg/HeroIcon";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
 
   const heading = ["Empowering ", "Trust ", "and ", "Transparency"];
   return (
@@ -44,7 +47,11 @@ const HeroSection = () => {
               </Typography>
             </Box>
             <Box sx={{ mt: 4 }}>
-              <Button variant="contained" color="primary" sx={{ px: 3.6 }}>
+              <Button variant="contained" color="primary" sx={{ px: 3.6 }}
+              onClick={() => {
+                navigate('/register')
+              }}
+              >
                 Register
               </Button>
               <Button
