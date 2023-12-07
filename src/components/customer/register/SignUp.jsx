@@ -10,6 +10,10 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import Icon1 from "../../../assets/jpg/register.jpg";
+import axios from 'axios';
+import { useForm } from "react-hook-form";
+
+
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   display: "flex",
@@ -64,7 +68,51 @@ const description = [
   "and ",
   "Privacy Policy.",
 ];
+  const onSubmit = async (data) => {
+    console.log(data);
+  
+    let userData = {
+      email: data.email,
+      password: data.password,
+    };
+
+    let dataSet = JSON.stringify({
+      "firstName": data.firstName,
+      "lastName": data.lastName,
+      "email": data.email,
+      "password": data.password,
+      "picturePath": "http://dummyimage.com/193x100.png/ff4444/ffff"
+    });
+    
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'http://localhost:3001/auth/register/customer', // Change this to your backend URL
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : dataSet
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log
+      console.log(error);
+    });
+    
+  };
 const SignUp = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    setValue,
+  } = useForm();
+  const navigate = useNavigate();
   return (
     <StyledGrid container>
       <StyledGridInner item xs={12} md={6} xl={6}>
@@ -97,43 +145,58 @@ const SignUp = () => {
               );
             })}
           </Typography>
-          <StyledTextField
-            label="First Name"
-            variant="outlined"
-            type="text"
-            sx={{ mb: 2.6 }}
-          />
-          <StyledTextField
-            label="Last Name"
-            variant="outlined"
-            type="text"
-            sx={{ mb: 2.6 }}
-          />
-          <StyledTextField
-            label="Email"
-            variant="outlined"
-            type="email"
-            placeholder="example.email@gmail.com"
-            sx={{ mb: 2.6 }}
-          />
-          <StyledTextField
-            label="Password"
-            variant="outlined"
-            type="password"
-            placeholder="Enter your password"
-          />
-          <StyledButton
-            variant="contained"
-            sx={{ mt: 3, width: 300, alignSelf: "center", textAlign: "center" }}
-          >
-            Sign Up
-          </StyledButton>
-          <Typography variant="body3" align="center" sx={{ mt: 10, mr: 3 }}>
-            Have an account?{" "}
-            <Typography variant="body3" align="center" color="primary">
-              Log in
+          <form onSubmit={handleSubmit(onSubmit)} >
+            <StyledTextField
+              label="First Name"
+              variant="outlined"
+              type="text"
+              {...register("firstName", {
+                required: "This field is required",
+              })}
+              sx={{ mb: 2.6 }}
+            />
+            <StyledTextField
+              label="Last Name"
+              variant="outlined"
+              type="text"
+              {...register("lastName", {
+                required: "This field is required",
+              })}
+              sx={{ mb: 2.6 }}
+            />
+            <StyledTextField
+              label="Email"
+              variant="outlined"
+              type="email"
+              {...register("email", {
+                required: "This field is required",
+              })}
+              placeholder="example.email@gmail.com"
+              sx={{ mb: 2.6 }}
+            />
+            <StyledTextField
+              label="Password"
+              variant="outlined"
+              {...register("password", {
+                required: "This field is required",
+              })}
+              type="password"
+              placeholder="Enter your password"
+            />
+            <StyledButton
+              variant="contained"
+              onClick = {handleSubmit(onSubmit)}
+              sx={{ mt: 3, width: 300, alignSelf: "center", textAlign: "center" }}
+            >
+              Sign Up
+            </StyledButton>
+            <Typography variant="body3" align="center" sx={{ mt: 10, mr: 3 }}>
+              Have an account?{" "}
+              <Typography variant="body3" align="center" color="primary">
+                Log in
+              </Typography>
             </Typography>
-          </Typography>
+          </form>
         </Box>
       </StyledGridInner>
       <StyledGridInner item xs={12} md={6} xl={4} sx={{ order: { xs: -1, md: 3 } }}>
