@@ -85,10 +85,11 @@ const Login = () => {
     };
   
     let dataSet = JSON.stringify({
-      "email": "ahsanshah@gmail.com",
-      "password": "customer1"
+      "email": data.email,
+      "password": data.password
     });
     
+    console.log(dataSet);
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
