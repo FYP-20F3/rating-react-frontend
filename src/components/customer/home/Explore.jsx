@@ -13,7 +13,7 @@ import Icon1 from "../../../assets/jpg/exploreIcon1.jpg";
 import Icon2 from "../../../assets/jpg/exploreIcon2.jpg";
 import Icon3 from "../../../assets/jpg/exploreIcon3.jpg";
 import Icon4 from "../../../assets/jpg/exploreIcon4.jpg";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -38,6 +38,7 @@ const StyledImage = styled("img")(({ theme }) => ({
 }));
 
 const Explore = () => {
+  const navigate = useNavigate();
   return (
     <Stack spacing={3} sx={{ pl: { xs: 1, md: 4 } }}>
       <Typography variant="h3" sx={{ pl: 4.5 }}>
@@ -46,14 +47,14 @@ const Explore = () => {
       <Grid container spacing={2}>
         <StyledGridInner item xs={11} sm={5.5} md={5} lg={2.7}>
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
-            <StyledCard>
+            <StyledCard
+              onClick={() => {
+                navigate("/home/category/electronics-tech");
+              }}
+            >
               <StyledCardContent>
                 <StyledImage src={Icon1} width={23} />
-                <Typography variant="body3">
-                  <Link to="/home/category/electronics-tech">
-                    Electronics & Tech
-                  </Link>
-                </Typography>
+                <Typography variant="body3">Electronics & Tech</Typography>
               </StyledCardContent>
             </StyledCard>
           </CardActionArea>
