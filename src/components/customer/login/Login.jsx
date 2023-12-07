@@ -78,7 +78,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     console.log(data);
-    navigate('/home')
+   
     let userData = {
       email: data.email,
       password: data.password,
