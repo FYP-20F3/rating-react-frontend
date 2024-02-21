@@ -1,21 +1,11 @@
 import React from "react";
-import {
-  Grid,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Stack,
-  Divider,
-} from "@mui/material";
+import { Grid, Box, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { styled } from "@mui/system";
 import Icon1 from "../../../assets/jpg/register.jpg";
-import axios from 'axios';
+import axios from "axios";
 import { useForm } from "react-hook-form";
-
-
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   display: "flex",
@@ -55,13 +45,13 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const StyledImage = styled("img")(({ theme }) => ({
   mixBlendMode: "darken",
   display: "block",
-   width: 400,
+  width: 400,
   height: 350,
   [theme.breakpoints.down("sm")]: {
     width: 250,
     height: 200,
   },
-  margin: "0 auto"
+  margin: "0 auto",
 }));
 
 const description = [
@@ -70,54 +60,52 @@ const description = [
   "and ",
   "Privacy Policy.",
 ];
-  
+
 const SignUp = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-    setValue,
   } = useForm();
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     console.log(data);
-  
+
     let userData = {
       email: data.email,
       password: data.password,
     };
 
     let dataSet = JSON.stringify({
-      "firstName": data.firstName,
-      "lastName": data.lastName,
-      "email": data.email,
-      "password": data.password,
-      "picturePath": "http://dummyimage.com/193x100.png/ff4444/ffff"
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+      picturePath: "http://dummyimage.com/193x100.png/ff4444/ffff",
     });
-    
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'http://localhost:3001/auth/register/customer', // Change this to your backend URL
-      headers: { 
-        'Content-Type': 'application/json'
-      },
-      data : dataSet
-    };
-    
-    axios.request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-      navigate('/login');
-    })
 
-    .catch((error) => {
-      console.log
-      console.log(error);
-    });
-    
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "http://localhost:3001/auth/register/customer", // Change this to your backend URL
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: dataSet,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        navigate("/customer/login");
+      })
+
+      .catch((error) => {
+        console.log;
+        console.log(error);
+      });
   };
   return (
     <StyledGrid container>
@@ -151,7 +139,11 @@ const SignUp = () => {
               );
             })}
           </Typography>
-          <form onSubmit={handleSubmit(onSubmit)} >
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            style={{ display: "flex", flexDirection: "column", width: "100%" }}
+          >
             <StyledTextField
               label="First Name"
               variant="outlined"
@@ -161,6 +153,12 @@ const SignUp = () => {
               })}
               sx={{ mb: 2.6 }}
             />
+            {errors.firstName && (
+              <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
+                {errors.firstName.message}
+              </Typography>
+            )}
+
             <StyledTextField
               label="Last Name"
               variant="outlined"
@@ -170,42 +168,86 @@ const SignUp = () => {
               })}
               sx={{ mb: 2.6 }}
             />
+            {errors.lastName && (
+              <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
+                {errors.lastName.message}
+              </Typography>
+            )}
             <StyledTextField
               label="Email"
               variant="outlined"
               type="email"
               {...register("email", {
-                required: "This field is required",
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                  message: "Invalid email address",
+                },
               })}
               placeholder="example.email@gmail.com"
               sx={{ mb: 2.6 }}
             />
+            {errors.email && (
+              <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
+                {errors.email.message}
+              </Typography>
+            )}
             <StyledTextField
               label="Password"
               variant="outlined"
               {...register("password", {
-                required: "This field is required",
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters long",
+                },
               })}
               type="password"
               placeholder="Enter your password"
             />
+            {errors.password && (
+              <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
+                {errors.password.message}
+              </Typography>
+            )}
             <StyledButton
               variant="contained"
-              onClick = {handleSubmit(onSubmit)}
-              sx={{ mt: 3, width: 300, alignSelf: "center", textAlign: "center" }}
+              onClick={handleSubmit(onSubmit)}
+              sx={{
+                mt: 3,
+                width: 300,
+                alignSelf: "center",
+                textAlign: "center",
+              }}
             >
               Sign Up
             </StyledButton>
-            <Typography variant="body3" align="center" sx={{ mt: 10, mr: 3 }}>
+            <Typography
+              variant="body3"
+              component="p"
+              align="center"
+              sx={{ mt: 5, mr: 3 }}
+            >
               Have an account?{" "}
-              <Typography variant="body3" align="center" color="primary">
+              <Button
+                variant="text"
+                align="center"
+                color="primary"
+                onClick={() => navigate("/customer/login")}
+              >
                 Log in
-              </Typography>
+              </Button>
             </Typography>
           </form>
         </Box>
       </StyledGridInner>
-      <StyledGridInner item xs={12} md={6} xl={4} sx={{ order: { xs: -1, md: 3 } }}>
+      <StyledGridInner
+        item
+        xs={12}
+        md={6}
+        xl={4}
+        sx={{ order: { xs: -1, md: 3 } }}
+      >
         <Box
           component="div"
           sx={{
@@ -216,7 +258,7 @@ const SignUp = () => {
             mr: 5,
             bgcolor: "background.paper",
             borderRadius: "0rem 7rem 0rem 7rem",
-            px: {xs: 3, xl: 0},
+            px: { xs: 3, xl: 0 },
           }}
         >
           <StyledTypography

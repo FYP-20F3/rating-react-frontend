@@ -16,13 +16,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 
 import LogoBox from "./LogoBox";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
-const navItems = ["Features", "Why us", "Reviews", "Register"];
+const navItems = ["Features", "Why us", "Reviews"];
 
 export default function MainNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -30,11 +31,18 @@ export default function MainNavbar() {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Button color="primary" variant="contained" sx={{ my: 2 }}>
+      <Button
+        color="primary"
+        variant="contained"
+        sx={{ my: 2 }}
+        onClick={() => navigate("/business/register")}
+      >
         For Business
       </Button>
       <Divider />
-      <Link to="/login"><Button sx={{ color: "primary.main", mt: 2 }}>Login</Button></Link>
+      <Link to="/customer/login">
+        <Button sx={{ color: "primary.main", mt: 2 }}>Login</Button>
+      </Link>
       <List>
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
@@ -57,7 +65,7 @@ export default function MainNavbar() {
         variant="outline"
         sx={{ display: "flex" }}
       >
-        <Toolbar sx={{ mr: 4, ml: 5 }}>
+        <Toolbar sx={{ ml: 5 }}>
           <LogoBox />
           <Box
             sx={{
@@ -72,7 +80,7 @@ export default function MainNavbar() {
                 sx={{ color: "text.primary", mr: 4 }}
                 variant="body2"
               >
-                {item === "Register" ? <Link to="/register">{item}</Link>: item}
+                {item}
               </Button>
             ))}
           </Box>
@@ -86,8 +94,16 @@ export default function MainNavbar() {
             <MenuIcon />
           </IconButton>
           <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <Link to="/login"><Button sx={{ color: "primary.main" }}>Login</Button></Link>
-            <Button color="primary" variant="contained">
+            <Link to="/customer/login">
+              <Button sx={{ color: "primary.main" }}>Login</Button>
+            </Link>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => {
+                navigate("/business/login");
+              }}
+            >
               For Business
             </Button>
           </Box>

@@ -19,6 +19,7 @@ const theme = createTheme({
     },
     background: {
       default: "#FFFFFF", // Neutral White for default background
+      offWhite: "#FFFFE2",
       paper: "#F5F7FA", // Neutral Silver for paper background
     },
     box: {
@@ -31,7 +32,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Inter, sans-serif", // Custom font family
+    fontFamily: "Public Sans, sans-serif", // Custom font family
     allVariants: {
       textTransform: "none",
     },

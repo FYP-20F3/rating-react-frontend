@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import {
   Stack,
   Grid,
-  Box,
   Typography,
   Card,
   CardContent,
@@ -18,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import { getData } from "../../../store/apiData";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-
 
 const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -47,11 +45,8 @@ const Explore = () => {
   const { respdata } = useSelector((state) => state.respdata);
 
   const handleCosmetics = () => {
-    
-                
-      navigate("/home/category/cosmetics");
-    
-  }
+    navigate("/customer/home/category/cosmetics");
+  };
   return (
     <Stack spacing={3} sx={{ pl: { xs: 1, md: 4 } }}>
       <Typography variant="h3" sx={{ pl: 4.5 }}>
@@ -62,7 +57,7 @@ const Explore = () => {
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
             <StyledCard
               onClick={() => {
-                navigate("/home/category/electronics-tech");
+                navigate("/customer/home/category/electronics-tech");
               }}
             >
               <StyledCardContent>
@@ -74,14 +69,14 @@ const Explore = () => {
         </StyledGridInner>
         <StyledGridInner item xs={11} sm={5.5} md={5} lg={2.7}>
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
-            <StyledCard onClick={() => {
-                navigate("/home/category/clothing");
-              }}>
+            <StyledCard
+              onClick={() => {
+                navigate("/customer/home/category/clothing");
+              }}
+            >
               <StyledCardContent>
                 <StyledImage src={Icon2} width={23} />
-                <Typography variant="body3">
-                  Clothing Store
-                </Typography>
+                <Typography variant="body3">Clothing Store</Typography>
               </StyledCardContent>
             </StyledCard>
           </CardActionArea>
@@ -91,23 +86,21 @@ const Explore = () => {
             <StyledCard onClick={handleCosmetics}>
               <StyledCardContent>
                 <StyledImage src={Icon3} width={23} />
-                <Typography variant="body3">
-                  Cosmetics
-                </Typography>
+                <Typography variant="body3">Cosmetics</Typography>
               </StyledCardContent>
             </StyledCard>
           </CardActionArea>
         </StyledGridInner>
         <StyledGridInner item xs={11} sm={5.5} md={5} lg={2.7}>
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
-            <StyledCard onClick={() => {
-                navigate("/home/category/food");
-              }}> 
+            <StyledCard
+              onClick={() => {
+                navigate("/customer/home/category/food");
+              }}
+            >
               <StyledCardContent>
                 <StyledImage src={Icon4} width={23} />
-                <Typography variant="body3">
-                  Food
-                </Typography>
+                <Typography variant="body3">Food</Typography>
               </StyledCardContent>
             </StyledCard>
           </CardActionArea>

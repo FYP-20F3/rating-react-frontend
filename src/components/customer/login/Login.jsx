@@ -9,12 +9,9 @@ import {
   Divider,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import axios from 'axios';
+import axios from "axios";
 import { styled } from "@mui/system";
-import Icon1 from "../../../assets/jpg/register.jpg";
 import { useNavigate } from "react-router-dom";
-
-
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   display: "flex",
@@ -43,7 +40,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-  
 const StyledButton = styled(Button)(({ theme }) => ({
   padding: theme.spacing(1, 2),
   backgroundColor: theme.palette.primary.main,
@@ -70,7 +66,6 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
     setValue,
   } = useForm();
@@ -78,42 +73,37 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     console.log(data);
-   
-    let userData = {
+
+    let dataSet = JSON.stringify({
       email: data.email,
       password: data.password,
-    };
-  
-    let dataSet = JSON.stringify({
-      "email": data.email,
-      "password": data.password
     });
-    
+
     console.log(dataSet);
     let config = {
-      method: 'post',
+      method: "post",
       maxBodyLength: Infinity,
-      url: 'http://localhost:3001/auth/login/customer', // Change this to your backend URL
-      headers: { 
-        'Content-Type': 'application/json'
+      url: "http://localhost:3001/auth/login/customer", // Change this to your backend URL
+      headers: {
+        "Content-Type": "application/json",
       },
-      data : dataSet
+      data: dataSet,
     };
-    
-    axios.request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-      navigate('/home')
-    })
-    .catch((error) => {
-      console.log
-      console.log(error);
-    });
-    
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        navigate("/customer/home");
+      })
+      .catch((error) => {
+        console.log;
+        console.log(error);
+      });
   };
-  
+
   return (
-    <StyledGrid container sx={{width:"100%"}}>
+    <StyledGrid container sx={{ width: "100%" }}>
       <StyledGridInner item xs={12}>
         <Box
           component="div"
@@ -138,29 +128,45 @@ const Login = () => {
           >
             Enter your details to get sign in to your account.
           </Typography>
-          <form onSubmit={handleSubmit(onSubmit)} >
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Stack>
               <StyledTextField
                 label="Email"
                 variant="outlined"
                 type="email"
                 {...register("email", {
-                  required: "This field is required",
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    message: "Invalid email address",
+                  },
                 })}
                 placeholder="example.email@gmail.com"
-                sx={{ mb: 2.6 }}
+                sx={{ mb: 2.2 }}
               />
+              {errors.email && (
+                <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
+                  {errors.email.message}
+                </Typography>
+              )}
               <StyledTextField
                 label="Password"
                 variant="outlined"
                 type="password"
-                {...register("password")}
-
+                {...register("password", {
+                  required: "Password is required",
+                })}
                 placeholder="Enter your password"
               />
+              {errors.password && (
+                <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
+                  {errors.password.message}
+                </Typography>
+              )}
+
               <StyledButton
                 type="submit"
-                onClick = {handleSubmit(onSubmit)}
+                onClick={handleSubmit(onSubmit)}
                 variant="contained"
                 sx={{ mt: 3, px: 10, alignSelf: "center", textAlign: "center" }}
               >
