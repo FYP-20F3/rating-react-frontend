@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 import {
   Grid,
@@ -17,6 +16,7 @@ import Icon1 from "../../../assets/jpg/register.jpg";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { BASE_URL } from "../../../const/APIS";
+import { DevTool } from "@hookform/devtools";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   display: "flex",
@@ -76,8 +76,16 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    },
+  });
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
@@ -92,7 +100,7 @@ const SignUp = () => {
   };
 
   const action = (
-    <React.Fragment>
+    <>
       <IconButton
         size="small"
         aria-label="close"
@@ -101,7 +109,7 @@ const SignUp = () => {
       >
         <CloseIcon fontSize="small" />
       </IconButton>
-    </React.Fragment>
+    </>
   );
 
   const onSubmit = async (data) => {
@@ -266,6 +274,7 @@ const SignUp = () => {
                 </Button>
               </Typography>
             </form>
+            <DevTool control={control} />
           </Box>
         </StyledGridInner>
         <StyledGridInner

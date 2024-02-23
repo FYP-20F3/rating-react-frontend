@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Grid,
   Box,
@@ -65,7 +65,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.user);
 
-  const handleClose = (event, reason) => {
+  const handleClose = (reason) => {
     if (reason === "clickaway") {
       return;
     }
@@ -74,7 +74,7 @@ const Login = () => {
   };
 
   const action = (
-    <React.Fragment>
+    <>
       <IconButton
         size="small"
         aria-label="close"
@@ -83,7 +83,7 @@ const Login = () => {
       >
         <CloseIcon fontSize="small" />
       </IconButton>
-    </React.Fragment>
+    </>
   );
 
   const onSubmit = async (data) => {

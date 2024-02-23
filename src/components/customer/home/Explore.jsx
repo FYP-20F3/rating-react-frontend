@@ -15,7 +15,6 @@ import Icon3 from "../../../assets/jpg/exploreIcon3.jpg";
 import Icon4 from "../../../assets/jpg/exploreIcon4.jpg";
 import { useNavigate } from "react-router-dom";
 
-
 const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   boxShadow: "none",
@@ -41,9 +40,6 @@ const StyledImage = styled("img")(({ theme }) => ({
 const Explore = () => {
   const navigate = useNavigate();
 
-  const handleCosmetics = () => {
-    navigate("/customer/home/category/cosmetics");
-  };
   return (
     <Stack spacing={3} sx={{ pl: { xs: 1, md: 4 } }}>
       <Typography variant="h3" sx={{ pl: 4.5 }}>
@@ -54,7 +50,7 @@ const Explore = () => {
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
             <StyledCard
               onClick={() => {
-                navigate("/customer/home/category/electronics-tech");
+                navigate("/customer/home/category/electronics_tech");
               }}
             >
               <StyledCardContent>
@@ -68,7 +64,7 @@ const Explore = () => {
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
             <StyledCard
               onClick={() => {
-                navigate("/customer/home/category/clothing");
+                navigate("/customer/home/category/clothing_store");
               }}
             >
               <StyledCardContent>
@@ -80,7 +76,9 @@ const Explore = () => {
         </StyledGridInner>
         <StyledGridInner item xs={11} sm={5.5} md={5} lg={2.7}>
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
-            <StyledCard onClick={handleCosmetics}>
+            <StyledCard
+              onClick={() => navigate("/customer/home/category/cosmetics")}
+            >
               <StyledCardContent>
                 <StyledImage src={Icon3} width={23} />
                 <Typography variant="body3">Cosmetics</Typography>

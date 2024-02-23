@@ -12,7 +12,6 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@hookform/devtools": "^4.3.1",
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
     "@reduxjs/toolkit": "^1.9.7",
@@ -26,6 +25,7 @@
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",

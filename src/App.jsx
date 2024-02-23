@@ -11,7 +11,9 @@ import BusinessRegister from "./pages/business/register/BusinessRegister";
 import BusinessDashboard from "./pages/business/dashboard/BusinessDashboard";
 import BusinessHome from "./pages/business/dashboard/sidebarPages/BusinessHome";
 import ServiceReviews from "./pages/business/dashboard/sidebarPages/ServiceReviews";
-import CustomerPrivateRoute from "./CustomerPrivateRoute";
+import PrivateRoute from "./PrivateRoute";
+import { customerLoginPath, businessLoginPath } from "./const/path";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
@@ -23,10 +25,8 @@ function App() {
         <Route path="/customer">
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route element={<CustomerPrivateRoute />}>
+          <Route element={<PrivateRoute path={customerLoginPath} />}>
             <Route path="home" element={<Home />} />
-          </Route>
-          <Route element={<CustomerPrivateRoute />}>
             <Route path="home/category/:id" element={<BusinessListPage />} />
           </Route>
         </Route>
@@ -36,13 +36,18 @@ function App() {
         <Route path="/business">
           <Route path="login" element={<BusinessLogin />} />
           <Route path="register" element={<BusinessRegister />} />
-          <Route path="dashboard" element={<BusinessDashboard />}>
-            <Route index element={<BusinessHome />} />
-            <Route path="reviews/service" element={<ServiceReviews />} />
+          <Route element={<PrivateRoute path={businessLoginPath} />}>
+            <Route path="dashboard" element={<BusinessDashboard />}>
+              <Route index element={<BusinessHome />} />
+              <Route path="reviews/service" element={<ServiceReviews />} />
+            </Route>
           </Route>
         </Route>
 
         {/* admin */}
+
+        {/* error */}
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </ThemeProvider>
   );

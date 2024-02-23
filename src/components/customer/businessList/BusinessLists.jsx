@@ -160,10 +160,10 @@ const BusinessLists = () => {
               size="small"
             >
               <MenuItem value="all-category">All Category</MenuItem>
-              <MenuItem value="electronics-tech">
+              <MenuItem value="electronics_tech">
                 Electronics & Technology
               </MenuItem>
-              <MenuItem value="clothing">Clothing Store</MenuItem>
+              <MenuItem value="clothing_store">Clothing Store</MenuItem>
               <MenuItem value="cosmetics">Cosmetics</MenuItem>
               <MenuItem value="food">Food</MenuItem>
             </StyledSelect>
