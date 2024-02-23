@@ -66,9 +66,7 @@ const BusinessRegister = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    // console.log(data);
 
-    console.log("hello");
   };
   return (
     <Box sx={{ bgcolor: "background.paper", height: "113vh" }}>

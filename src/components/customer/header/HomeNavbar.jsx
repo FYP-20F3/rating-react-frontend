@@ -23,12 +23,16 @@ import { useState } from "react";
 import LogoBox from "./LogoBox";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
+import { useSelector, useDispatch } from "react-redux";
+import { signOut } from "../../../redux/userSlice";
 
 const drawerWidth = 240;
 const navItems = ["Reviews", "Complaints", "Surveys"];
 
 export default function HomeNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { error } = useSelector((state) => state.user);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -44,7 +48,7 @@ export default function HomeNavbar() {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center"}}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <List>
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
@@ -67,7 +71,7 @@ export default function HomeNavbar() {
         variant="outline"
         sx={{ display: "flex" }}
       >
-        <Toolbar sx={{ mr: {xs: 2, md: 4}, ml: {xs: 2, md: 5} }}>
+        <Toolbar sx={{ mr: { xs: 2, md: 4 }, ml: { xs: 2, md: 5 } }}>
           <LogoBox />
           <Box
             sx={{
@@ -90,9 +94,9 @@ export default function HomeNavbar() {
             sx={{
               display: "flex",
               alignItems: "center",
-              textAlign: "center",           
+              textAlign: "center",
               mr: 1.4,
-              ml: {xs: "auto", md:0},
+              ml: { xs: "auto", md: 0 },
             }}
           >
             <Tooltip title="Account settings">
@@ -109,7 +113,7 @@ export default function HomeNavbar() {
                     width: 35,
                     height: 35,
                     mr: 0.6,
-                    
+
                     bgcolor: "primary.light",
                     color: "white",
                   }}
@@ -167,6 +171,7 @@ export default function HomeNavbar() {
                 sx={{
                   color: "text.primary",
                 }}
+                onClick={() => dispatch(signOut())}
               >
                 Logout
               </Typography>
@@ -201,7 +206,7 @@ export default function HomeNavbar() {
               borderRadius: ".9rem",
               left: ".4rem",
               bgcolor: "white",
-            },  
+            },
           }}
         >
           {drawer}

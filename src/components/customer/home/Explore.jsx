@@ -14,9 +14,7 @@ import Icon2 from "../../../assets/jpg/exploreIcon2.jpg";
 import Icon3 from "../../../assets/jpg/exploreIcon3.jpg";
 import Icon4 from "../../../assets/jpg/exploreIcon4.jpg";
 import { useNavigate } from "react-router-dom";
-import { getData } from "../../../store/apiData";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+
 
 const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -42,7 +40,6 @@ const StyledImage = styled("img")(({ theme }) => ({
 
 const Explore = () => {
   const navigate = useNavigate();
-  const { respdata } = useSelector((state) => state.respdata);
 
   const handleCosmetics = () => {
     navigate("/customer/home/category/cosmetics");

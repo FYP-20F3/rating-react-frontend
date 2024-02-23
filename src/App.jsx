@@ -11,6 +11,7 @@ import BusinessRegister from "./pages/business/register/BusinessRegister";
 import BusinessDashboard from "./pages/business/dashboard/BusinessDashboard";
 import BusinessHome from "./pages/business/dashboard/sidebarPages/BusinessHome";
 import ServiceReviews from "./pages/business/dashboard/sidebarPages/ServiceReviews";
+import CustomerPrivateRoute from "./CustomerPrivateRoute";
 
 function App() {
   return (
@@ -20,10 +21,14 @@ function App() {
 
         {/* customer */}
         <Route path="/customer">
-          <Route path="home" element={<Home />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="home/categories/:id" element={<BusinessListPage />} />
+          <Route element={<CustomerPrivateRoute />}>
+            <Route path="home" element={<Home />} />
+          </Route>
+          <Route element={<CustomerPrivateRoute />}>
+            <Route path="home/category/:id" element={<BusinessListPage />} />
+          </Route>
         </Route>
 
         {/* business */}

@@ -1,11 +1,22 @@
-import React from "react";
-import { Grid, Box, Typography, TextField, Button } from "@mui/material";
+import * as React from "react";
+import { useState } from "react";
+import {
+  Grid,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Snackbar,
+  IconButton,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { styled } from "@mui/system";
 import Icon1 from "../../../assets/jpg/register.jpg";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { BASE_URL } from "../../../const/APIS";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   display: "flex",
@@ -69,212 +80,236 @@ const SignUp = () => {
   } = useForm();
   const navigate = useNavigate();
 
+  const [error, setError] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
   const onSubmit = async (data) => {
-    console.log(data);
-
-    let userData = {
-      email: data.email,
-      password: data.password,
-    };
-
-    let dataSet = JSON.stringify({
+    console.log("data", data);
+    let payload = {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       password: data.password,
-      picturePath: "http://dummyimage.com/193x100.png/ff4444/ffff",
-    });
-
-    let config = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: "http://localhost:3001/auth/register/customer", // Change this to your backend URL
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: dataSet,
     };
+    console.log(payload);
 
-    axios
-      .request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
-        navigate("/customer/login");
-      })
-
-      .catch((error) => {
-        console.log;
-        console.log(error);
-      });
+    try {
+      const response = await axios.post(
+        `${BASE_URL}auth/register/customer`,
+        payload
+      );
+      console.log("response:", response);
+      navigate("/customer/login");
+    } catch (error) {
+      let arr = error.response.data.error.split(":");
+      // console.log(arr);
+      setError(arr[0]);
+      setOpen(true);
+    }
   };
+
   return (
-    <StyledGrid container>
-      <StyledGridInner item xs={12} md={6} xl={6}>
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: { xs: "79%", sm: "60%", md: "83%", lg: "65%", xl: "60%" },
-          }}
-        >
-          <StyledTypography
-            variant="h2"
-            align="center"
-            sx={{ fontSize: "1.5rem", fontWeight: "700" }}
-          >
-            Create an account
-          </StyledTypography>
-          <Typography
-            sx={{ mb: 4, width: { xs: 250, md: 330 }, mx: "auto" }}
-            align="center"
+    <>
+      <StyledGrid container>
+        <StyledGridInner item xs={12} md={6} xl={6}>
+          <Box
             component="div"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: { xs: "79%", sm: "60%", md: "83%", lg: "65%", xl: "60%" },
+            }}
           >
-            {description.map((item, index) => {
-              const color = index % 2 === 0 ? "secondary" : "primary";
-              return (
-                <Typography key={index} color={color} variant="body4">
-                  {item}
-                </Typography>
-              );
-            })}
-          </Typography>
+            <StyledTypography
+              variant="h2"
+              align="center"
+              sx={{ fontSize: "1.5rem", fontWeight: "700" }}
+            >
+              Create an account
+            </StyledTypography>
+            <Typography
+              sx={{ mb: 4, width: { xs: 250, md: 330 }, mx: "auto" }}
+              align="center"
+              component="div"
+            >
+              {description.map((item, index) => {
+                const color = index % 2 === 0 ? "secondary" : "primary";
+                return (
+                  <Typography key={index} color={color} variant="body4">
+                    {item}
+                  </Typography>
+                );
+              })}
+            </Typography>
 
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            style={{ display: "flex", flexDirection: "column", width: "100%" }}
-          >
-            <StyledTextField
-              label="First Name"
-              variant="outlined"
-              type="text"
-              {...register("firstName", {
-                required: "This field is required",
-              })}
-              sx={{ mb: 2.6 }}
-            />
-            {errors.firstName && (
-              <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
-                {errors.firstName.message}
-              </Typography>
-            )}
-
-            <StyledTextField
-              label="Last Name"
-              variant="outlined"
-              type="text"
-              {...register("lastName", {
-                required: "This field is required",
-              })}
-              sx={{ mb: 2.6 }}
-            />
-            {errors.lastName && (
-              <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
-                {errors.lastName.message}
-              </Typography>
-            )}
-            <StyledTextField
-              label="Email"
-              variant="outlined"
-              type="email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                  message: "Invalid email address",
-                },
-              })}
-              placeholder="example.email@gmail.com"
-              sx={{ mb: 2.6 }}
-            />
-            {errors.email && (
-              <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
-                {errors.email.message}
-              </Typography>
-            )}
-            <StyledTextField
-              label="Password"
-              variant="outlined"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters long",
-                },
-              })}
-              type="password"
-              placeholder="Enter your password"
-            />
-            {errors.password && (
-              <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
-                {errors.password.message}
-              </Typography>
-            )}
-            <StyledButton
-              variant="contained"
-              onClick={handleSubmit(onSubmit)}
-              sx={{
-                mt: 3,
-                width: 300,
-                alignSelf: "center",
-                textAlign: "center",
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
               }}
             >
-              Sign Up
-            </StyledButton>
-            <Typography
-              variant="body3"
-              component="p"
-              align="center"
-              sx={{ mt: 5, mr: 3 }}
-            >
-              Have an account?{" "}
-              <Button
-                variant="text"
-                align="center"
-                color="primary"
-                onClick={() => navigate("/customer/login")}
+              <StyledTextField
+                label="First Name"
+                variant="outlined"
+                type="text"
+                {...register("firstName", {
+                  required: "This field is required",
+                })}
+                sx={{ mb: 2.6 }}
+              />
+              {errors.firstName && (
+                <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
+                  {errors.firstName.message}
+                </Typography>
+              )}
+
+              <StyledTextField
+                label="Last Name"
+                variant="outlined"
+                type="text"
+                {...register("lastName", {
+                  required: "This field is required",
+                })}
+                sx={{ mb: 2.6 }}
+              />
+              {errors.lastName && (
+                <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
+                  {errors.lastName.message}
+                </Typography>
+              )}
+              <StyledTextField
+                label="Email"
+                variant="outlined"
+                type="email"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    message: "Invalid email address",
+                  },
+                })}
+                placeholder="example.email@gmail.com"
+                sx={{ mb: 2.6 }}
+              />
+              {errors.email && (
+                <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
+                  {errors.email.message}
+                </Typography>
+              )}
+              <StyledTextField
+                label="Password"
+                variant="outlined"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters long",
+                  },
+                })}
+                type="password"
+                placeholder="Enter your password"
+              />
+              {errors.password && (
+                <Typography variant="body4" sx={{ color: "error.main", mb: 1 }}>
+                  {errors.password.message}
+                </Typography>
+              )}
+              <StyledButton
+                variant="contained"
+                onClick={handleSubmit(onSubmit)}
+                sx={{
+                  mt: 3,
+                  width: 300,
+                  alignSelf: "center",
+                  textAlign: "center",
+                }}
               >
-                Log in
-              </Button>
-            </Typography>
-          </form>
-        </Box>
-      </StyledGridInner>
-      <StyledGridInner
-        item
-        xs={12}
-        md={6}
-        xl={4}
-        sx={{ order: { xs: -1, md: 3 } }}
-      >
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            flexGrow: 1,
-            ml: 5,
-            mr: 5,
-            bgcolor: "background.paper",
-            borderRadius: "0rem 7rem 0rem 7rem",
-            px: { xs: 3, xl: 0 },
-          }}
+                Sign Up
+              </StyledButton>
+              <Typography
+                variant="body3"
+                component="p"
+                align="center"
+                sx={{ mt: 5, mr: 3 }}
+              >
+                Have an account?{" "}
+                <Button
+                  variant="text"
+                  align="center"
+                  color="primary"
+                  onClick={() => navigate("/customer/login")}
+                >
+                  Log in
+                </Button>
+              </Typography>
+            </form>
+          </Box>
+        </StyledGridInner>
+        <StyledGridInner
+          item
+          xs={12}
+          md={6}
+          xl={4}
+          sx={{ order: { xs: -1, md: 3 } }}
         >
-          <StyledTypography
-            variant="h2"
-            sx={{ fontWeight: 500, mt: 4 }}
-            align="center"
+          <Box
+            component="div"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flexGrow: 1,
+              ml: 5,
+              mr: 5,
+              bgcolor: "background.paper",
+              borderRadius: "0rem 7rem 0rem 7rem",
+              px: { xs: 3, xl: 0 },
+            }}
           >
-            Welcome to VOC!
-          </StyledTypography>
-          <StyledTypography variant="body3" align="center" sx={{ mb: 5 }}>
-            First thing first, let set you up with an account. &#128075;
-          </StyledTypography>
-          <StyledImage src={Icon1} alt="Welcome Image" />
-        </Box>
-      </StyledGridInner>
-    </StyledGrid>
+            <StyledTypography
+              variant="h2"
+              sx={{ fontWeight: 500, mt: 4 }}
+              align="center"
+            >
+              Welcome to VOC!
+            </StyledTypography>
+            <StyledTypography variant="body3" align="center" sx={{ mb: 5 }}>
+              First thing first, let set you up with an account. &#128075;
+            </StyledTypography>
+            <StyledImage src={Icon1} alt="Welcome Image" />
+          </Box>
+        </StyledGridInner>
+      </StyledGrid>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message={error}
+        action={action}
+      />
+    </>
   );
 };
 
