@@ -14,6 +14,8 @@ import ServiceReviews from "./pages/business/dashboard/sidebarPages/ServiceRevie
 import PrivateRoute from "./PrivateRoute";
 import { customerLoginPath, businessLoginPath } from "./const/path";
 import ErrorPage from "./pages/ErrorPage";
+import BusinessInfoPage from "./pages/customer/BusinessInfoPage";
+import { SearchNameProvider } from "./context/SearchNameContext";
 
 function App() {
   return (
@@ -26,8 +28,11 @@ function App() {
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route element={<PrivateRoute path={customerLoginPath} />}>
-            <Route path="home" element={<Home />} />
-            <Route path="home/category/:id" element={<BusinessListPage />} />
+            <Route element={<SearchNameProvider />}>
+              <Route path="home" element={<Home />} />
+              <Route path="category/:id" element={<BusinessListPage />} />
+            </Route>
+            <Route path="reviews/:businessId" element={<BusinessInfoPage />} />
           </Route>
         </Route>
 

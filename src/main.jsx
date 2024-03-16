@@ -5,7 +5,7 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store, { persistor } from "./redux/store";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import { PersistGate } from "redux-persist/integration/react";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -14,7 +14,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <PersistGate persistor={persistor}>
         <BrowserRouter>
           <CssBaseline />
-          <App />
+          <StyledEngineProvider injectFirst>
+            <App />
+          </StyledEngineProvider>
         </BrowserRouter>
       </PersistGate>
     </Provider>

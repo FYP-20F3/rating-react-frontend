@@ -1,37 +1,23 @@
-import React from "react";
-import { Stack, Typography, TextField, Button } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import { styled } from "@mui/system";
+import { Stack, Typography } from "@mui/material";
+import SearchTextField from "../common/SearchTextField";
+import { useSearchName } from "../../../context/SearchNameContext";
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
-  marginBottom: theme.spacing(1.5),
-  "& .MuiInputBase-input": {
-    paddingLeft: theme.spacing(1),
-    height: theme.spacing(2.7), // Default height
-    [theme.breakpoints.down("sm")]: {
-      height: theme.spacing(1), // Reduced height for smaller screens
+const ListHero = ({ category }) => {
+  const widthSpacing = {
+    width: { md: "120%" },
+  };
+
+  const paddingSpacing = {
+    paddingNormal: {
+      tb: 0.6,
+      rl: 4,
     },
-    fontSize: theme.typography.body1.fontSize, // Default font size for larger screens
-    [theme.breakpoints.down("md")]: {
-      fontSize: "0.7rem", // Smaller placeholder font size for smaller screens
+    paddingSm: {
+      tb: 0.5,
+      rl: 2,
     },
-  },
-}));
+  };
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  padding: theme.spacing(0.6, 4),
-  [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(0.5, 2),
-  },
-  borderRadius: "27px",
-  cursor: "pointer",
-  fontSize: theme.typography.body1.fontSize, // Default font size for larger screens
-  [theme.breakpoints.down("md")]: {
-    fontSize: "0.7rem", // Smaller placeholder font size for smaller screens
-  },
-}));
-
-const ListHero = () => {
   return (
     <Stack
       sx={{
@@ -44,30 +30,19 @@ const ListHero = () => {
         pb: 8,
       }}
     >
-      <Typography variant="h2" align="center" sx={{}}>
-        Businesses List In{" "}
-        <Typography variant="h2" align="center" color="primary">
-          Electronics & Technology
+      <Typography variant="h2" component="h2" align="center" sx={{}}>
+        Businesses List In
+        <Typography variant="h2" component="p" align="center" color="primary">
+          {category}
         </Typography>
       </Typography>
       <Stack sx={{ marginTop: "2.5rem" }}>
-        <StyledTextField
-          hiddenLabel
-          variant="outlined"
-          placeholder="Search Company by name"
-          InputProps={{
-            startAdornment: <SearchIcon />,
-            endAdornment: (
-              <StyledButton variant="contained">Search</StyledButton>
-            ),
-            style: {
-              borderRadius: "30px",
-              backgroundColor: "white",
-            },
-          }}
-          sx={{
-            width: { md: 570 },
-          }}
+        <SearchTextField
+          wSpacing={widthSpacing.width}
+          mSpacing={1.5}
+          hSpacing={2.7}
+          pNormalSpacing={paddingSpacing.paddingNormal}
+          pSmallSpacing={paddingSpacing.paddingSm}
         />
       </Stack>
     </Stack>

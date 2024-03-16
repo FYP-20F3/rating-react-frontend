@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@100..900&display=swap");
+@tailwind components;
+@tailwind utilities;
+
 /* Reset some default styles */
 * {
   margin: 0;
@@ -16,4 +19,24 @@ a {
 body {
   font-family: "Public Sans", sans-serif;
   overflow-x: hidden;
+}
+
+.star-rating {
+  @apply flex items-center mt-4;
+}
+
+.star-rating a {
+  @apply text-sm font-medium text-blue-600 hover:underline;
+}
+
+.star-rating-bar {
+  @apply w-2/4 h-5 mx-4 rounded;
+}
+
+.star-rating-fill {
+  @apply h-5 rounded bg-yellow-300;
+}
+
+.star-rating-percentage {
+  @apply text-sm font-medium text-gray-500;
 }

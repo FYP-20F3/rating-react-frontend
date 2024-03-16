@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import {
   Stack,
   Grid,
@@ -50,7 +49,7 @@ const Explore = () => {
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
             <StyledCard
               onClick={() => {
-                navigate("/customer/home/category/electronics_tech");
+                navigate("/customer/category/electronics_tech");
               }}
             >
               <StyledCardContent>
@@ -64,7 +63,7 @@ const Explore = () => {
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
             <StyledCard
               onClick={() => {
-                navigate("/customer/home/category/clothing_store");
+                navigate("/customer/category/clothing_store");
               }}
             >
               <StyledCardContent>
@@ -77,7 +76,7 @@ const Explore = () => {
         <StyledGridInner item xs={11} sm={5.5} md={5} lg={2.7}>
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
             <StyledCard
-              onClick={() => navigate("/customer/home/category/cosmetics")}
+              onClick={() => navigate("/customer/category/cosmetics")}
             >
               <StyledCardContent>
                 <StyledImage src={Icon3} width={23} />
@@ -90,7 +89,7 @@ const Explore = () => {
           <CardActionArea sx={{ px: { xs: 3, sm: 0 }, width: { xs: "400" } }}>
             <StyledCard
               onClick={() => {
-                navigate("/customer/home/category/food");
+                navigate("/customer/category/food");
               }}
             >
               <StyledCardContent>

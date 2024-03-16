@@ -10,7 +10,7 @@ const LogoBox = () => {
         <Typography
           variant="h2"
           component="span"
-          sx={{ mr: "auto", fontWeight: 700, verticalAlign: "bottom"}}
+          sx={{ mr: "auto", fontWeight: 700, position: "fixed", top: "14px" }}
         >
           VOC
         </Typography>

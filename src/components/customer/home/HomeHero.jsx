@@ -1,15 +1,10 @@
-import React, { useState } from "react";
-import {
-  Grid,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Divider,
-} from "@mui/material";
+import { Grid, Box, Typography, Divider } from "@mui/material";
 import { styled } from "@mui/system";
-import SearchIcon from "@mui/icons-material/Search";
 import Icon1 from "../../../assets/jpg/reviewIllustration.png";
+import SearchTextField from "../common/SearchTextField";
+import { useNavigate } from "react-router-dom";
+import { useSearchName } from "../../../context/SearchNameContext";
+import { set } from "react-hook-form";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   justifyContent: "space-between",
@@ -37,34 +32,6 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-  "& .MuiInputBase-input": {
-    paddingLeft: theme.spacing(1),
-    height: theme.spacing(3), // Default height
-    [theme.breakpoints.down("sm")]: {
-      height: theme.spacing(1), // Reduced height for smaller screens
-    },
-    fontSize: theme.typography.body1.fontSize, // Default font size for larger screens
-    [theme.breakpoints.down('md')]: {
-      fontSize: '0.7rem', // Smaller placeholder font size for smaller screens
-    },
-  },
-}));
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  padding: theme.spacing(1, 5),
-  [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(.5, 2.7),
-  },
-  borderRadius: "27px",
-  cursor: "pointer",
-  fontSize: theme.typography.body1.fontSize, // Default font size for larger screens
-    [theme.breakpoints.down('md')]: {
-      fontSize: '0.7rem', // Smaller placeholder font size for smaller screens
-    },
-}));
-
 const StyledImage = styled("img")(({ theme }) => ({
   width: 400,
   height: 400,
@@ -81,29 +48,28 @@ const StyledImage = styled("img")(({ theme }) => ({
 }));
 
 const HomeHero = () => {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const widthSpacing = {
+    width: { xs: "92%", sm: "78%", md: "80%" },
+  };
+  const navigate = useNavigate();
 
-  const handleSearch = async () => {
-    try {
-      setLoading(true);
-
-      // Make an AJAX call to your search API
-      const response = await fetch(`https://api.example.com/search?q=${query}`);
-      const data = await response.json();
-
-      setResults(data);
-    } catch (error) {
-      console.error('Error searching:', error);
-    } finally {
-      setLoading(false);
-    }
+  const paddingSpacing = {
+    paddingNormal: {
+      tb: 1,
+      rl: 5,
+    },
+    paddingSm: {
+      tb: 0.5,
+      rl: 2.7,
+    },
   };
 
-  const handleChange = (event) => {
-    setQuery(event.target.value);
+  const handleSearch = (event) => {
+    set(event.target.value);
+    navigate("/customer/category/all");
   };
+
+  console.log(paddingSpacing);
   return (
     <StyledGrid container>
       <StyledGridInner item xs={12} md={6}>
@@ -132,25 +98,15 @@ const HomeHero = () => {
               borderColor: "#323842",
             }}
           />
-          <StyledTextField
-            hiddenLabel
-            variant="outlined"
-            value={query}
-            onChange={handleChange}
-            placeholder="Search Company by name"
-            size="medium"
-            InputProps={{
-              startAdornment: <SearchIcon />,
-              endAdornment: <StyledButton variant="contained">Search</StyledButton>,
-              style: {
-                borderRadius: "30px",
-              },
-            }}
-            sx={{
-              width: { xs: "92%", sm: "78%", md: 470 },
-            }}
+          <SearchTextField
+            wSpacing={widthSpacing.width}
+            mSpacing={2}
+            hSpacing={3}
+            pNormalSpacing={paddingSpacing.paddingNormal}
+            pSmallSpacing={paddingSpacing.paddingSm}
+            handleSearch={handleSearch}
           />
-          {loading && <p>Loading results...</p>}
+          {/* {loading && <p>Loading results...</p>}
 
           {results.length > 0 && (
             <ul>
@@ -160,7 +116,7 @@ const HomeHero = () => {
             </ul>
           )}
 
-          {results.length === 0 && !loading && <p>No results found.</p>}
+          {results.length === 0 && !loading && <p>No results found.</p>} */}
         </Box>
       </StyledGridInner>
       <StyledGridInner item xs={12} md={6}>
