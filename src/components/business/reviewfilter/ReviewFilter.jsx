@@ -198,9 +198,6 @@ const ReviewItem = ({ review }) => {
                     <Grid item>
                         <Button variant="outlined" size="small">Share</Button>
                     </Grid>
-                    <Grid item>
-                        <Button variant="outlined" size="small">Request information</Button>
-                    </Grid>
                 </Grid>
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={10}>
