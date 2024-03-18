@@ -22,6 +22,8 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
+
 import { Reviews } from "@mui/icons-material";
 
 export default function Sidebar({
@@ -31,12 +33,20 @@ export default function Sidebar({
   DrawerHeader,
 }) {
   const theme = useTheme();
+  const navigate = useNavigate();
+
   const CARD_PROPERTY = {
     borderRadius: 3,
     boxShadow: 0,
     bgcolor: grey[200],
     mx: 1.4,
   };
+  const handleDashboard = () => {
+    navigate("/business/dashboard");
+  }
+  const handleReviews = () => {
+    navigate("business/reviews");
+  }
   return (
     <Drawer
       sx={{
@@ -98,12 +108,26 @@ export default function Sidebar({
               <MailIcon />
             </ListItemIcon>
             <ListItemText
+              onClick={handleDashboard}
               primary={"Dashboard"}
               sx={{ fontSize: "body4.fontSize" }}
             />
           </ListItemButton>
         </ListItem>
-        <Accordion
+        <ListItem>
+          <ListItemButton>
+            <ListItemIcon>
+              <Reviews sx={{ mr: 2, verticalAlign: "middle" }} />
+            </ListItemIcon>
+            <ListItemText
+              onClick={handleReviews}
+
+              primary={"Reviews"}
+              sx={{ fontSize: "body4.fontSize" }}
+            />
+          </ListItemButton>
+        </ListItem>
+        {/* <Accordion
           sx={{
             boxShadow: "none",
             // pl: 1,
@@ -140,7 +164,7 @@ export default function Sidebar({
               Service Reviews
             </Button>
           </AccordionDetails>
-        </Accordion>
+        </Accordion> */}
       </List>
       <Divider />
       <List>
