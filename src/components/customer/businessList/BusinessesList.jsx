@@ -87,23 +87,12 @@ const BusinessesList = ({
 }) => {
   const navigate = useNavigate();
   const ratings = [1, 2, 3, 4, 5];
-  const [category, setCategory] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
+  const color = isClicked ? "bg-blue-200" : "bg-white";
 
-  // useEffect(() => {
-  //   let businessCategory = "";
-  //   if (data != null && data.length > 0) {
-  //     businessCategory = data[0].businessCategory;
-  //   }
-
-  //   const allSameCategory =
-  //     data && data.length > 0
-  //       ? data.every(
-  //           (business) => business.businessCategory === businessCategory
-  //         )
-  //       : false;
-
-  //   setCategory(allSameCategory ? businessCategory : "all-category");
-  // }, [data]);
+  const handleClick = () => {
+    setIsClicked(!isClicked);
+  };
 
   return (
     <StyledGrid container spacing={1}>
@@ -138,14 +127,20 @@ const BusinessesList = ({
             >
               <StyledButton
                 sx={{ fontWeight: "bold" }}
-                className="active:bg-blue-200"
-                onClick={() => setRating(0.0)}
+                className={color}
+                onClick={() => {
+                  handleClick();
+                  setRating(0.0);
+                }}
               >
                 Any
               </StyledButton>
               <StyledButton
-                className="active:bg-blue-200"
-                onClick={() => setRating(3.0)}
+                className={color}
+                onClick={() => {
+                  handleClick();
+                  setRating(3.0);
+                }}
               >
                 <StarRateIcon sx={{ color: "primary.main", mr: 0.3 }} />
                 <Typography
@@ -157,8 +152,11 @@ const BusinessesList = ({
                 </Typography>
               </StyledButton>
               <StyledButton
-                className="active:bg-blue-200"
-                onClick={() => setRating(4.0)}
+                className={color}
+                onClick={() => {
+                  handleClick();
+                  setRating(4.0);
+                }}
               >
                 <StarRateIcon sx={{ color: "primary.main", mr: 0.3 }} />
                 <Typography
@@ -170,8 +168,11 @@ const BusinessesList = ({
                 </Typography>
               </StyledButton>
               <StyledButton
-                className="active:bg-blue-200"
-                onClick={() => setRating(5)}
+                className={color}
+                onClick={() => {
+                  handleClick();
+                  setRating(5);
+                }}
               >
                 <StarRateIcon sx={{ color: "primary.main", mr: 0.3 }} />
                 <Typography
