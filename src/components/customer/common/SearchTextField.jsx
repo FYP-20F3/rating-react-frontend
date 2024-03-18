@@ -10,8 +10,9 @@ const SearchTextField = ({
   pNormalSpacing,
   pSmallSpacing,
   handleSearch,
+  handleSearchButton,
 }) => {
-  const { searchName, setSearchName } = useSearchName();
+  const {searchName} = useSearchName();
 
   const StyledTextField = styled(TextField)(({ theme }) => ({
     marginBottom: theme.spacing(mSpacing),
@@ -46,13 +47,13 @@ const SearchTextField = ({
       hiddenLabel
       variant="outlined"
       value={searchName}
-      onChange={() => setSearchName(e.target.value)}
+      onChange={handleSearch}
       placeholder="Search Company by name"
       size="medium"
       InputProps={{
         startAdornment: <SearchIcon />,
         endAdornment: (
-          <StyledButton variant="contained" onClick={handleSearch}>
+          <StyledButton variant="contained" onClick={handleSearchButton}>
             Search
           </StyledButton>
         ),

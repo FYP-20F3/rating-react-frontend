@@ -31,6 +31,7 @@ function App() {
             <Route element={<SearchNameProvider />}>
               <Route path="home" element={<Home />} />
               <Route path="category/:id" element={<BusinessListPage />} />
+              <Route path="search" element={<BusinessListPage />} />
             </Route>
             <Route path="reviews/:businessId" element={<BusinessInfoPage />} />
           </Route>

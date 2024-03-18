@@ -1,4 +1,5 @@
 export const cities = [
+  "All",
   "Rawalpindi",
   "Islamabad",
   "Lahore",

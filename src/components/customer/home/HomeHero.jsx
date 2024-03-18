@@ -2,9 +2,8 @@ import { Grid, Box, Typography, Divider } from "@mui/material";
 import { styled } from "@mui/system";
 import Icon1 from "../../../assets/jpg/reviewIllustration.png";
 import SearchTextField from "../common/SearchTextField";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSearchName } from "../../../context/SearchNameContext";
-import { set } from "react-hook-form";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   justifyContent: "space-between",
@@ -64,12 +63,20 @@ const HomeHero = () => {
     },
   };
 
+  const { searchName, setSearchName } = useSearchName();
+
   const handleSearch = (event) => {
-    set(event.target.value);
-    navigate("/customer/category/all");
+    setSearchName(event.target.value);
   };
 
-  console.log(paddingSpacing);
+  const handleSearchButton = () => {
+    console.log(searchName);
+    const updatedQueryString = new URLSearchParams({
+      searchName: searchName,
+    }).toString();
+    navigate(`/customer/search?${updatedQueryString}`);
+  };
+
   return (
     <StyledGrid container>
       <StyledGridInner item xs={12} md={6}>
@@ -105,6 +112,7 @@ const HomeHero = () => {
             pNormalSpacing={paddingSpacing.paddingNormal}
             pSmallSpacing={paddingSpacing.paddingSm}
             handleSearch={handleSearch}
+            handleSearchButton={handleSearchButton}
           />
           {/* {loading && <p>Loading results...</p>}
 

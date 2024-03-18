@@ -18,6 +18,18 @@ const ListHero = ({ category }) => {
     },
   };
 
+  const { searchName, setSearchName } = useSearchName();
+  const handleSearch = (event) => {
+    setSearchName(event.target.value);
+  };
+
+  const handleSearchButton = () => {
+    const updatedQueryString = new URLSearchParams({
+      searchName: searchName,
+    }).toString();
+    navigate(`/customer/search?${updatedQueryString}`);
+  };
+
   return (
     <Stack
       sx={{
@@ -43,6 +55,8 @@ const ListHero = ({ category }) => {
           hSpacing={2.7}
           pNormalSpacing={paddingSpacing.paddingNormal}
           pSmallSpacing={paddingSpacing.paddingSm}
+          handleSearch={handleSearch}
+          handleSearchButton={handleSearchButton}
         />
       </Stack>
     </Stack>
