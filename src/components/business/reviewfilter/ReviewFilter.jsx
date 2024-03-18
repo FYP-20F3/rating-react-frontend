@@ -173,7 +173,7 @@ export default ReviewFilter;
 
 const ReviewItem = ({ review }) => {
     return (
-        <Card variant="outlined" className="mb-4">
+        <Card variant="outlined" className="mb-4 bg-white">
             <CardContent>
                 <Typography variant="h6" color="text.secondary" gutterBottom>
                     {review.title}
@@ -184,7 +184,7 @@ const ReviewItem = ({ review }) => {
                     </Grid>
                     <Grid item xs={12} sm={6} className="text-right">
                         <Typography variant="body2" color="text.secondary">
-                            {review.date} ago
+                            {review.date} 
                         </Typography>
                     </Grid>
                 </Grid>
