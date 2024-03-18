@@ -40,3 +40,12 @@ body {
 .star-rating-percentage {
   @apply text-sm font-medium text-gray-500;
 }
+.css-aysnnq {
+  padding: 0px !important;
+}
+
+.css-3ui2y3 {
+  position: static !important;
+  background-color: #FFFFE2 !important;
+  min-width: auto !important;
+}
