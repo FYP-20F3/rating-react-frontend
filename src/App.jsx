@@ -14,6 +14,7 @@ import ServiceReviews from "./pages/business/dashboard/sidebarPages/ServiceRevie
 import PrivateRoute from "./PrivateRoute";
 import { customerLoginPath, businessLoginPath } from "./const/path";
 import ErrorPage from "./pages/ErrorPage";
+import Reviews from "./pages/business/dashboard/sidebarPages/Reviews";
 import BusinessInfoPage from "./pages/customer/BusinessInfoPage";
 import { SearchNameProvider } from "./context/SearchNameContext";
 
@@ -45,6 +46,7 @@ function App() {
           <Route element={<PrivateRoute path={businessLoginPath} />}>
             <Route path="dashboard" element={<BusinessDashboard />}>
               <Route index element={<BusinessHome />} />
+              <Route path="business/reviews" element={<Reviews />} />
               <Route path="reviews/service" element={<ServiceReviews />} />
             </Route>
           </Route>
