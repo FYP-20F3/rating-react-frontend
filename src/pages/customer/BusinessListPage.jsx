@@ -53,8 +53,15 @@ const BusinessListPage = () => {
           .join("&");
 
         const response = await axios.get(
-          `${BASE_URL}businesses/search?${queryString}`
+            `${BASE_URL}businesses/search?${queryString}`,
+            {
+              headers: {
+                // Assuming the token is a Bearer token; adjust if using a different scheme
+                Authorization: `Bearer ${token}`
+              }
+            }
         );
+
 
         setData(response.data);
       } catch (error) {
