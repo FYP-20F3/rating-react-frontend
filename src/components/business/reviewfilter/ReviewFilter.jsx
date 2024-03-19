@@ -51,13 +51,13 @@ const ReviewFilter = () => {
                 }
             }
         );
-        console.log(response)
+        console.log(response.data)
         setReviews(response.data)
-        let filtered = reviews;
+        let filtered = response.data;
 
         // Filter by star rating
         if (starRating) {
-            filtered = filtered.filter(review => review.rating === starRating);
+            filtered = filtered.filter(review => review.reviewRating === starRating);
         }
         if (reviewType) {
             filtered = filtered.filter(review => review.reviewType === reviewType);
