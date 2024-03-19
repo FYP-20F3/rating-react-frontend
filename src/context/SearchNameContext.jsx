@@ -19,6 +19,7 @@ export const SearchNameProvider = ({ children }) => {
 
   return (
     <SearchNameContext.Provider value={contextValue}>
+      {children}
       <Outlet />
     </SearchNameContext.Provider>
   );

@@ -77,26 +77,22 @@ const StyledAvatar = styled("img")(({ theme }) => ({
   },
 }));
 
-const BusinessesList = ({ data, setLocation, setRating }) => {
+const BusinessesList = ({
+  data,
+  id,
+  setLocation,
+  setRating,
+  sort,
+  setSort,
+}) => {
   const navigate = useNavigate();
   const ratings = [1, 2, 3, 4, 5];
-  const [category, setCategory] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
+  const color = isClicked ? "bg-blue-200" : "bg-white";
 
-  useEffect(() => {
-    let businessCategory = "";
-    if (data != null && data.length > 0) {
-      businessCategory = data[0].businessCategory;
-    }
-
-    const allSameCategory =
-      data && data.length > 0
-        ? data.every(
-            (business) => business.businessCategory === businessCategory
-          )
-        : false;
-
-    setCategory(allSameCategory ? businessCategory : "all-category");
-  }, [data]);
+  const handleClick = () => {
+    setIsClicked(!isClicked);
+  };
 
   return (
     <StyledGrid container spacing={1}>
@@ -131,13 +127,20 @@ const BusinessesList = ({ data, setLocation, setRating }) => {
             >
               <StyledButton
                 sx={{ fontWeight: "bold" }}
-                className="active:bg-blue-200"
+                className={color}
+                onClick={() => {
+                  handleClick();
+                  setRating(0.0);
+                }}
               >
                 Any
               </StyledButton>
               <StyledButton
-                className="active:bg-blue-200"
-                onClick={() => setRating(3.0)}
+                className={color}
+                onClick={() => {
+                  handleClick();
+                  setRating(3.0);
+                }}
               >
                 <StarRateIcon sx={{ color: "primary.main", mr: 0.3 }} />
                 <Typography
@@ -149,8 +152,11 @@ const BusinessesList = ({ data, setLocation, setRating }) => {
                 </Typography>
               </StyledButton>
               <StyledButton
-                className="active:bg-blue-200"
-                onClick={() => setRating(4.0)}
+                className={color}
+                onClick={() => {
+                  handleClick();
+                  setRating(4.0);
+                }}
               >
                 <StarRateIcon sx={{ color: "primary.main", mr: 0.3 }} />
                 <Typography
@@ -162,8 +168,11 @@ const BusinessesList = ({ data, setLocation, setRating }) => {
                 </Typography>
               </StyledButton>
               <StyledButton
-                className="active:bg-blue-200"
-                onClick={() => setRating(4.5)}
+                className={color}
+                onClick={() => {
+                  handleClick();
+                  setRating(5);
+                }}
               >
                 <StarRateIcon sx={{ color: "primary.main", mr: 0.3 }} />
                 <Typography
@@ -171,7 +180,7 @@ const BusinessesList = ({ data, setLocation, setRating }) => {
                   color="inherit"
                   sx={{ fontWeight: "bold" }}
                 >
-                  +4.5
+                  5.O
                 </Typography>
               </StyledButton>
             </ButtonGroup>
@@ -190,7 +199,11 @@ const BusinessesList = ({ data, setLocation, setRating }) => {
               size="small"
             >
               {cities.map((city, index) => (
-                <MenuItem value={city} key={index}>
+                <MenuItem
+                  value={city}
+                  key={index}
+                  onClick={() => setLocation(city)}
+                >
                   {city}
                 </MenuItem>
               ))}
@@ -205,14 +218,16 @@ const BusinessesList = ({ data, setLocation, setRating }) => {
               Category
             </Typography>
             <StyledSelect
-              defaultValue="all-category"
-              value={category}
+              defaultValue="all"
+              value={id}
               labelId="category-select"
               size="small"
             >
               <MenuItem
-                value="all-category"
-                onClick={() => navigate("/customer/category/all")}
+                value="all"
+                onClick={() => {
+                  navigate("/customer/category/all");
+                }}
               >
                 All Category
               </MenuItem>
@@ -271,12 +286,23 @@ const BusinessesList = ({ data, setLocation, setRating }) => {
                 Sort By:
               </Typography>
               <StyledSelect
-                defaultValue="default"
+                defaultValue="reviewCount"
+                value={sort}
                 labelId="sort-select"
                 size="small"
               >
-                <MenuItem value="default">Highest Number of Reviews</MenuItem>
-                <MenuItem value="ordered-by">Most recent reviews</MenuItem>
+                <MenuItem
+                  value="reviewCount"
+                  onClick={() => setSort("reviewCount")}
+                >
+                  Highest Number of Reviews
+                </MenuItem>
+                <MenuItem
+                  value="recentReviews"
+                  onClick={() => setSort("recentReviews")}
+                >
+                  Most recent reviews
+                </MenuItem>
               </StyledSelect>
             </Box>
           </Box>
