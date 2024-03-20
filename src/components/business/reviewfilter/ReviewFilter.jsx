@@ -8,6 +8,11 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import { Card, CardContent, } from '@mui/material';
 import Rating from '@mui/material/Rating';
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { BASE_URL } from "../../../const/APIS";
+
+
 
 import { Box } from "@mui/material";
 
@@ -19,11 +24,13 @@ const dummyReviews = [
     { title: 'Average service', reviewType: 'Service', description: 'The service provided was average and did not meet my expectations.', rating: 3, replyStatus: 'Not Replied', date: '2023-03-11' }
 ];
 const ReviewFilter = () => {
+    const { currentUser, token } = useSelector((state) => state.user);
     const [starRating, setStarRating] = useState('');
     const [replyStatus, setReplyStatus] = useState('');
     const [reviewDate, setReviewDate] = useState('');
     const [filteredReviews, setFilteredReviews] = useState(dummyReviews);
     const [reviewType, setReviewType] = useState('');
+    const [reviews, setReviews] = useState([])
 
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -31,12 +38,26 @@ const ReviewFilter = () => {
         filterReviews();
     }, [starRating, replyStatus, reviewDate, searchQuery, reviewType]);
 
-    const filterReviews = () => {
-        let filtered = dummyReviews;
+    const filterReviews = async () => {
+        console.log(currentUser)
+        console.log(token)
+
+        const response = await axios.get(
+            `${BASE_URL}reviews/business/${currentUser._id}`,
+            {
+                headers: {
+                    // Assuming the token is a Bearer token; adjust if using a different scheme
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+        console.log(response.data)
+        setReviews(response.data)
+        let filtered = response.data;
 
         // Filter by star rating
         if (starRating) {
-            filtered = filtered.filter(review => review.rating === starRating);
+            filtered = filtered.filter(review => review.reviewRating === starRating);
         }
         if (reviewType) {
             filtered = filtered.filter(review => review.reviewType === reviewType);
@@ -176,20 +197,20 @@ const ReviewItem = ({ review }) => {
         <Card variant="outlined" className="mb-4 bg-white">
             <CardContent>
                 <Typography variant="h6" color="text.secondary" gutterBottom>
-                    {review.title}
+                    {review.reviewTitle}
                 </Typography>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item xs={12} sm={6}>
-                        <Rating name="read-only" value={review.rating} readOnly />
+                        <Rating name="read-only" value={review.reviewRating} readOnly />
                     </Grid>
                     <Grid item xs={12} sm={6} className="text-right">
                         <Typography variant="body2" color="text.secondary">
-                            {review.date} 
+                            {review.dateOfExperience} 
                         </Typography>
                     </Grid>
                 </Grid>
                 <Typography variant="body2" component="p" className="mt-2">
-                    {review.description}
+                    {review.reviewDescription}
                 </Typography>
                 <Grid container spacing={1} className="mt-2">
                     <Grid item>
@@ -197,9 +218,6 @@ const ReviewItem = ({ review }) => {
                     </Grid>
                     <Grid item>
                         <Button variant="outlined" size="small">Share</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button variant="outlined" size="small">Request information</Button>
                     </Grid>
                 </Grid>
                 <Grid container spacing={1}>

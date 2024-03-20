@@ -66,8 +66,15 @@ const BusinessListPage = () => {
         console.log(`${BASE_URL}businesses/search?${queryString}`);
 
         const response = await axios.get(
-          `${BASE_URL}businesses/search?${queryString}`
+            `${BASE_URL}businesses/search?${queryString}`,
+            {
+              headers: {
+                // Assuming the token is a Bearer token; adjust if using a different scheme
+                Authorization: `Bearer ${token}`
+              }
+            }
         );
+
 
         setData(response.data);
         console.log(response.data, "response.data");
