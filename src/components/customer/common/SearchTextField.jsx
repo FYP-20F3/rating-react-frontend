@@ -12,7 +12,7 @@ const SearchTextField = ({
   handleSearch,
   handleSearchButton,
 }) => {
-  const {searchName} = useSearchName();
+  const { searchName } = useSearchName();
 
   const StyledTextField = styled(TextField)(({ theme }) => ({
     marginBottom: theme.spacing(mSpacing),
@@ -65,6 +65,7 @@ const SearchTextField = ({
       sx={{
         width: wSpacing,
       }}
+      autoFocus
     />
   );
 };

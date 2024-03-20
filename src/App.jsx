@@ -17,6 +17,7 @@ import ErrorPage from "./pages/ErrorPage";
 import Reviews from "./pages/business/dashboard/sidebarPages/Reviews";
 import BusinessInfoPage from "./pages/customer/BusinessInfoPage";
 import { SearchNameProvider } from "./context/SearchNameContext";
+import CreateReviewPage from "./pages/customer/CreateReviewPage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
               <Route path="search" element={<BusinessListPage />} />
             </Route>
             <Route path="reviews/:businessId" element={<BusinessInfoPage />} />
+            <Route path="evaluate/:businessId" element={<CreateReviewPage />} />
           </Route>
         </Route>
 

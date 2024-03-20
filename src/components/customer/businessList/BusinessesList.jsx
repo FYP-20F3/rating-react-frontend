@@ -11,12 +11,14 @@ import {
   Avatar,
   CardHeader,
   Divider,
+  CardActionArea,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Icon1 from "../../../assets/jpg/info.jpg";
 import { useNavigate } from "react-router-dom";
 import { cities } from "../../../const/data";
+import { useSearchName } from "../../../context/SearchNameContext";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   display: "flex",
@@ -87,11 +89,13 @@ const BusinessesList = ({
 }) => {
   const navigate = useNavigate();
   const ratings = [1, 2, 3, 4, 5];
-  const [isClicked, setIsClicked] = useState(false);
-  const color = isClicked ? "bg-blue-200" : "bg-white";
+  const [selectedRating, setSelectedRating] = useState(0.0);
+  const { searchName, setSearchName } = useSearchName();
 
-  const handleClick = () => {
-    setIsClicked(!isClicked);
+  console.log(data, "data");
+
+  const handleClick = (rating) => {
+    setSelectedRating(rating);
   };
 
   return (
@@ -127,18 +131,18 @@ const BusinessesList = ({
             >
               <StyledButton
                 sx={{ fontWeight: "bold" }}
-                className={color}
+                className={selectedRating === 0.0 ? "bg-blue-200" : "bg-white"}
                 onClick={() => {
-                  handleClick();
+                  handleClick(0.0);
                   setRating(0.0);
                 }}
               >
                 Any
               </StyledButton>
               <StyledButton
-                className={color}
+                className={selectedRating === 3.0 ? "bg-blue-200" : "bg-white"}
                 onClick={() => {
-                  handleClick();
+                  handleClick(3.0);
                   setRating(3.0);
                 }}
               >
@@ -152,9 +156,9 @@ const BusinessesList = ({
                 </Typography>
               </StyledButton>
               <StyledButton
-                className={color}
+                className={selectedRating === 4.0 ? "bg-blue-200" : "bg-white"}
                 onClick={() => {
-                  handleClick();
+                  handleClick(4.0);
                   setRating(4.0);
                 }}
               >
@@ -168,10 +172,10 @@ const BusinessesList = ({
                 </Typography>
               </StyledButton>
               <StyledButton
-                className={color}
+                className={selectedRating === 5.0 ? "bg-blue-200" : "bg-white"}
                 onClick={() => {
-                  handleClick();
-                  setRating(5);
+                  handleClick(5.0);
+                  setRating(5.0);
                 }}
               >
                 <StarRateIcon sx={{ color: "primary.main", mr: 0.3 }} />
@@ -189,6 +193,7 @@ const BusinessesList = ({
             <Typography
               variant="subtitle1"
               fontWeight="bold"
+              id="location-select"
               sx={{ marginBottom: ".6rem !important" }}
             >
               Location
@@ -213,6 +218,7 @@ const BusinessesList = ({
             <Typography
               variant="subtitle1"
               fontWeight="bold"
+              id="category-select"
               sx={{ marginBottom: ".6rem !important" }}
             >
               Category
@@ -286,7 +292,7 @@ const BusinessesList = ({
                 Sort By:
               </Typography>
               <StyledSelect
-                defaultValue="reviewCount"
+                defaultValue={searchName != undefined ? "none" : sort}
                 value={sort}
                 labelId="sort-select"
                 size="small"
@@ -303,11 +309,24 @@ const BusinessesList = ({
                 >
                   Most recent reviews
                 </MenuItem>
+                <MenuItem value="none" onClick={() => setSort("none")}>
+                  None
+                </MenuItem>
               </StyledSelect>
             </Box>
           </Box>
           {data.map((item) => (
-            <Stack spacing={0.4} key={item._id}>
+            <Stack
+              spacing={0.4}
+              key={item._id}
+              sx={{
+                "&:hover": {
+                  boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.3)", // Adjust shadow darkness and spread
+                  cursor: "pointer",
+                },
+              }}
+              onClick={() => navigate(`/customer/reviews/${item._id}`)}
+            >
               <StyledCard>
                 <CardHeader
                   avatar={
@@ -453,6 +472,23 @@ const BusinessesList = ({
               </StyledCard>
             </Stack>
           ))}
+          {data.length == 0 && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "10rem",
+              }}
+            >
+              <Typography
+                variant="h3"
+                sx={{ marginBottom: ".6rem !important" }}
+              >
+                No data to display
+              </Typography>
+            </Box>
+          )}
         </Stack>
       </Grid>
     </StyledGrid>

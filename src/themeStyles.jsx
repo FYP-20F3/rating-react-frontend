@@ -19,7 +19,6 @@ const theme = createTheme({
     },
     background: {
       default: "#FFFFFF", // Neutral White for default background
-      offWhite: "#FFFFE2",
       paper: "#F5F7FA", // Neutral Silver for paper background
     },
     box: {

@@ -17,19 +17,14 @@ const BusinessListPage = () => {
   const { searchName } = useSearchName();
   const [data, setData] = useState([]);
   const { token } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const queryParams = {
     ...(location && { location }),
-    ...(searchName && { searchName }),
     ...(rating && { rating }),
     ...(sort && { sort }),
     category: id,
   };
-
-  const navigate = useNavigate();
-
-  // Create a copy of queryParams for deletion logic
-  const newSearchParams = { ...queryParams };
 
   let businessCategory =
     id === "electronics_tech"
@@ -47,33 +42,24 @@ const BusinessListPage = () => {
   }
 
   useEffect(() => {
-    const fetchBusinessList = async () => {
-      try {
-        console.log(queryParams, "queryParams");
+    let debounceTimer;
 
-        if (queryParams.category === undefined) {
-          delete queryParams[Object.keys(queryParams).pop()];
-          console.log(queryParams, "category inside");
+    const fetchBusinessList = async (params) => {
+      try {
+        // Create a copy of queryParams for deletion logic
+        const newSearchParams = { ...params };
+
+        console.log(params, "queryParams");
+
+        if (params.category === undefined) {
+          delete params[Object.keys(params).pop()];
+          console.log(params, "category inside");
         }
 
-        // if (
-        //   queryParams.rating === undefined &&
-        //   queryParams.location != undefined &&
-        //   queryParams.searchName != undefined
-        // ) {
-        //   const categoryPop = Object.values(queryParams).pop();
-        //   delete queryParams[Object.keys(queryParams).pop()];
-        //   delete queryParams[Object.keys(queryParams).pop()];
-        //   queryParams.category = categoryPop;
-        //   console.log(queryParams, "queryParams3 isnesd");
-        // }
-
-        const queryString = Object.keys(queryParams)
+        const queryString = Object.keys(params)
           .map(
             (key) =>
-              encodeURIComponent(key) +
-              "=" +
-              encodeURIComponent(queryParams[key])
+              encodeURIComponent(key) + "=" + encodeURIComponent(params[key])
           )
           .join("&");
         console.log(queryString, "queryString");
@@ -87,14 +73,16 @@ const BusinessListPage = () => {
         console.log(response.data, "response.data");
 
         // Conditional deletion of the last property in newSearchParams
-        if (queryParams.category === undefined) {
-          console.log(newSearchParams, "newSearchParams inside if");
-          delete newSearchParams[Object.keys(newSearchParams).pop()];
-          console.log(newSearchParams, "newSearchParams");
+        if (
+          newSearchParams.rating === undefined &&
+          newSearchParams.location != undefined &&
+          newSearchParams.searchName != undefined
+        ) {
+          console.log(params, "newSearchParams inside if");
+          delete params[Object.keys(params).pop()];
+          console.log(params, "newSearchParams");
 
-          const updatedQueryString = new URLSearchParams(
-            newSearchParams
-          ).toString();
+          const updatedQueryString = new URLSearchParams(params).toString();
 
           console.log(updatedQueryString, "updatedQueryString");
 
@@ -105,7 +93,27 @@ const BusinessListPage = () => {
       }
     };
 
-    fetchBusinessList();
+    // Clear previous timer
+    clearTimeout(debounceTimer);
+
+    // Check if it's a searchName update, then debounce
+    if (searchName) {
+      // Set a new timer for 500ms (adjust as needed)
+      debounceTimer = setTimeout(() => {
+        // Update query parameters after debounce time
+        const updatedQueryParams = {
+          searchName: searchName,
+          ...queryParams,
+        };
+
+        fetchBusinessList(updatedQueryParams);
+      }, 1000); // 500ms delay
+    } else {
+      // Update immediately for other filters
+      fetchBusinessList(queryParams);
+    }
+
+    return () => clearTimeout(debounceTimer); // Cleanup function to clear timer
   }, [id, location, searchName, rating, sort]);
 
   return (

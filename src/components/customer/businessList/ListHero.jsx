@@ -1,6 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import SearchTextField from "../common/SearchTextField";
 import { useSearchName } from "../../../context/SearchNameContext";
+import { useNavigate } from "react-router-dom";
 
 const ListHero = ({ category }) => {
   const widthSpacing = {
@@ -19,6 +20,9 @@ const ListHero = ({ category }) => {
   };
 
   const { searchName, setSearchName } = useSearchName();
+  const navigate = useNavigate();
+
+  
   const handleSearch = (event) => {
     setSearchName(event.target.value);
   };
