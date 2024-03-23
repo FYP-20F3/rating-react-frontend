@@ -100,8 +100,8 @@ const Login = () => {
         payload
       );
       console.log("response:", response);
-      const { token, rest } = response.data;
-      dispatch(signInSuccess({ token, rest }));
+      const { token, rest, role } = response.data;
+      dispatch(signInSuccess({ token, rest, role }));
       navigate("/customer/home");
     } catch (err) {
       console.log(err.response);

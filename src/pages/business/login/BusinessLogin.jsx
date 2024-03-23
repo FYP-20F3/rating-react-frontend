@@ -12,12 +12,11 @@ import {
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { styled } from "@mui/system";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import { signInSuccess, signInFailure } from "../../../redux/userSlice";
 import { BASE_URL } from "../../../const/APIS";
-
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   display: "flex",
@@ -70,6 +69,12 @@ const BusinessLogin = () => {
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.user);
 
+  const { token, currentUser, role } = useSelector((state) => state.user);
+
+  if ((token, currentUser, role === "business")) {
+    return <Navigate to="/business/dashboard" />;
+  }
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -100,8 +105,8 @@ const BusinessLogin = () => {
         payload
       );
       console.log("response:", response);
-      const { token, rest } = response.data;
-      dispatch(signInSuccess({ token, rest }));
+      const { token, rest, role } = response.data;
+      dispatch(signInSuccess({ rest, token, role }));
       navigate("/business/dashboard");
     } catch (err) {
       console.log(err.response);

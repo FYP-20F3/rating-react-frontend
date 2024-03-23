@@ -90,7 +90,7 @@ const BusinessesList = ({
   const navigate = useNavigate();
   const ratings = [1, 2, 3, 4, 5];
   const [selectedRating, setSelectedRating] = useState(0.0);
-  const { searchName, setSearchName } = useSearchName();
+  const { searchName } = useSearchName();
 
   console.log(data, "data");
 
@@ -325,13 +325,15 @@ const BusinessesList = ({
                   cursor: "pointer",
                 },
               }}
-              onClick={() => navigate(`/customer/reviews/${item._id}`)}
+              onClick={() =>
+                navigate(`/customer/reviews/${item._id}/${item.businessName}`)
+              }
             >
               <StyledCard>
                 <CardHeader
                   avatar={
                     data.length > 0 ? (
-                      <StyledAvatar src={item.businessLogoPath} sx={{}} />
+                      <StyledAvatar src={item.businessLogoPath} />
                     ) : (
                       <Avatar
                         aria-label="profile"

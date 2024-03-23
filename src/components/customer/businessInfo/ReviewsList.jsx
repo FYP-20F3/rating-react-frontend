@@ -1,13 +1,17 @@
 import { Box, Divider, Grid, styled } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
-import { CardHeader } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Avatar,
+  Button,
+  CardHeader,
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import StarRateIcon from "@mui/icons-material/StarRate";
+import { useSelector } from "react-redux";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   display: "flex",
@@ -24,7 +28,21 @@ const StyledCard = styled(Grid)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-const ReviewsList = () => {
+const ReviewsList = ({ data }) => {
+  const { currentUser } = useSelector((state) => state.user);
+  const userName = currentUser?.firstName + " " + currentUser?.lastName;
+  const ratings = [1, 2, 3, 4, 5];
+  const navigate = useNavigate();
+  const reviews = data.reviews;
+  console.log(reviews);
+
+  // console.log(currentUser, "current user");
+  console.log(data, "data");
+
+  const handleClick = () => {
+    navigate(`/customer/evaluate/${data._id}/${data.businessName}`);
+  };
+
   return (
     <StyledGrid container spacing={1}>
       <Grid item xs={12} md={7} lg={8}>
@@ -38,19 +56,34 @@ const ReviewsList = () => {
               marginTop: "auto",
               marginBottom: "auto",
             }}
-            image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbyWPR_XEwFflTnPQw8tNkj2_-8491kECbLpcjpKm3Zw&s" // Replace with your image source
+            image={currentUser?.picturePath} // Replace with your image source
             alt="Profile Picture"
           />
           <CardContent sx={{ flex: 1 }}>
             <Typography gutterBottom variant="h6" component="div">
-              User Name
+              {userName}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Write your review here...
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                textDecoration: "none", // Remove default underline
+                "&:hover": {
+                  textDecoration: "underline", // Add underline on hover
+                  color: "info.main",
+                },
+              }}
+              onClick={handleClick}
+            >
+              Write a review
             </Typography>
           </CardContent>
-          <Button variant="contained" className="my-7 mr-3">
-            Write a Review
+          <Button
+            variant="contained"
+            className="my-7 mr-3"
+            onClick={handleClick}
+          >
+            Give Review
           </Button>
         </StyledCard>
         <Box
@@ -148,6 +181,103 @@ const ReviewsList = () => {
             </Button>
           </Box>
         </Box>
+        {reviews &&
+          reviews.map((item, index) => (
+            <Card
+              key={index}
+              sx={{ mb: 4, mt: 3, ml: 10, mr: 19, py: 2, px: 3 }}
+            >
+              <CardHeader
+                avatar={
+                  <Avatar
+                    alt={`${item.customer.firstName} ${item.customer.lastName}`}
+                    sx={{
+                      width: { xs: "50px", md: "58px" },
+                      height: { xs: "50px", md: "58px" },
+                      borderRadius: 50,
+                    }}
+                    src={item.customer.picturePath}
+                  />
+                }
+                title={`${item.customer.firstName} ${item.customer.lastName}`}
+              />
+              <Divider
+                className="mx-5 mb-2"
+                sx={{ height: "5px", borderBottom: "2px solid #ccc" }}
+              />
+              <CardContent>
+                <div className="flex items-center mb-2 space-x-1 justify-between">
+                  <div className="grid grid-cols-5">
+                    {ratings.map((rating) => (
+                      <div key={rating}>
+                        <Avatar
+                          aria-label="star box"
+                          variant="square"
+                          sx={{
+                            bgcolor:
+                              rating <= item.reviewRating
+                                ? "box.green"
+                                : "box.default",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: { xs: "15px", sm: "25px" },
+                            width: { xs: "15px", sm: "25px" },
+                            marginRight: "1px",
+                          }}
+                        >
+                          <StarRateIcon
+                            sx={{
+                              color: "white",
+                              height: { xs: "15px", sm: "25px" },
+                              width: { xs: "15px", sm: "25px" },
+                            }}
+                          />
+                        </Avatar>
+                      </div>
+                    ))}
+                  </div>
+                  <Typography
+                    variant="p"
+                    color="text.secondary"
+                    className="font-semibold"
+                  >
+                    {new Date(item.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </Typography>
+                </div>
+                <Typography
+                  variant="h6"
+                  component="p"
+                  className="mb-5 text-lg font-bold text-gray-500"
+                >
+                  {item.reviewTitle}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  className="mb-2 text-gray-500 text-base"
+                >
+                  {item.reviewDescription}
+                </Typography>
+                <Typography variant="body2" className="mb-3 text-gray-500">
+                  <span className="font-bold mr-2">Date of Experience:</span>
+                  <span>
+                    {new Date(item.dateOfExperience).toLocaleDateString(
+                      "en-US",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }
+                    )}
+                  </span>
+                </Typography>
+              </CardContent>
+            </Card>
+          ))}
       </Grid>
       <Grid item xs={12} md={7} lg={3.5} className="mr-8">
         <Card className="">
