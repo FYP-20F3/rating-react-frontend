@@ -47,6 +47,9 @@ export default function Sidebar({
   const handleReviews = () => {
     navigate("business/reviews");
   }
+  const handleAnalysis = () => {
+    navigate("business/analysis");
+  }
   return (
     <Drawer
       sx={{
@@ -123,6 +126,19 @@ export default function Sidebar({
               onClick={handleReviews}
 
               primary={"Reviews"}
+              sx={{ fontSize: "body4.fontSize" }}
+            />
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton>
+            <ListItemIcon>
+              <Reviews sx={{ mr: 2, verticalAlign: "middle" }} />
+            </ListItemIcon>
+            <ListItemText
+              onClick={handleAnalysis}
+
+              primary={"Analysis"}
               sx={{ fontSize: "body4.fontSize" }}
             />
           </ListItemButton>

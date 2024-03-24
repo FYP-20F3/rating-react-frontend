@@ -18,6 +18,7 @@ import Reviews from "./pages/business/dashboard/sidebarPages/Reviews";
 import BusinessInfoPage from "./pages/customer/BusinessInfoPage";
 import { SearchNameProvider } from "./context/SearchNameContext";
 import CreateReviewPage from "./pages/customer/CreateReviewPage";
+import Analysis from "./pages/business/dashboard/sidebarPages/Analysis";
 
 function App() {
   return (
@@ -49,7 +50,9 @@ function App() {
             <Route path="dashboard" element={<BusinessDashboard />}>
               <Route index element={<BusinessHome />} />
               <Route path="business/reviews" element={<Reviews />} />
+              <Route path="business/analysis" element={<Analysis />} />
               <Route path="reviews/service" element={<ServiceReviews />} />
+              <Route path="reviews/analysis" element={<ServiceReviews />} />
             </Route>
           </Route>
         </Route>
