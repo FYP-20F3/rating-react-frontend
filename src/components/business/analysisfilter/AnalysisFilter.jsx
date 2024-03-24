@@ -75,7 +75,7 @@ const AnalysisFilter = () => {
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 0,
-                    legend: 'reviews',
+                    legend: 'Number of reviews',
                     legendPosition: 'middle',
                     legendOffset: -40,
                     tickValues: tickValues, // Use the custom tick values array
