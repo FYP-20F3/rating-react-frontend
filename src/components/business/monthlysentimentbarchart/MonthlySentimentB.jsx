@@ -4,17 +4,16 @@ import { ResponsiveBar } from '@nivo/bar'; // Import Nivo ResponsiveBar
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../../../const/APIS";
 
-const AnalysisFilter = () => {
+const MonthlySentimentB = () => {
     const { currentUser, token } = useSelector((state) => state.user);
     const [totalReview, setTotalReview] = useState(0)
     const [reviews, setReviews] = useState([]);
     const colors = {
-        '1': '#d32f2f', // Red for 1-star reviews
-        '2': '#ff5722', // Deep orange for 2-star reviews
-        '3': '#ffc107', // Amber for 3-star reviews
-        '4': '#4caf50', // Green for 4-star reviews
-        '5': '#1976d2'  // Blue for 5-star reviews
+        Positive: '#4caf50', // Green for positive sentiment
+        Negative: '#d32f2f', // Red for negative sentiment
+        Neutral: '#ffc107'  // Amber for neutral sentiment
     };
+
     useEffect(() => {
         filterReviews();
     }, []);
@@ -34,6 +33,7 @@ const AnalysisFilter = () => {
         );
         console.log(response.data);
         const processedData = processData(response.data);
+        console.log(processedData)
         const sortedData = processedData.sort((a, b) => {
             const partsA = a.monthYear.split(' ');
             const partsB = b.monthYear.split(' ');
@@ -41,9 +41,10 @@ const AnalysisFilter = () => {
             const dateB = new Date(`${partsB[1]}-${partsB[0]}-01`);
             return dateA - dateB;
         });
+        console.log(sortedData)
         const totalSortedReviews = sortedData.reduce((total, data) => total + data.total, 0);
         console.log(sortedData.length)
-        setTotalReview(sortedData.length)
+
         setReviews(sortedData); // Update this line
     };
 
@@ -59,30 +60,42 @@ const AnalysisFilter = () => {
             const reviewDate = new Date(createdAt);
             return reviewDate >= lastYear;
         });
+        console.log(last12MonthsReviews)
 
-        last12MonthsReviews.forEach(({ reviewRating, createdAt }) => {
-            const reviewDate = new Date(createdAt);
+        last12MonthsReviews.forEach((review) => {
+            const reviewDate = new Date(review.createdAt);
             const monthIndex = reviewDate.getMonth();
             const year = reviewDate.getFullYear();
             const monthYear = `${monthNames[monthIndex]} ${year}`;
 
             if (!groupedData[monthYear]) {
-                groupedData[monthYear] = { monthYear, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, total: 0 };
+                groupedData[monthYear] = { monthYear, Positive: 0, Negative: 0, Neutral: 0, total: 0 };
             }
-            groupedData[monthYear][reviewRating]++;
+
+            // Check if the review sentiment exists in the data object
+            const sentiment = review.Sentiment;
+            if (['Positive', 'Negative', 'Neutral'].includes(sentiment)) {
+                groupedData[monthYear][sentiment]++;
+            } else {
+                // Handle the case where the sentiment might not be one of the expected values
+                // For example, initialize it to Neutral or log an error
+                console.error('Unexpected sentiment value:', sentiment);
+                groupedData[monthYear]['Neutral']++; // Defaulting to Neutral for this example
+            }
+
             groupedData[monthYear].total++; // Keep track of total reviews for each month
         });
 
-        // Convert counts to percentages
-        Object.values(groupedData).forEach(data => {
-            ['1', '2', '3', '4', '5'].forEach(rating => {
-                data[rating] = (data[rating] / data.total) * 100; // Convert to percentage
-            });
-            delete data.total; // Remove total count as it's no longer needed
-        });
+
+        setTotalReview(last12MonthsReviews.length);
+
+
+
+        console.log(Object.values(groupedData))
 
         return Object.values(groupedData);
     };
+
 
 
     const BarChart = () => {
@@ -92,7 +105,8 @@ const AnalysisFilter = () => {
         return (
             <ResponsiveBar
                 data={reviews}
-                keys={['1', '2', '3', '4', '5']}
+                keys={['Positive', 'Negative', 'Neutral']}
+
                 indexBy="monthYear"
                 colors={({ id, data }) => colors[id]}
 
@@ -130,12 +144,12 @@ const AnalysisFilter = () => {
 
     return (
         <div style={{ height: "500px" }}>
-            <h1>Analysis Filter</h1>
+            <h1>Analysis for reviews based on sentiments</h1>
             <div className="legend flex justify-between	" >
-                {Object.keys(colors).map(rating => (
-                    <div key={rating} className="legend-item" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                        <span className="legend-color" style={{ backgroundColor: colors[rating], width: '20px', height: '20px', display: 'inline-block', marginRight: '10px', borderRadius: '50%' }}></span>
-                        <span className="legend-text">{rating}-star reviews</span>
+                {Object.keys(colors).map(sentiment => (
+                    <div key={sentiment} className="legend-item" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                        <span className="legend-color" style={{ backgroundColor: colors[sentiment], width: '20px', height: '20px', display: 'inline-block', marginRight: '10px', borderRadius: '50%' }}></span>
+                        <span className="legend-text">{sentiment} sentiment</span>
                     </div>
                 ))}
             </div>
@@ -146,15 +160,16 @@ const AnalysisFilter = () => {
     );
 };
 
-export default AnalysisFilter;
+export default MonthlySentimentB;
 
 const TotalReviewsCard = ({ totalReviews }) => {
     console.log(totalReviews)
     return (
         <div className="total-reviews-card">
-            <h2>Total Reviews In last 12 months</h2>
+            <h2>Total Reviews in the last 12 month</h2>
             <p>{totalReviews}</p>
         </div>
     );
 };
+
 
