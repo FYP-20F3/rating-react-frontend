@@ -60,7 +60,7 @@ const BusinessDashboard = () => {
         drawerWidth={drawerWidth}
         DrawerHeader={DrawerHeader}
       />
-      <Main open={open} sx={{}}>
+      <Main open={open}>
         <DrawerHeader />
         <Outlet />
       </Main>
