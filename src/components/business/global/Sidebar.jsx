@@ -45,7 +45,7 @@ export default function Sidebar({
     navigate("/business/dashboard");
   }
   const handleReviews = () => {
-    navigate("business/reviews");
+    navigate("/business/reviews");
   }
   const handleAnalysis = () => {
     navigate("business/analysis");

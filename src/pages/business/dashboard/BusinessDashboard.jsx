@@ -3,6 +3,9 @@ import Sidebar from "../../../components/business/global/Sidebar";
 import TopAppbar from "../../../components/business/global/TopAppbar";
 import { Outlet } from "react-router-dom";
 import { Box, styled } from "@mui/material";
+import { businessLoginPath } from "../../../const/path";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 const drawerWidth = 280;
 
@@ -47,6 +50,12 @@ const BusinessDashboard = () => {
     setOpen(false);
   };
 
+  const { token } = useSelector((state) => state.user);
+
+  if (!token) {
+    return <Navigate to={businessLoginPath} />;
+  }
+
   return (
     <Box sx={{ display: "flex", bgcolor: "background.paper" }}>
       <TopAppbar
@@ -60,7 +69,7 @@ const BusinessDashboard = () => {
         drawerWidth={drawerWidth}
         DrawerHeader={DrawerHeader}
       />
-      <Main open={open} sx={{}}>
+      <Main open={open}>
         <DrawerHeader />
         <Outlet />
       </Main>

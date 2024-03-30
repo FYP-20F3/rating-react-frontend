@@ -9,17 +9,39 @@ import {
   Card,
 } from "@mui/material";
 import StarRateIcon from "@mui/icons-material/StarRate";
-import Icon1 from "../../../assets/jpg/info.jpg";
 import { styled } from "@mui/system";
 
 const StyledImage = styled("img")(({ theme }) => ({
-  mixBlendMode: "darken",
-  width: "22px",
-  height: "22px",
+  width: "120px",
+  height: "120px",
+  borderRadius: 1,
+  mt: 1,
+  mr: 1,
+  [theme.breakpoints.down("md")]: {
+    mt: 0,
+    mr: 0,
+    width: "90px",
+    height: "90px",
+  },
 }));
 
-const InfoHero = () => {
+const InfoHero = ({ data }) => {
   const ratings = [1, 2, 3, 4, 5];
+
+  let overallRating = 0;
+  if (data.overallRating) {
+    const averageRating = data.overallRating;
+    overallRating = parseFloat(averageRating.toFixed(0));
+  }
+  console.log(overallRating, "data");
+
+  // console.log(data, "data");
+  // console.log(data.length > 0 ? data.businessLogoPath: "ok", data.length > 0, "data.businessLogoPath");
+
+  const handleClick = () => {
+    window.open(data.websiteAddress, "_blank");
+    // window.open("https://www.google.com.pk/?gws_rd=ssl", "_blank");
+  };
 
   return (
     <Grid
@@ -27,7 +49,7 @@ const InfoHero = () => {
       spacing={0.4}
       sx={{
         bgcolor: "background.paper",
-        pt: 8,
+        pt: 10,
         pb: 2,
         px: 18,
       }}
@@ -36,21 +58,25 @@ const InfoHero = () => {
         <Card elevation={0}>
           <CardHeader
             avatar={
-              <Avatar
-                aria-label="profile"
-                variant="square"
-                sx={{
-                  bgcolor: "white",
-                  color: "primary.main",
-                  width: { xs: "90px", md: "140px" },
-                  height: { xs: "90px", md: "140px" },
-                  borderRadius: 1,
-                  mt: { xs: 0, md: 1 },
-                  mr: { xs: 0, md: 1 },
-                }}
-              >
-                BN
-              </Avatar>
+              data ? (
+                <StyledImage src={data.businessLogoPath} />
+              ) : (
+                <Avatar
+                  aria-label="profile"
+                  variant="square"
+                  sx={{
+                    bgcolor: "white",
+                    color: "primary.main",
+                    width: { xs: "90px", md: "140px" },
+                    height: { xs: "90px", md: "140px" },
+                    borderRadius: 1,
+                    mt: { xs: 0, md: 1 },
+                    mr: { xs: 0, md: 1 },
+                  }}
+                >
+                  BN
+                </Avatar>
+              )
             }
             title={
               <Stack>
@@ -62,7 +88,7 @@ const InfoHero = () => {
                     mt: 1,
                   }}
                 >
-                  Business Name
+                  {data.businessName}
                 </Typography>
                 <Grid container>
                   {ratings.map((rating) => (
@@ -71,20 +97,31 @@ const InfoHero = () => {
                         aria-label="star box"
                         variant="square"
                         sx={{
-                          bgcolor: "box.green",
+                          bgcolor:
+                            rating == 1 && overallRating == 1
+                              ? "box.red"
+                              : rating <= 2 && overallRating == 2
+                              ? "box.orange"
+                              : rating <= 3 && overallRating == 3
+                              ? "box.yellow"
+                              : rating <= 4 && overallRating == 4
+                              ? "box.lime"
+                              : rating <= 5 && overallRating == 5
+                              ? "box.green"
+                              : "box.default",
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          height: { xs: "15px", sm: "28px" },
-                          width: { xs: "15px", sm: "28px" },
+                          height: { xs: "15px", sm: "25px" },
+                          width: { xs: "15px", sm: "25px" },
                           marginRight: "1px",
                         }}
                       >
                         <StarRateIcon
                           sx={{
                             color: "white",
-                            height: { xs: "15px", sm: "32px" },
-                            width: { xs: "15px", sm: "32px" },
+                            height: { xs: "15px", sm: "25px" },
+                            width: { xs: "15px", sm: "25px" },
                           }}
                         />
                       </Avatar>
@@ -100,7 +137,7 @@ const InfoHero = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      4.7
+                      {data.overallRating}
                     </Typography>
                     <Divider
                       orientation="vertical"
@@ -121,7 +158,7 @@ const InfoHero = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      3,4555 reviews
+                      {data.reviewCount} reviews
                     </Typography>
                   </Grid>
                 </Grid>
@@ -130,13 +167,19 @@ const InfoHero = () => {
           />
         </Card>
       </Grid>
-      <Grid item xs={12} md={4} className="ml-auto mt-7">
+      <Grid item xs={12} md={4.4} className="tw-ml-auto tw-mt-7">
         <Box
-          className="mt-2 rounded-md border-indigo-600 p-2"
-          sx={{ border: "2px solid" }}
+          className="tw-mt-2 tw-rounded-md tw-border-indigo-600 tw-p-2"
+          sx={{
+            border: "2px solid",
+            "&:hover": {
+              boxShadow: 4, // Enhance box shadow on hover
+            },
+          }}
+          onClick={handleClick}
         >
-          <Typography variant="h3" component="h2" className="text-blue-800">
-            www.dummywebsite.com
+          <Typography variant="h3" component="h2" className="tw-text-blue-800">
+            {data.websiteAddress}
           </Typography>
           <Typography
             variant="body2"
