@@ -6,17 +6,20 @@ import {
   Box,
   Select,
   MenuItem,
+  Snackbar,
   Grid,
   Avatar,
+  IconButton,
+  Alert,
 } from "@mui/material";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useEffect } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../../const/APIS";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
 
 const ReviewForm = () => {
   const {
@@ -28,6 +31,9 @@ const ReviewForm = () => {
   const [rating, setRating] = useState(0); // Initial rating state
   const [ratingError, setRatingError] = useState("");
   const { businessId, businessName } = useParams();
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
+  // const [suggestions, setSuggestions] = useState("");
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
@@ -37,6 +43,14 @@ const ReviewForm = () => {
     const newRating = clickedRating === rating ? 0 : clickedRating;
     setRating(newRating);
     setRatingError("");
+  };
+
+  const handleClose = (reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
 
   const onSubmit = async (data) => {
@@ -61,9 +75,16 @@ const ReviewForm = () => {
     try {
       const response = await axios.post(`${BASE_URL}reviews/create`, payload);
       console.log("response:", response);
-      navigate(`/customer/reviews/${businessId}/${businessName}`);
+      if (response.data.semantics) {
+      } else {
+        navigate(`/customer/reviews/${businessId}/${businessName}`);
+      }
     } catch (error) {
-      console.log(error);
+      const semantics = `Review submission failed. Seems to be ${error.response.data.semantics}.\n`;
+      // const msg = error.response.data.details.suggestions;
+      setError(semantics);
+      // setSuggestions(msg);
+      setOpen(true);
     }
   };
 
@@ -128,111 +149,128 @@ const ReviewForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="max-w-lg mx-auto mt-16 px-7 py-5 bg-white shadow-lg rounded"
-    >
-      <Typography
-        variant="h2"
-        className="text-2xl font-bold mb-7 w-full text-center"
+    <>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="tw-max-w-lg tw-mx-auto tw-mt-16 tw-px-7 tw-py-5 tw-bg-white tw-shadow-lg tw-rounded"
       >
-        Review Form
-      </Typography>
-      <Box className="mb-4 px-5">
-        <Typography variant="body1" className="block mb-2">
-          Rate Your Experience
-        </Typography>
-        <Grid container>{renderStars()}</Grid>
-        {ratingError && (
-          <Typography variant="body2" color="error" className="mt-2">
-            {ratingError}
-          </Typography>
-        )}
-      </Box>
-      <Box className="mb-4 px-5">
-        <Typography variant="body1" className="block mb-1">
-          Select the Review you want to give
-        </Typography>
-        <Select
-          {...register("reviewType", {
-            required: "Please select a review type",
-          })}
-          defaultValue="service"
-          size="small"
-          className="w-full py-0.5 px-0.5 border border-gray-300"
+        <Typography
+          variant="h2"
+          className="tw-text-2xl tw-font-bold tw-mb-7 tw-w-full tw-text-center"
         >
-          <MenuItem value="service">Service</MenuItem>
-          <MenuItem value="delivery">Delivery</MenuItem>
-          <MenuItem value="product">Product</MenuItem>
-          <MenuItem value="packaging">Packaging</MenuItem>
-        </Select>
-        {errors.reviewType && (
-          <Typography variant="body2" color="error" className="mt-2">
-            {errors.reviewType.message}
-          </Typography>
-        )}
-      </Box>
-      <Box className="mb-4 px-5">
-        <Typography variant="body1" className="block mb-1">
-          Tell us more about your experience
+          Review Form
         </Typography>
-        <TextField
-          {...register("reviewDescription", {
-            required: "Please enter a description",
-          })}
-          multiline
-          rows={6}
-          className="w-full py-0.5 px-0.5 border border-gray-300"
-        />
-        {errors.reviewDescription && (
-          <Typography variant="body2" color="error" className="mt-2">
-            {errors.reviewDescription.message}
+        <Box className="tw-mb-4 tw-px-5">
+          <Typography variant="body1" className="tw-block tw-mb-2">
+            Rate Your Experience
           </Typography>
-        )}
-      </Box>
-      <Box className="mb-4 px-5">
-        <Typography variant="body1" className="block mb-1">
-          Give your review a title
-        </Typography>
-        <TextField
-          {...register("reviewTitle", { required: "Please enter a title" })}
-          type="text"
-          className="w-full py-0.5 px-0.5 border border-gray-300"
-        />
-        {errors.reviewTitle && (
-          <Typography variant="body2" color="error" className="mt-2">
-            {errors.reviewTitle.message}
+          <Grid container>{renderStars()}</Grid>
+          {ratingError && (
+            <Typography variant="body2" color="error" className="tw-mt-2">
+              {ratingError}
+            </Typography>
+          )}
+        </Box>
+        <Box className="tw-mb-4 tw-px-5">
+          <Typography variant="body1" className="tw-block tw-mb-1">
+            Select the Review you want to give
           </Typography>
-        )}
-      </Box>
-      <Box className="mb-5 px-5">
-        <Typography variant="body1" className="block mb-1">
-          Date of experience
-        </Typography>
-        <TextField
-          {...register("dateOfExperience", {
-            required: "Please select a date",
-          })}
-          type="date"
-          className="w-full py-0.5 px-0.5 border border-gray-300"
-        />
-        {errors.dateOfExperience && (
-          <Typography variant="body2" color="error" className="mt-2">
-            {errors.dateOfExperience.message}
+          <Select
+            {...register("reviewType", {
+              required: "Please select a review type",
+            })}
+            defaultValue="service"
+            size="small"
+            className="tw-w-full tw-py-0.5 tw-px-0.5 tw-border tw-border-gray-300"
+          >
+            <MenuItem value="service">Service</MenuItem>
+            <MenuItem value="delivery">Delivery</MenuItem>
+            <MenuItem value="product">Product</MenuItem>
+            <MenuItem value="packaging">Packaging</MenuItem>
+          </Select>
+          {errors.reviewType && (
+            <Typography variant="body2" color="error" className="tw-mt-2">
+              {errors.reviewType.message}
+            </Typography>
+          )}
+        </Box>
+        <Box className="tw-mb-4 tw-px-5">
+          <Typography variant="body1" className="tw-block tw-mb-1">
+            Tell us more about your experience
           </Typography>
-        )}
-      </Box>
-      <Box className="flex justify-center">
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          className="py-2 px-4 focus:outline-none focus:ring-2"
+          <TextField
+            {...register("reviewDescription", {
+              required: "Please enter a description",
+            })}
+            multiline
+            rows={6}
+            className="tw-w-full tw-py-0.5 tw-px-0.5 tw-border tw-border-gray-300"
+          />
+          {errors.reviewDescription && (
+            <Typography variant="body2" color="error" className="tw-mt-2">
+              {errors.reviewDescription.message}
+            </Typography>
+          )}
+        </Box>
+        <Box className="tw-mb-4 tw-px-5">
+          <Typography variant="body1" className="tw-block tw-mb-1">
+            Give your review a title
+          </Typography>
+          <TextField
+            {...register("reviewTitle", { required: "Please enter a title" })}
+            type="text"
+            className="tw-w-full tw-py-0.5 tw-px-0.5 tw-border tw-border-gray-300"
+          />
+          {errors.reviewTitle && (
+            <Typography variant="body2" color="error" className="tw-mt-2">
+              {errors.reviewTitle.message}
+            </Typography>
+          )}
+        </Box>
+        <Box className="tw-mb-5 tw-px-5">
+          <Typography variant="body1" className="tw-block tw-mb-1">
+            Date of experience
+          </Typography>
+          <TextField
+            {...register("dateOfExperience", {
+              required: "Please select a date",
+            })}
+            type="date"
+            className="tw-w-full tw-py-0.5 tw-px-0.5 tw-border tw-border-gray-300"
+          />
+          {errors.dateOfExperience && (
+            <Typography variant="body2" color="error" className="tw-mt-2">
+              {errors.dateOfExperience.message}
+            </Typography>
+          )}
+        </Box>
+        <Box className="tw-flex tw-justify-center">
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className="tw-py-2 tw-px-4 focus:tw-outline-none focus:tw-ring-2"
+          >
+            Submit
+          </Button>
+        </Box>
+      </form>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
         >
-          Submit
-        </Button>
-      </Box>
-    </form>
+          <span>{error}</span>
+          {/* <span>Follow this</span>
+          <Typography variant="body3" onClick={()=>}>
+             Link 
+          </Typography>
+          <span>to make your review more </span> */}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

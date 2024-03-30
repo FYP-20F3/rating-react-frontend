@@ -10,7 +10,7 @@ const BusinessHome = () => {
   }
 
   return (
-    <div className="d-block justify-content-center">
+    <div className="tw-block tw-justify-content-center">
       <div>home</div>
       <div>home</div>
       <div>home</div>

@@ -28,6 +28,13 @@ const StyledImage = styled("img")(({ theme }) => ({
 const InfoHero = ({ data }) => {
   const ratings = [1, 2, 3, 4, 5];
 
+  let overallRating = 0;
+  if (data.overallRating) {
+    const averageRating = data.overallRating;
+    overallRating = parseFloat(averageRating.toFixed(0));
+  }
+  console.log(overallRating, "data");
+
   // console.log(data, "data");
   // console.log(data.length > 0 ? data.businessLogoPath: "ok", data.length > 0, "data.businessLogoPath");
 
@@ -91,15 +98,15 @@ const InfoHero = ({ data }) => {
                         variant="square"
                         sx={{
                           bgcolor:
-                            rating == 1 && data.overallRating == 1
+                            rating == 1 && overallRating == 1
                               ? "box.red"
-                              : rating <= 2 && data.overallRating == 2
+                              : rating <= 2 && overallRating == 2
                               ? "box.orange"
-                              : rating <= 3 && data.overallRating == 3
+                              : rating <= 3 && overallRating == 3
                               ? "box.yellow"
-                              : rating <= 4 && data.overallRating == 4
+                              : rating <= 4 && overallRating == 4
                               ? "box.lime"
-                              : rating <= 5 && data.overallRating == 5
+                              : rating <= 5 && overallRating == 5
                               ? "box.green"
                               : "box.default",
                           display: "flex",
@@ -160,9 +167,9 @@ const InfoHero = ({ data }) => {
           />
         </Card>
       </Grid>
-      <Grid item xs={12} md={4.4} className="ml-auto mt-7">
+      <Grid item xs={12} md={4.4} className="tw-ml-auto tw-mt-7">
         <Box
-          className="mt-2 rounded-md border-indigo-600 p-2"
+          className="tw-mt-2 tw-rounded-md tw-border-indigo-600 tw-p-2"
           sx={{
             border: "2px solid",
             "&:hover": {
@@ -171,7 +178,7 @@ const InfoHero = ({ data }) => {
           }}
           onClick={handleClick}
         >
-          <Typography variant="h3" component="h2" className="text-blue-800">
+          <Typography variant="h3" component="h2" className="tw-text-blue-800">
             {data.websiteAddress}
           </Typography>
           <Typography
