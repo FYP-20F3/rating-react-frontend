@@ -107,7 +107,7 @@ const ReviewFilter = () => {
     };
 
     return (
-        <div className="p-4">
+        <div className="tw-p-4">
             <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12} sm={4}>
                     <TextField
@@ -177,10 +177,10 @@ const ReviewFilter = () => {
                     </FormControl>
                 </Grid>
                 <Grid item xs={6} sm={2}>
-                    <Button onClick={handleSearch} variant="contained" color="primary" className="w-full px-4 py-3">Search</Button>
+                    <Button onClick={handleSearch} variant="contained" color="primary" className="tw-w-full tw-px-4 tw-py-3">Search</Button>
                 </Grid>
             </Grid>
-            <List className="mt-4">
+            <List className="tw-mt-4">
                 {filteredReviews.map((review, index) => (
                     <ReviewItem key={index} review={review} />
                 ))}
@@ -194,7 +194,7 @@ export default ReviewFilter;
 
 const ReviewItem = ({ review }) => {
     return (
-        <Card variant="outlined" className="mb-4 bg-white">
+        <Card variant="outlined" className="tw-mb-4 tw-bg-white">
             <CardContent>
                 <Typography variant="h6" color="text.secondary" gutterBottom>
                     {review.reviewTitle}
@@ -203,16 +203,16 @@ const ReviewItem = ({ review }) => {
                     <Grid item xs={12} sm={6}>
                         <Rating name="read-only" value={review.reviewRating} readOnly />
                     </Grid>
-                    <Grid item xs={12} sm={6} className="text-right">
+                    <Grid item xs={12} sm={6} className="tw-text-right">
                         <Typography variant="body2" color="text.secondary">
                             {review.dateOfExperience} 
                         </Typography>
                     </Grid>
                 </Grid>
-                <Typography variant="body2" component="p" className="mt-2">
+                <Typography variant="body2" component="p" className="tw-mt-2">
                     {review.reviewDescription}
                 </Typography>
-                <Grid container spacing={1} className="mt-2">
+                <Grid container spacing={1} className="tw-mt-2">
                     <Grid item>
                         <Button variant="outlined" size="small">Reply</Button>
                     </Grid>
@@ -227,12 +227,12 @@ const ReviewItem = ({ review }) => {
                             multiline
                             variant="outlined"
                             fullWidth
-                            className="mt-2"
+                            className="tw-mt-2"
                         />
                     </Grid>
                     <Grid item xs={12} sm={2}>
 
-                        <Button variant="contained" fullWidth color="primary" className="mt-2 py-3 px-4">
+                        <Button variant="contained" fullWidth color="primary" className="tw-mt-2 tw-py-3 tw-px-4">
                             Post reply
                         </Button>
                     </Grid>

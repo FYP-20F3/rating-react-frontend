@@ -92,7 +92,17 @@ const BusinessesList = ({
   const [selectedRating, setSelectedRating] = useState(0.0);
   const { searchName, setSearchName } = useSearchName();
 
-  console.log(data, "data");
+  let processedData = [];
+  if (data) {
+    processedData = data.map((item) => {
+      if (item.overallRating) {
+        const averageRating = item.overallRating;
+        const starRating = parseFloat(averageRating.toFixed(0));
+        item.starRating = starRating;
+        return item;
+      }
+    });
+  }
 
   const handleClick = (rating) => {
     setSelectedRating(rating);
@@ -131,7 +141,7 @@ const BusinessesList = ({
             >
               <StyledButton
                 sx={{ fontWeight: "bold" }}
-                className={selectedRating === 0.0 ? "bg-blue-200" : "bg-white"}
+                className={selectedRating === 0.0 ? "tw-bg-blue-200" : "tw-bg-white"}
                 onClick={() => {
                   handleClick(0.0);
                   setRating(0.0);
@@ -140,7 +150,7 @@ const BusinessesList = ({
                 Any
               </StyledButton>
               <StyledButton
-                className={selectedRating === 3.0 ? "bg-blue-200" : "bg-white"}
+                className={selectedRating === 3.0 ? "tw-bg-blue-200" : "tw-bg-white"}
                 onClick={() => {
                   handleClick(3.0);
                   setRating(3.0);
@@ -156,7 +166,7 @@ const BusinessesList = ({
                 </Typography>
               </StyledButton>
               <StyledButton
-                className={selectedRating === 4.0 ? "bg-blue-200" : "bg-white"}
+                className={selectedRating === 4.0 ? "tw-bg-blue-200" : "tw-bg-white"}
                 onClick={() => {
                   handleClick(4.0);
                   setRating(4.0);
@@ -172,7 +182,7 @@ const BusinessesList = ({
                 </Typography>
               </StyledButton>
               <StyledButton
-                className={selectedRating === 5.0 ? "bg-blue-200" : "bg-white"}
+                className={selectedRating === 5.0 ? "tw-bg-blue-200" : "tw-bg-white"}
                 onClick={() => {
                   handleClick(5.0);
                   setRating(5.0);
@@ -315,7 +325,7 @@ const BusinessesList = ({
               </StyledSelect>
             </Box>
           </Box>
-          {data.map((item) => (
+          {processedData.map((item) => (
             <Stack
               spacing={0.4}
               key={item._id}
@@ -369,15 +379,15 @@ const BusinessesList = ({
                               variant="square"
                               sx={{
                                 bgcolor:
-                                  rating == 1 && item.overallRating == 1
+                                  rating == 1 && item.starRating == 1
                                     ? "box.red"
-                                    : rating <= 2 && item.overallRating == 2
+                                    : rating <= 2 && item.starRating == 2
                                     ? "box.orange"
-                                    : rating <= 3 && item.overallRating == 3
+                                    : rating <= 3 && item.starRating == 3
                                     ? "box.yellow"
-                                    : rating <= 4 && item.overallRating == 4
+                                    : rating <= 4 && item.starRating == 4
                                     ? "box.lime"
-                                    : rating <= 5 && item.overallRating == 5
+                                    : rating <= 5 && item.starRating == 5
                                     ? "box.green"
                                     : "box.default",
                                 display: "flex",

@@ -12,6 +12,7 @@ const BusinessHome = () => {
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <div className="d-block justify-content-center">
 =======
     <Box
@@ -23,6 +24,9 @@ const BusinessHome = () => {
       }}
     >
 >>>>>>> f2e7dfa (testing)
+=======
+    <div className="tw-block tw-justify-content-center">
+>>>>>>> a328159 (design and settings changed)
       <div>home</div>
       <div>home</div>
       <div>home</div>
