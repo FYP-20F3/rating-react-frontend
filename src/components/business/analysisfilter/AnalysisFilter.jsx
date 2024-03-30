@@ -6,7 +6,7 @@ import { BASE_URL } from "../../../const/APIS";
 
 const AnalysisFilter = () => {
     const { currentUser, token } = useSelector((state) => state.user);
-    const [totalReview, setTotalReview] = useState(0)
+
     const [reviews, setReviews] = useState([]);
     const colors = {
         '1': '#d32f2f', // Red for 1-star reviews
@@ -41,9 +41,6 @@ const AnalysisFilter = () => {
             const dateB = new Date(`${partsB[1]}-${partsB[0]}-01`);
             return dateA - dateB;
         });
-        const totalSortedReviews = sortedData.reduce((total, data) => total + data.total, 0);
-        console.log(sortedData.length)
-        setTotalReview(sortedData.length)
         setReviews(sortedData); // Update this line
     };
 
@@ -54,23 +51,19 @@ const AnalysisFilter = () => {
         const now = new Date();
         const lastYear = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
 
-        // Filter out reviews that are not within the last 12 months
-        const last12MonthsReviews = reviews.filter(({ createdAt }) => {
+        reviews.forEach(({ reviewRating, createdAt }) => {
             const reviewDate = new Date(createdAt);
-            return reviewDate >= lastYear;
-        });
+            if (reviewDate >= lastYear) { // Filter reviews from the last year
+                const monthIndex = reviewDate.getMonth();
+                const year = reviewDate.getFullYear();
+                const monthYear = `${monthNames[monthIndex]} ${year}`;
 
-        last12MonthsReviews.forEach(({ reviewRating, createdAt }) => {
-            const reviewDate = new Date(createdAt);
-            const monthIndex = reviewDate.getMonth();
-            const year = reviewDate.getFullYear();
-            const monthYear = `${monthNames[monthIndex]} ${year}`;
-
-            if (!groupedData[monthYear]) {
-                groupedData[monthYear] = { monthYear, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, total: 0 };
+                if (!groupedData[monthYear]) {
+                    groupedData[monthYear] = { monthYear, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, total: 0 };
+                }
+                groupedData[monthYear][reviewRating]++;
+                groupedData[monthYear].total++; // Keep track of total reviews for each month
             }
-            groupedData[monthYear][reviewRating]++;
-            groupedData[monthYear].total++; // Keep track of total reviews for each month
         });
 
         // Convert counts to percentages
@@ -83,6 +76,15 @@ const AnalysisFilter = () => {
 
         return Object.values(groupedData);
     };
+
+    const sortedData = processData(reviews).sort((a, b) => {
+        const [yearA, monthA] = a.monthYear.split('-').map(Number);
+        const [yearB, monthB] = b.monthYear.split('-').map(Number);
+        return yearA !== yearB ? yearA - yearB : monthA - monthB;
+    });
+
+
+
 
 
     const BarChart = () => {
@@ -118,6 +120,7 @@ const AnalysisFilter = () => {
                     legendPosition: 'middle',
                     legendOffset: -40,
                     tickValues: tickValues, // Use the custom tick values array
+
                     // Modify this as needed to fit your data
                 }}
             // Additional properties and configurations
@@ -139,7 +142,9 @@ const AnalysisFilter = () => {
                     </div>
                 ))}
             </div>
-            <TotalReviewsCard totalReviews={totalReview} />
+
+            {/* Conditionally render the BarChart only if reviews exist */}
+
 
             {reviews.length > 0 ? <BarChart /> : <p>No reviews data available</p>}
         </div>
@@ -147,14 +152,3 @@ const AnalysisFilter = () => {
 };
 
 export default AnalysisFilter;
-
-const TotalReviewsCard = ({ totalReviews }) => {
-    console.log(totalReviews)
-    return (
-        <div className="total-reviews-card">
-            <h2>Total Reviews In last 12 months</h2>
-            <p>{totalReviews}</p>
-        </div>
-    );
-};
-
