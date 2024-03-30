@@ -13,15 +13,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <BrowserRouter>
-<<<<<<< HEAD
-          <CssBaseline />
-          <StyledEngineProvider injectFirst>
-            <App />
-=======
           {/* <CssBaseline /> */}
           <StyledEngineProvider injectFirst>
           <App />
->>>>>>> a328159 (design and settings changed)
           </StyledEngineProvider>
         </BrowserRouter>
       </PersistGate>

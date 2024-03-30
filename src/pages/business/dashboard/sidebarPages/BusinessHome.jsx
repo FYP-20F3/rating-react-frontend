@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { customerLoginPath } from "../../../../const/path";
 import { Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
+import { Box } from "@mui/material";
 
 const BusinessHome = () => {
   const { token } = useSelector((state) => state.user);
@@ -35,6 +36,7 @@ const BusinessHome = () => {
       <div>home</div>
       <div>home</div>
       <div>home</div>
+    </Box>
     </Box>
   );
 };

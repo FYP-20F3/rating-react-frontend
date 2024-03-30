@@ -135,15 +135,26 @@ const ReviewsList = ({ data }) => {
               marginTop: "auto",
               marginBottom: "auto",
             }}
-            image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbyWPR_XEwFflTnPQw8tNkj2_-8491kECbLpcjpKm3Zw&s" // Replace with your image source
+            image={currentUser?.picturePath} // Replace with your image source
             alt="Profile Picture"
           />
           <CardContent sx={{ flex: 1 }}>
             <Typography gutterBottom variant="h6" component="div">
-              User Name
+              {userName}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Write your review here...
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                textDecoration: "none", // Remove default underline
+                "&:hover": {
+                  textDecoration: "underline", // Add underline on hover
+                  color: "info.main",
+                },
+              }}
+              onClick={handleClick}
+            >
+              Write a review
             </Typography>
           </CardContent>
 <<<<<<< HEAD
@@ -174,12 +185,14 @@ const ReviewsList = ({ data }) => {
               variant="h6"
               component="p"
               className="tw-text-lg tw-font-medium tw-text-gray-500"
+              className="tw-text-lg tw-font-medium tw-text-gray-500"
             >
               Reviews
             </Typography>
           </Box>
           <Box className="star-rating">
             <Link>5 star</Link>
+            <Box className="star-rating-bar tw-bg-gray-200">
             <Box className="star-rating-bar tw-bg-gray-200">
               <Box className="star-rating-fill" style={{ width: "70%" }} />
             </Box>
@@ -194,6 +207,7 @@ const ReviewsList = ({ data }) => {
           <Box className="star-rating">
             <Link>4 star</Link>
             <Box className="star-rating-bar tw-bg-gray-200">
+            <Box className="star-rating-bar tw-bg-gray-200">
               <Box className="star-rating-fill" style={{ width: "17%" }} />
             </Box>
             <Typography
@@ -206,6 +220,7 @@ const ReviewsList = ({ data }) => {
           </Box>
           <Box className="star-rating">
             <Link>3 star</Link>
+            <Box className="star-rating-bar tw-bg-gray-200">
             <Box className="star-rating-bar tw-bg-gray-200">
               <Box className="star-rating-fill" style={{ width: "8%" }} />
             </Box>
@@ -220,6 +235,7 @@ const ReviewsList = ({ data }) => {
           <Box className="star-rating">
             <Link>2 star</Link>
             <Box className="star-rating-bar tw-bg-gray-200">
+            <Box className="star-rating-bar tw-bg-gray-200">
               <Box className="star-rating-fill" style={{ width: "4%" }} />
             </Box>
             <Typography
@@ -232,6 +248,7 @@ const ReviewsList = ({ data }) => {
           </Box>
           <Box className="star-rating">
             <Link>1 star</Link>
+            <Box className="star-rating-bar tw-bg-gray-200">
             <Box className="star-rating-bar tw-bg-gray-200">
               <Box className="star-rating-fill" style={{ width: "1%" }} />
             </Box>
@@ -249,10 +266,118 @@ const ReviewsList = ({ data }) => {
               variant="outlined"
               className="tw-text-blue-600 tw-border-blue-600 hover:tw-bg-blue-200"
               onClick={toggleDrawer}
+              className="tw-text-blue-600 tw-border-blue-600 hover:tw-bg-blue-200"
+              onClick={toggleDrawer}
             >
               Filter
               <FilterAltIcon className="tw-ml-1" />
+              <FilterAltIcon className="tw-ml-1" />
             </Button>
+            <Drawer
+              anchor="right"
+              open={open}
+              onClose={handleClose}
+              sx={{
+                "& .MuiDrawer-paper": {
+                  backgroundColor: "white",
+                  width: "29rem",
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+                className="drawer-header"
+                component="div"
+              >
+                <Typography variant="h2" component="h2">
+                  Filter By
+                </Typography>
+                <IconButton onClick={handleClose}>
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+              <List>
+                <ListItem className="tw-px-5 tw-mb-3">
+                  <TextField
+                    placeholder="Search"
+                    variant="outlined"
+                    size="small"
+                    className="tw-w-[25.5rem]"
+                    InputProps={{
+                      startAdornment: <SearchIcon />,
+                      sx: {
+                        "& .MuiInputBase-input": {
+                          fontSize: "18px",
+                          pl: 1,
+                          borderRadius: 2,
+                        },
+                        "& .MuiOutlinedInput-root": {
+                          p: 2.8,
+                        },
+                      },
+                    }}
+                  />
+                </ListItem>
+                <ListItem className="tw-px-5 tw-mb-2">
+                  <Typography variant="h3" component="h4">
+                    Review With Replies
+                  </Typography>
+                  <Checkbox
+                    checked={reviewWithReply}
+                    onChange={handleReviewWithReplyChange}
+                  />
+                </ListItem>
+                <ListItem className="tw-px-5 tw-mb-3">
+                  <FormControl fullWidth>
+                    <Typography
+                      variant="h4"
+                      component="h4"
+                      id="review-category-label"
+                      className="tw-mb-3"
+                    >
+                      Review Category
+                    </Typography>
+                    <Select
+                      labelId="review-category-label"
+                      defaultValue="all"
+                      value={selectedCategory}
+                      onChange={handleCategoryChange}
+                    >
+                      {reviewCategories.map((category) => (
+                        <MenuItem key={category.value} value={category.value}>
+                          {category.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </ListItem>
+                <ListItem className="tw-px-5 tw-mb-3">
+                  <FormControl fullWidth>
+                    <Typography
+                      variant="h4"
+                      component="h4"
+                      id="sort-review-label"
+                      className="tw-mb-3"
+                    >
+                      Sort by date
+                    </Typography>
+                    <Select
+                      labelId="sort-review-label"
+                      defaultValue="new"
+                      value={sortReview}
+                      onChange={handleSortChange}
+                    >
+                      <MenuItem value="new">New Reviews</MenuItem>
+                      <MenuItem value="new">Old Reviews</MenuItem>
+                    </Select>
+                  </FormControl>
+                </ListItem>
+              </List>
+            </Drawer>
             <Drawer
               anchor="right"
               open={open}
@@ -476,6 +601,8 @@ const ReviewsList = ({ data }) => {
       </Grid>
       <Grid item xs={12} md={7} lg={3.5} className="tw-mr-8">
         <Card>
+      <Grid item xs={12} md={7} lg={3.5} className="tw-mr-8">
+        <Card>
           <CardHeader title="Company Activity" />
           <Divider />
           <CardContent>
@@ -483,6 +610,7 @@ const ReviewsList = ({ data }) => {
               <Typography
                 variant="body2"
                 component="p"
+                className="tw-text-blue-600 hover:tw-underline"
                 className="tw-text-blue-600 hover:tw-underline"
               >
                 Progress Dashboard

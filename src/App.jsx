@@ -30,14 +30,26 @@ function App() {
         <Route path="/customer">
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route element={<PrivateRoute path={customerLoginPath} />}>
+          <Route
+            element={
+              <PrivateRoute
+                path={{ url: customerLoginPath, role: "customer" }}
+              />
+            }
+          >
             <Route element={<SearchNameProvider />}>
               <Route path="home" element={<Home />} />
               <Route path="category/:id" element={<BusinessListPage />} />
               <Route path="search" element={<BusinessListPage />} />
             </Route>
-            <Route path="reviews/:businessId" element={<BusinessInfoPage />} />
-            <Route path="evaluate/:businessId" element={<CreateReviewPage />} />
+            <Route
+              path="reviews/:businessId/:businessName"
+              element={<BusinessInfoPage />}
+            />
+            <Route
+              path="evaluate/:businessId/:businessName"
+              element={<CreateReviewPage />}
+            />
           </Route>
         </Route>
 
@@ -46,11 +58,16 @@ function App() {
         <Route path="/business">
           <Route path="login" element={<BusinessLogin />} />
           <Route path="register" element={<BusinessRegister />} />
-          <Route element={<PrivateRoute path={businessLoginPath} />}>
-            <Route path="dashboard" element={<BusinessDashboard />}>
-              <Route index element={<BusinessHome />} />
-              <Route path="business/reviews" element={<Reviews />} />
-              <Route path="business/analysis" element={<Analysis />} />
+          <Route
+            element={
+              <PrivateRoute
+                path={{ url: businessLoginPath, role: "business" }}
+              />
+            }
+          >
+            <Route element={<BusinessDashboard />}>
+              <Route path="dashboard" element={<BusinessHome />} />
+              <Route path="reviews" element={<Reviews />} />
               <Route path="reviews/service" element={<ServiceReviews />} />
               <Route path="reviews/analysis" element={<ServiceReviews />} />
             </Route>

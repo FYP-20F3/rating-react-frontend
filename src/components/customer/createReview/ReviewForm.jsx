@@ -15,84 +15,145 @@ import {
   Avatar,
   IconButton,
   Alert,
+  IconButton,
+  Alert,
 } from "@mui/material";
 import StarRateIcon from "@mui/icons-material/StarRate";
 <<<<<<< HEAD
 
 const ReviewForm = () => {
-  const ratings = [1, 2, 3, 4, 5];
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const [rating, setRating] = useState(0); // Initial rating state
+  const [ratingError, setRatingError] = useState("");
+  const { businessId, businessName } = useParams();
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
+  // const [suggestions, setSuggestions] = useState("");
+  const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  // Function to handle click on a star
+  const handleStarClick = (clickedRating) => {
+    // If the same star is clicked again, reset the rating
+    const newRating = clickedRating === rating ? 0 : clickedRating;
+    setRating(newRating);
+    setRatingError("");
+  };
+
+  const handleClose = (reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const onSubmit = async (data) => {
+    console.log("data:", data);
+
+    // Manually validate the rating field before form submission
+    if (rating === 0) {
+      // Set an error message for the rating field
+      setRatingError("Please select a rating");
+      return;
+    }
+
+    let payload = {
+      ...data,
+      customerId: currentUser._id,
+      businessId: businessId,
+      reviewRating: rating,
+    };
+
+    console.log(payload, "payload");
+
+    try {
+      const response = await axios.post(`${BASE_URL}reviews/create`, payload);
+      console.log("response:", response);
+      if (response.data.semantics) {
+      } else {
+        navigate(`/customer/reviews/${businessId}/${businessName}`);
+      }
+    } catch (error) {
+      const semantics = `Review submission failed. Seems to be ${error.response.data.semantics}.\n`;
+      // const msg = error.response.data.details.suggestions;
+      setError(semantics);
+      // setSuggestions(msg);
+      setOpen(true);
+    }
+  };
+
+  const renderStars = () => {
+    return [1, 2, 3, 4, 5].map((star) => (
+      <Grid item key={star}>
+        {/* {console.log(rating, "rating")}
+              {console.log(star, "star")}
+              {console.log(
+                star,
+                "<=",
+                rating,
+                star <= rating,
+                star <= rating
+                  ? rating === 1
+                    ? "box.red"
+                    : rating === 2
+                    ? "box.orange"
+                    : rating === 3
+                    ? "box.yellow"
+                    : rating === 4
+                    ? "box.lime"
+                    : "box.green"
+                  : "box.default",
+                "color"
+              )} */}
+        <Avatar
+          aria-label={`star-${star}`}
+          variant="square"
+          onClick={() => handleStarClick(star)}
+          sx={{
+            bgcolor:
+              star <= rating
+                ? rating === 1
+                  ? "box.red"
+                  : rating === 2
+                  ? "box.orange"
+                  : rating === 3
+                  ? "box.yellow"
+                  : rating === 4
+                  ? "box.lime"
+                  : "box.green"
+                : "box.default",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: { xs: "20px", sm: "30px" },
+            width: { xs: "20px", sm: "30px" },
+            marginRight: "1px",
+          }}
+        >
+          <StarRateIcon
+            sx={{
+              color: "white",
+              height: { xs: "20px", sm: "30px" },
+              width: { xs: "20px", sm: "30px" },
+            }}
+          />
+        </Avatar>
+      </Grid>
+    ));
+  };
 
   return (
-    <form
-      className="max-w-lg mx-auto mt-16 px-7 py-5 bg-white shadow-lg rounded" // Maintain Tailwind CSS classes for styling
-    >
-      <Typography
-        variant="h2"
-        className="text-2xl font-bold mb-7 w-full text-center"
+    <>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="tw-max-w-lg tw-mx-auto tw-mt-16 tw-px-7 tw-py-5 tw-bg-white tw-shadow-lg tw-rounded"
       >
-        Review Form
-      </Typography>
-      <Box className="mb-4 px-5">
-        <Typography variant="body1" className="block mb-2" id="rating">
-          Rate Your Experience
-        </Typography>
-        <Grid container>
-          {ratings.map((rating) => (
-            <Grid item key={rating}>
-              <Avatar
-                aria-label="star box"
-                variant="square"
-                sx={{
-                  bgcolor:
-                    rating == 1
-                      ? "box.red"
-                      : rating <= 2
-                      ? "box.orange"
-                      : rating <= 3
-                      ? "box.yellow"
-                      : rating <= 4
-                      ? "box.lime"
-                      : rating <= 5
-                      ? "box.green"
-                      : "box.default",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: { xs: "15px", sm: "25px" },
-                  width: { xs: "15px", sm: "25px" },
-                  marginRight: "1px",
-                }}
-              >
-                <StarRateIcon
-                  sx={{
-                    color: "white",
-                    height: { xs: "15px", sm: "25px" },
-                    width: { xs: "15px", sm: "25px" },
-                  }}
-                />
-              </Avatar>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-      <Box className="mb-4 px-5">
-        <Typography variant="body1" className="block mb-1" id="reviewType">
-          Select the Review you want to give
-        </Typography>
-        <Select
-          defaultValue="all"
-          // value={id}
-          labelId="reviewType"
-          size="small"
-          className="w-full py-0.5 px-0.5 border border-gray-300"
-        >
-          <MenuItem value="all" onClick={() => {}}>
-            All Category
-          </MenuItem>
-        </Select>
-      </Box>
-      {/* Added optional id attributes on other Typography components */}
-      <Box className="mb-4 px-5">
         <Typography
           variant="body1"
           className="block mb-1"

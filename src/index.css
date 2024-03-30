@@ -58,3 +58,44 @@ body {
   background-color: #f5f7fa !important;
   min-width: auto !important;
 }
+
+.reviews-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* subtle shadow to float the table */
+}
+
+.reviews-table th,
+.reviews-table td {
+  text-align: left;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  /* light border for cells */
+}
+
+.reviews-table thead {
+  background-color: #f4f4f4;
+  /* light grey background for the table header */
+  color: #333;
+  /* dark text for contrast */
+}
+
+.reviews-table tbody tr:nth-child(odd) {
+  background-color: #fafafa;
+  /* zebra-striping for rows */
+}
+
+.reviews-table tbody tr:hover {
+  background-color: #f1f1f1;
+  /* hover effect for rows */
+  cursor: pointer;
+}
+
+.reviews-table th {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 10;
+}
