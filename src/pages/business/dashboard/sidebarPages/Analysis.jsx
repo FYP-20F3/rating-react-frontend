@@ -11,10 +11,7 @@ const Analysis = () => {
     return (
         <Box sx={{
             bgcolor: "background.paper",
-            pt: 8,
-            pb: 2,
-            px: 18,
-            height: "100vh",
+            // height: "1000vh",
             width: "100%"
         }}>
             {/* <AnalysisFilter /> */}
