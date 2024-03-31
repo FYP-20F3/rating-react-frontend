@@ -48,7 +48,7 @@ export default function Sidebar({
     navigate("/business/reviews");
   }
   const handleAnalysis = () => {
-    navigate("business/analysis");
+    navigate("/business/reviews/analysis");
   }
   return (
     <Drawer
