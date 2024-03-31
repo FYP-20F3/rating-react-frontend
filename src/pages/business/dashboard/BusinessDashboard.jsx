@@ -7,7 +7,7 @@ import { businessLoginPath } from "../../../const/path";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
-const drawerWidth = 280;
+const drawerWidth = 285;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({

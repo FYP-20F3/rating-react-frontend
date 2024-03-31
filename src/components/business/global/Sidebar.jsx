@@ -1,30 +1,35 @@
-import { styled, useTheme } from "@mui/material/styles";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
-import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import Card from "@mui/material/Card";
-import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/material";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  IconButton,
+  Card,
+  Avatar,
+  Box,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Button,
+  useTheme,
+} from "@mui/material";
 import { grey } from "@mui/material/colors";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ReviewsIcon from "@mui/icons-material/Reviews";
-import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import {
+  Reviews,
+  ArrowCircleLeft,
+  ArrowCircleRight,
+  AutoGraph,
+  Dashboard,
+  Logout,
+} from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { signOut } from "../../../redux/userSlice";
 
-import { Reviews } from "@mui/icons-material";
 
 export default function Sidebar({
   handleDrawerClose,
@@ -34,22 +39,24 @@ export default function Sidebar({
 }) {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const CARD_PROPERTY = {
     borderRadius: 3,
     boxShadow: 0,
     bgcolor: grey[200],
-    mx: 1.4,
+    mx: 1.34,
   };
   const handleDashboard = () => {
     navigate("/business/dashboard");
-  }
+  };
   const handleReviews = () => {
     navigate("/business/reviews");
-  }
+  };
   const handleAnalysis = () => {
     navigate("/business/reviews/analysis");
-  }
+  };
   return (
     <Drawer
       sx={{
@@ -69,9 +76,9 @@ export default function Sidebar({
       <DrawerHeader>
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === "ltr" ? (
-            <ArrowCircleLeftIcon />
+            <ArrowCircleLeft />
           ) : (
-            <ArrowCircleRightIcon />
+            <ArrowCircleRight />
           )}
         </IconButton>
       </DrawerHeader>
@@ -94,13 +101,26 @@ export default function Sidebar({
             <Avatar
               variant="square"
               sx={{ bgcolor: "primary.main", width: 65, height: 65, mr: 2 }}
-              src="https://randomuser.me/api/portraits/women/47.jpg"
+              src={currentUser?.businessLogoPath}
             >
               G
             </Avatar>
-            <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-              Oriana
-            </Typography>
+            <Box>
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: "bold" }}
+                color="primary"
+              >
+                {currentUser?.businessName}
+              </Typography>
+              <Typography
+                variant="body3"
+                sx={{ fontWeight: "bold" }}
+                color="text.secondary"
+              >
+                {currentUser?.email}
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Card>
@@ -108,7 +128,7 @@ export default function Sidebar({
         <ListItem>
           <ListItemButton>
             <ListItemIcon>
-              <MailIcon />
+              <Dashboard />
             </ListItemIcon>
             <ListItemText
               onClick={handleDashboard}
@@ -124,7 +144,6 @@ export default function Sidebar({
             </ListItemIcon>
             <ListItemText
               onClick={handleReviews}
-
               primary={"Reviews"}
               sx={{ fontSize: "body4.fontSize" }}
             />
@@ -133,11 +152,10 @@ export default function Sidebar({
         <ListItem>
           <ListItemButton>
             <ListItemIcon>
-              <Reviews sx={{ mr: 2, verticalAlign: "middle" }} />
+              <AutoGraph sx={{ mr: 2, verticalAlign: "middle" }} />
             </ListItemIcon>
             <ListItemText
               onClick={handleAnalysis}
-
               primary={"Analysis"}
               sx={{ fontSize: "body4.fontSize" }}
             />
@@ -182,18 +200,20 @@ export default function Sidebar({
           </AccordionDetails>
         </Accordion> */}
       </List>
-      <Divider />
+      <Divider sx={{ mt: 15 }} />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem >
+          <ListItemButton>
+            <ListItemIcon>
+              <Logout fontSize="small" sx={{ mr: 2, verticalAlign: "middle" }} />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Logout"}
+              sx={{ fontSize: "body4.fontSize" }}
+              onClick={() => dispatch(signOut())}
+            />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Drawer>
   );
