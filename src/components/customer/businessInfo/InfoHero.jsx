@@ -28,6 +28,8 @@ const StyledImage = styled("img")(({ theme }) => ({
 const InfoHero = ({ data }) => {
   const ratings = [1, 2, 3, 4, 5];
 
+<<<<<<< HEAD
+=======
   let overallRating = 0;
   if (data.overallRating) {
     const averageRating = data.overallRating;
@@ -43,6 +45,7 @@ const InfoHero = ({ data }) => {
     // window.open("https://www.google.com.pk/?gws_rd=ssl", "_blank");
   };
 
+>>>>>>> a328159 (design and settings changed)
   return (
     <Grid
       container
@@ -97,6 +100,9 @@ const InfoHero = ({ data }) => {
                         aria-label="star box"
                         variant="square"
                         sx={{
+<<<<<<< HEAD
+                          bgcolor: "box.green",
+=======
                           bgcolor:
                             rating == 1 && overallRating == 1
                               ? "box.red"
@@ -109,6 +115,7 @@ const InfoHero = ({ data }) => {
                               : rating <= 5 && overallRating == 5
                               ? "box.green"
                               : "box.default",
+>>>>>>> a328159 (design and settings changed)
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
@@ -167,6 +174,21 @@ const InfoHero = ({ data }) => {
           />
         </Card>
       </Grid>
+<<<<<<< HEAD
+      <Grid item xs={12} md={4} className="ml-auto mt-7">
+        <Box
+          className="tw-mt-2 tw-rounded-md tw-border-indigo-600 tw-p-2"
+          sx={{
+            border: "2px solid",
+            "&:hover": {
+              boxShadow: 4, // Enhance box shadow on hover
+            },
+          }}
+          onClick={handleClick}
+        >
+          <Typography variant="h3" component="h2" className="text-blue-800">
+            www.dummywebsite.com
+=======
       <Grid item xs={12} md={4.4} className="tw-ml-auto tw-mt-7">
         <Box
           className="tw-mt-2 tw-rounded-md tw-border-indigo-600 tw-p-2"
@@ -180,6 +202,7 @@ const InfoHero = ({ data }) => {
         >
           <Typography variant="h3" component="h2" className="tw-text-blue-800">
             {data.websiteAddress}
+>>>>>>> a328159 (design and settings changed)
           </Typography>
           <Typography
             variant="body2"

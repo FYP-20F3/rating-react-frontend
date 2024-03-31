@@ -58,6 +58,8 @@ body {
   background-color: #f5f7fa !important;
   min-width: auto !important;
 }
+<<<<<<< HEAD
+
 .reviews-table {
   width: 100%;
   border-collapse: collapse;
@@ -98,3 +100,5 @@ body {
   background-color: #fff;
   z-index: 10;
 }
+=======
+>>>>>>> parent of 3b23190 (merges and new data)

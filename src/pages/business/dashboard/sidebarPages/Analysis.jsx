@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { Box } from "@mui/material";
 import AnalysisFilter from '../../../../components/business/analysisfilter/analysisFilter';
 import MonthlySentimentB from '../../../../components/business/monthlysentimentbarchart/MonthlySentimentB';
@@ -20,4 +20,4 @@ const Analysis = () => {
     )
 }
 
-export default Analysis
+export default Analysis;
