@@ -30,7 +30,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../../../redux/userSlice";
 
-
 export default function Sidebar({
   handleDrawerClose,
   open,
@@ -115,7 +114,7 @@ export default function Sidebar({
               </Typography>
               <Typography
                 variant="body3"
-                sx={{ fontWeight: "bold" }}
+                sx={{ fontWeight: 500 }}
                 color="text.secondary"
               >
                 {currentUser?.email}
@@ -202,10 +201,13 @@ export default function Sidebar({
       </List>
       <Divider sx={{ mt: 15 }} />
       <List>
-        <ListItem >
+        <ListItem>
           <ListItemButton>
             <ListItemIcon>
-              <Logout fontSize="small" sx={{ mr: 2, verticalAlign: "middle" }} />
+              <Logout
+                fontSize="small"
+                sx={{ mr: 2, verticalAlign: "middle" }}
+              />
             </ListItemIcon>
             <ListItemText
               primary={"Logout"}
