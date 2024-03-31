@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import { customerLoginPath } from "../../../../const/path";
 import { Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
-import { Box } from "@mui/material";
 
 const BusinessHome = () => {
   const { token } = useSelector((state) => state.user);
@@ -12,10 +11,6 @@ const BusinessHome = () => {
   }
 
   return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <div className="d-block justify-content-center">
-=======
     <Box
       sx={{
         bgcolor: "background.paper",
@@ -24,10 +19,6 @@ const BusinessHome = () => {
         px: 18,
       }}
     >
->>>>>>> f2e7dfa (testing)
-=======
-    <div className="tw-block tw-justify-content-center">
->>>>>>> a328159 (design and settings changed)
       <div>home</div>
       <div>home</div>
       <div>home</div>
@@ -36,7 +27,6 @@ const BusinessHome = () => {
       <div>home</div>
       <div>home</div>
       <div>home</div>
-    </Box>
     </Box>
   );
 };

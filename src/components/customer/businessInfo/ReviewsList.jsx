@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-import { Box, Divider, Grid, styled } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
-import { CardHeader } from "@mui/material";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-=======
 import {
   Card,
   CardContent,
@@ -24,9 +12,7 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText,
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
   Checkbox,
@@ -45,7 +31,6 @@ import StarRateIcon from "@mui/icons-material/StarRate";
 import SearchIcon from "@mui/icons-material/Search";
 import { useSelector } from "react-redux";
 import { useState } from "react";
->>>>>>> a328159 (design and settings changed)
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   display: "flex",
@@ -62,9 +47,6 @@ const StyledCard = styled(Grid)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-<<<<<<< HEAD
-const ReviewsList = () => {
-=======
 const ReviewsList = ({ data }) => {
   const { currentUser } = useSelector((state) => state.user);
   const userName = currentUser?.firstName + " " + currentUser?.lastName;
@@ -121,7 +103,6 @@ const ReviewsList = ({ data }) => {
     setSortReview(event.target.value);
   };
 
->>>>>>> a328159 (design and settings changed)
   return (
     <StyledGrid container spacing={1}>
       <Grid item xs={12} md={7} lg={8}>
@@ -157,17 +138,12 @@ const ReviewsList = ({ data }) => {
               Write a review
             </Typography>
           </CardContent>
-<<<<<<< HEAD
-          <Button variant="contained" className="my-7 mr-3">
-            Write a Review
-=======
           <Button
             variant="contained"
             className="tw-my-7 tw-mr-3"
             onClick={handleClick}
           >
             Give Review
->>>>>>> a328159 (design and settings changed)
           </Button>
         </StyledCard>
         <Box
@@ -185,14 +161,12 @@ const ReviewsList = ({ data }) => {
               variant="h6"
               component="p"
               className="tw-text-lg tw-font-medium tw-text-gray-500"
-              className="tw-text-lg tw-font-medium tw-text-gray-500"
             >
               Reviews
             </Typography>
           </Box>
           <Box className="star-rating">
             <Link>5 star</Link>
-            <Box className="star-rating-bar tw-bg-gray-200">
             <Box className="star-rating-bar tw-bg-gray-200">
               <Box className="star-rating-fill" style={{ width: "70%" }} />
             </Box>
@@ -207,7 +181,6 @@ const ReviewsList = ({ data }) => {
           <Box className="star-rating">
             <Link>4 star</Link>
             <Box className="star-rating-bar tw-bg-gray-200">
-            <Box className="star-rating-bar tw-bg-gray-200">
               <Box className="star-rating-fill" style={{ width: "17%" }} />
             </Box>
             <Typography
@@ -220,7 +193,6 @@ const ReviewsList = ({ data }) => {
           </Box>
           <Box className="star-rating">
             <Link>3 star</Link>
-            <Box className="star-rating-bar tw-bg-gray-200">
             <Box className="star-rating-bar tw-bg-gray-200">
               <Box className="star-rating-fill" style={{ width: "8%" }} />
             </Box>
@@ -235,7 +207,6 @@ const ReviewsList = ({ data }) => {
           <Box className="star-rating">
             <Link>2 star</Link>
             <Box className="star-rating-bar tw-bg-gray-200">
-            <Box className="star-rating-bar tw-bg-gray-200">
               <Box className="star-rating-fill" style={{ width: "4%" }} />
             </Box>
             <Typography
@@ -248,7 +219,6 @@ const ReviewsList = ({ data }) => {
           </Box>
           <Box className="star-rating">
             <Link>1 star</Link>
-            <Box className="star-rating-bar tw-bg-gray-200">
             <Box className="star-rating-bar tw-bg-gray-200">
               <Box className="star-rating-fill" style={{ width: "1%" }} />
             </Box>
@@ -266,11 +236,8 @@ const ReviewsList = ({ data }) => {
               variant="outlined"
               className="tw-text-blue-600 tw-border-blue-600 hover:tw-bg-blue-200"
               onClick={toggleDrawer}
-              className="tw-text-blue-600 tw-border-blue-600 hover:tw-bg-blue-200"
-              onClick={toggleDrawer}
             >
               Filter
-              <FilterAltIcon className="tw-ml-1" />
               <FilterAltIcon className="tw-ml-1" />
             </Button>
             <Drawer
@@ -378,115 +345,8 @@ const ReviewsList = ({ data }) => {
                 </ListItem>
               </List>
             </Drawer>
-            <Drawer
-              anchor="right"
-              open={open}
-              onClose={handleClose}
-              sx={{
-                "& .MuiDrawer-paper": {
-                  backgroundColor: "white",
-                  width: "29rem",
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-                className="drawer-header"
-                component="div"
-              >
-                <Typography variant="h2" component="h2">
-                  Filter By
-                </Typography>
-                <IconButton onClick={handleClose}>
-                  <CloseIcon />
-                </IconButton>
-              </Box>
-              <List>
-                <ListItem className="tw-px-5 tw-mb-3">
-                  <TextField
-                    placeholder="Search"
-                    variant="outlined"
-                    size="small"
-                    className="tw-w-[25.5rem]"
-                    InputProps={{
-                      startAdornment: <SearchIcon />,
-                      sx: {
-                        "& .MuiInputBase-input": {
-                          fontSize: "18px",
-                          pl: 1,
-                          borderRadius: 2,
-                        },
-                        "& .MuiOutlinedInput-root": {
-                          p: 2.8,
-                        },
-                      },
-                    }}
-                  />
-                </ListItem>
-                <ListItem className="tw-px-5 tw-mb-2">
-                  <Typography variant="h3" component="h4">
-                    Review With Replies
-                  </Typography>
-                  <Checkbox
-                    checked={reviewWithReply}
-                    onChange={handleReviewWithReplyChange}
-                  />
-                </ListItem>
-                <ListItem className="tw-px-5 tw-mb-3">
-                  <FormControl fullWidth>
-                    <Typography
-                      variant="h4"
-                      component="h4"
-                      id="review-category-label"
-                      className="tw-mb-3"
-                    >
-                      Review Category
-                    </Typography>
-                    <Select
-                      labelId="review-category-label"
-                      defaultValue="all"
-                      value={selectedCategory}
-                      onChange={handleCategoryChange}
-                    >
-                      {reviewCategories.map((category) => (
-                        <MenuItem key={category.value} value={category.value}>
-                          {category.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </ListItem>
-                <ListItem className="tw-px-5 tw-mb-3">
-                  <FormControl fullWidth>
-                    <Typography
-                      variant="h4"
-                      component="h4"
-                      id="sort-review-label"
-                      className="tw-mb-3"
-                    >
-                      Sort by date
-                    </Typography>
-                    <Select
-                      labelId="sort-review-label"
-                      defaultValue="new"
-                      value={sortReview}
-                      onChange={handleSortChange}
-                    >
-                      <MenuItem value="new">New Reviews</MenuItem>
-                      <MenuItem value="new">Old Reviews</MenuItem>
-                    </Select>
-                  </FormControl>
-                </ListItem>
-              </List>
-            </Drawer>
           </Box>
         </Box>
-<<<<<<< HEAD
-=======
         {reviews &&
           reviews.map((item, index) => (
             <Card
@@ -597,10 +457,7 @@ const ReviewsList = ({ data }) => {
               </CardContent>
             </Card>
           ))}
->>>>>>> a328159 (design and settings changed)
       </Grid>
-      <Grid item xs={12} md={7} lg={3.5} className="tw-mr-8">
-        <Card>
       <Grid item xs={12} md={7} lg={3.5} className="tw-mr-8">
         <Card>
           <CardHeader title="Company Activity" />
@@ -610,7 +467,6 @@ const ReviewsList = ({ data }) => {
               <Typography
                 variant="body2"
                 component="p"
-                className="tw-text-blue-600 hover:tw-underline"
                 className="tw-text-blue-600 hover:tw-underline"
               >
                 Progress Dashboard
