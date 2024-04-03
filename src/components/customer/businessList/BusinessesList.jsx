@@ -104,6 +104,8 @@ const BusinessesList = ({
     });
   }
 
+  console.log("processedData", processedData);
+
   const handleClick = (rating) => {
     setSelectedRating(rating);
   };

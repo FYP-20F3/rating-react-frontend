@@ -189,8 +189,9 @@ const RevCatMonthlyLineChart = () => {
     );
   };
 
+  const pageHeight = reviews.length === 0 ? "tw-h-[80vh]" : "";
   return (
-    <div>
+    <div className={`${pageHeight}`}>
       <h1>Analysis for reviews based on sentiments</h1>
       <div className="legend flex justify-between	">
         {Object.keys(colors).map((sentiment) => (

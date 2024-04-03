@@ -17,7 +17,7 @@ const BusinessInfoPage = () => {
   useEffect(() => {
     const fetchBusinessInfo = async () => {
       try {
-        console.log(`${BASE_URL}businesses/${businessId}`);
+        // console.log(`${BASE_URL}businesses/${businessId}`);
         const response = await axios.get(
           `${BASE_URL}businesses/${businessId}`,
           {
@@ -29,7 +29,7 @@ const BusinessInfoPage = () => {
         );
 
         setData(response.data);
-        console.log(response.data, "hellllo");
+        console.log(response.data, "businessInfo");
       } catch (error) {
         console.log(error);
       }
@@ -37,12 +37,12 @@ const BusinessInfoPage = () => {
 
     fetchBusinessInfo();
   }, [businessId]);
-  
+
   return (
     <>
       <HomeNavbar />
       <InfoHero data={data} />
-      <ReviewsList data={data} />
+      <ReviewsList businessData={data} />
       <Footer />
     </>
   );

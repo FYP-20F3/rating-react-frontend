@@ -6,12 +6,13 @@ import Footer from "../../components/customer/footer/Footer";
 import Explore from "../../components/customer/home/Explore";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { customerLoginPath } from "../../const/path";
 
 const Home = () => {
   const { token } = useSelector((state) => state.user);
 
   if (!token) {
-    return <Navigate to="/customer/login" />;
+    return <Navigate to={customerLoginPath} />;
   }
 
   return (

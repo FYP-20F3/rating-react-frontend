@@ -1,244 +1,286 @@
-import React, { useEffect, useState } from 'react';
-import { TextField, Select, MenuItem, InputLabel, FormControl, Grid, Button } from '@mui/material';
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
-import { Card, CardContent, } from '@mui/material';
-import Rating from '@mui/material/Rating';
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Grid,
+  Button,
+  Checkbox,
+  Typography,
+  List,
+} from "@mui/material";
+
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../../../const/APIS";
+import { Navigate, useNavigate } from "react-router-dom";
+import ReviewItem from "./ReviewItem";
 
-
-
-import { Box } from "@mui/material";
-
-const dummyReviews = [
-    { title: 'Excellent service', reviewType: 'Service', description: 'The service was excellent and exceeded my expectations.', rating: 5, replyStatus: 'Replied', date: '2023-03-15' },
-    { title: 'Good support, but slow', reviewType: 'Delivery', description: 'The support provided was good, but the response time was slow.', rating: 3, replyStatus: 'Not Replied', date: '2023-03-14' },
-    { title: 'Unsatisfactory experience', reviewType: 'Product', description: 'My experience was unsatisfactory due to several issues with the service.', rating: 1, replyStatus: 'Replied', date: '2023-03-13' },
-    { title: 'Very helpful', reviewType: 'Packaging', description: 'The support team was very helpful and guided me through the process.', rating: 4, replyStatus: 'Replied', date: '2023-03-12' },
-    { title: 'Average service', reviewType: 'Service', description: 'The service provided was average and did not meet my expectations.', rating: 3, replyStatus: 'Not Replied', date: '2023-03-11' }
-];
 const ReviewFilter = () => {
-    const { currentUser, token } = useSelector((state) => state.user);
-    const [starRating, setStarRating] = useState('');
-    const [replyStatus, setReplyStatus] = useState('');
-    const [reviewDate, setReviewDate] = useState('');
-    const [filteredReviews, setFilteredReviews] = useState(dummyReviews);
-    const [reviewType, setReviewType] = useState('');
-    const [reviews, setReviews] = useState([])
+  const { currentUser, token } = useSelector((state) => state.user);
+  const businessId = currentUser?._id;
+  const businessName = currentUser?.businessName;
+  const [starRatings, setStarRatings] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [selectedRatings, setSelectedRatings] = useState([]); // Maintain an array for selected ratings
+  const [replyStatus, setReplyStatus] = useState("all");
+  const [reviewDate, setReviewDate] = useState("new");
+  const [reviewType, setReviewType] = useState("all");
+  const [reviews, setReviews] = useState([]);
+  const [filterChanged, setFilterChanged] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
-    const [searchQuery, setSearchQuery] = useState('');
+  const queryParams = {
+    reply: replyStatus,
+    sort: reviewDate,
+    category: reviewType,
+  };
 
-    useEffect(() => {
-        filterReviews();
-    }, [starRating, replyStatus, reviewDate, searchQuery, reviewType]);
-
-    const filterReviews = async () => {
-        console.log(currentUser)
-        console.log(token)
-
-        const response = await axios.get(
-            `${BASE_URL}reviews/business/${currentUser._id}`,
-            {
-                headers: {
-                    // Assuming the token is a Bearer token; adjust if using a different scheme
-                    Authorization: `Bearer ${token}`
-                }
+  const fetchBusinessReviews = useCallback(
+    async (params) => {
+      try {
+        // Construct the query string including the rating parameter
+        let queryString = Object.keys(params)
+          .map((key) => {
+            if (key === "rating" && Array.isArray(params[key])) {
+              // Construct an array of rating strings
+              const ratingParams = params[key].map((rating) => `${rating}`);
+              return ratingParams.join("&");
             }
+            return (
+              encodeURIComponent(key) + "=" + encodeURIComponent(params[key])
+            );
+          })
+          .join("&");
+
+        console.log(
+          `${BASE_URL}reviews/searchReviews/${businessId}?${queryString}`
         );
-        console.log(response.data)
-        setReviews(response.data)
-        let filtered = response.data;
+        const response = await axios.get(
+          `${BASE_URL}reviews/searchReviews/${businessId}?${queryString}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setReviews(response.data);
+        console.log(response.data, "reviews");
 
-        // Filter by star rating
-        if (starRating) {
-            filtered = filtered.filter(review => review.reviewRating === starRating);
+        if (filterChanged) {
+          console.log(`/business/reviews?${queryString}`);
+          navigate(`/business/reviews?${queryString}`);
         }
-        if (reviewType) {
-            filtered = filtered.filter(review => review.reviewType === reviewType);
-        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [filterChanged, navigate, businessId, token]
+  );
 
-        // Filter by reply status
-        if (replyStatus) {
-            filtered = filtered.filter(review => replyStatus === 'replied' ? review.replyStatus === 'Replied' : review.replyStatus === 'Not Replied');
-        }
+  useEffect(() => {
+    let debounceTimer;
 
-        // Sort by date
-        if (reviewDate) {
-            filtered = filtered.sort((a, b) => reviewDate === 'newest' ? new Date(b.date) - new Date(a.date) : new Date(a.date) - new Date(b.date));
-        }
+    clearTimeout(debounceTimer);
 
-        // Filter by search query
-        if (searchQuery) {
-            filtered = filtered.filter(review => review.title.toLowerCase().includes(searchQuery.toLowerCase()));
-        }
+    if (searchQuery) {
+      debounceTimer = setTimeout(() => {
+        const updatedQueryParams = {
+          keyword: searchQuery,
+          ...queryParams,
+        };
+        fetchBusinessReviews(updatedQueryParams);
+      }, 1000);
+    } else {
+      fetchBusinessReviews(queryParams);
+    }
 
-        setFilteredReviews(filtered);
-    };
+    return () => clearTimeout(debounceTimer);
+  }, [replyStatus, reviewType, reviewDate, searchQuery]);
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
-    };
+  if (!token) {
+    return <Navigate to={customerLoginPath} />;
+  }
 
-    const handleRatingChange = (event) => {
-        setStarRating(event.target.value);
-    };
+  // handleCheckboxChange function
+  const handleCheckboxChange = (event, index) => {
+    const newRatings = [...starRatings];
+    newRatings[index] = event.target.checked;
+    setStarRatings(newRatings);
 
-    const handleReplyChange = (event) => {
-        setReplyStatus(event.target.value);
-    };
+    // Update selected ratings in descending order
+    const updatedSelectedRatings = newRatings
+      .map((checked, idx) => (checked ? 5 - idx : null))
+      .filter((value) => value !== null);
+    // console.log(updatedSelectedRatings);
 
-    const handleDateChange = (event) => {
-        setReviewDate(event.target.value);
-    };
-    const clearFilters = () => {
-        setStarRating('');
-        setReplyStatus('');
-        setReviewDate('');
-        setFilteredReviews(dummyReviews);
-    };
-    const handleSearch = () => {
-        filterReviews();
-    };
+    setSelectedRatings(updatedSelectedRatings); // Update selected ratings array
 
-    return (
-        <div className="tw-p-4">
-            <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} sm={4}>
-                    <TextField
-                        label="Search"
-                        variant="outlined"
-                        fullWidth
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                    <FormControl fullWidth>
-                        <InputLabel>Review Type</InputLabel>
-                        <Select
-                            value={reviewType}
-                            onChange={(e) => setReviewType(e.target.value)}
-                            label="Review Type"
-                        >
-                            <MenuItem value="">All</MenuItem>
-                            <MenuItem value="Service">Service</MenuItem>
-                            <MenuItem value="Delivery">Delivery</MenuItem>
-                            <MenuItem value="Product">Product</MenuItem>
-                            <MenuItem value="Packaging">Packaging</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={6} sm={2}>
-                    <FormControl fullWidth>
-                        <InputLabel>Star Rating</InputLabel>
-                        <Select
-                            value={starRating}
-                            onChange={handleRatingChange}
-                            label="Star Rating"
-                        >
-                            <MenuItem value={1}>1 Star</MenuItem>
-                            <MenuItem value={2}>2 Stars</MenuItem>
-                            <MenuItem value={3}>3 Stars</MenuItem>
-                            <MenuItem value={4}>4 Stars</MenuItem>
-                            <MenuItem value={5}>5 Stars</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={6} sm={2}>
-                    <FormControl fullWidth>
-                        <InputLabel>Reply</InputLabel>
-                        <Select
-                            value={replyStatus}
-                            onChange={handleReplyChange}
-                            label="Reply"
-                        >
-                            <MenuItem value="replied">Replied</MenuItem>
-                            <MenuItem value="not_replied">Not Replied</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={6} sm={2}>
-                    <FormControl fullWidth>
-                        <InputLabel>Date</InputLabel>
-                        <Select
-                            value={reviewDate}
-                            onChange={handleDateChange}
-                            label="Date"
-                        >
-                            <MenuItem value="newest">Newest First</MenuItem>
-                            <MenuItem value="oldest">Oldest First</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={6} sm={2}>
-                    <Button onClick={handleSearch} variant="contained" color="primary" className="tw-w-full tw-px-4 tw-py-3">Search</Button>
-                </Grid>
-            </Grid>
-            <List className="tw-mt-4">
-                {filteredReviews.map((review, index) => (
-                    <ReviewItem key={index} review={review} />
-                ))}
-            </List>
-        </div>
+    // Construct an array of rating strings
+    const ratingParams = updatedSelectedRatings.map(
+      (rating) => `rating=${rating}`
     );
+
+    const updatedQueryParams = {
+      ...queryParams,
+      rating: ratingParams,
+    };
+
+    // Use fetchBusinessReviews from the outer scope
+    fetchBusinessReviews(updatedQueryParams);
+    setFilterChanged(true);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setFilterChanged(true);
+  };
+
+  const handleRatingChange = (event) => {
+    setSelectedRatings(event.target.value); // Update selected ratings array
+  };
+
+  const handleReplyChange = (event) => {
+    setReplyStatus(event.target.value);
+    setFilterChanged(true);
+  };
+
+  const handleDateChange = (event) => {
+    setReviewDate(event.target.value);
+    setFilterChanged(true);
+  };
+
+  const handleReviewChange = (event) => {
+    setReviewType(event.target.value);
+    setFilterChanged(true);
+  };
+
+  const handleSearch = () => {
+    filterReviews();
+  };
+
+  const pageHeight = reviews.length === 0 ? "tw-h-[80vh]" : "";
+  return (
+    <div className={`tw-p-4 ${pageHeight}`}>
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={12} sm={4}>
+          <TextField
+            label="Search"
+            variant="outlined"
+            fullWidth
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={2.5}>
+          <FormControl fullWidth>
+            <InputLabel>Review Type</InputLabel>
+            <Select
+              value={reviewType}
+              onChange={handleReviewChange}
+              label="Review Type"
+              defaultValue="all"
+            >
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="service">Service</MenuItem>
+              <MenuItem value="delivery">Delivery</MenuItem>
+              <MenuItem value="product">Product</MenuItem>
+              <MenuItem value="packaging">Packaging</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6} sm={3}>
+          <FormControl fullWidth>
+            <InputLabel>Star Rating</InputLabel>
+            <Select
+              value={selectedRatings} // Use selectedRatings instead of starRating
+              onChange={handleRatingChange}
+              label="Star Rating"
+              renderValue={(selected) => (
+                <div>
+                  <Typography variant="body2" component="span">
+                    Selected Rating{" "}
+                  </Typography>
+                  {selected.map((value) => (
+                    <Typography key={value} variant="body2" component="span">
+                      {`${value}, `}
+                    </Typography>
+                  ))}
+                </div>
+              )}
+              multiple
+            >
+              {[1, 2, 3, 4, 5].map((rating) => (
+                <MenuItem key={rating} value={rating}>
+                  <Checkbox
+                    checked={starRatings[5 - rating]}
+                    onChange={(event) =>
+                      handleCheckboxChange(event, 5 - rating)
+                    }
+                    color="primary"
+                    inputProps={{ "aria-label": `rating-${rating}` }}
+                  />
+                  <Typography
+                    component="span"
+                    className="tw-text-blue-500 tw-text-sm"
+                  >
+                    {`${rating} star`}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6} sm={2.5}>
+          <FormControl fullWidth>
+            <InputLabel>Reply</InputLabel>
+            <Select
+              value={replyStatus}
+              onChange={handleReplyChange}
+              label="Reply"
+              defaultValue="all"
+            >
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="true">Replied</MenuItem>
+              <MenuItem value="false">Not Replied</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6} sm={4}>
+          <FormControl fullWidth>
+            <InputLabel>Date</InputLabel>
+            <Select
+              value={reviewDate}
+              onChange={handleDateChange}
+              label="Date"
+              defaultValue="new"
+            >
+              <MenuItem value="new">Newest First</MenuItem>
+              <MenuItem value="old">Oldest First</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
+      <List className="tw-mt-4">
+        {reviews.map((review, index) => (
+          <ReviewItem
+            key={index}
+            review={review}
+            businessName={businessName}
+            businessId={businessId}
+          />
+        ))}
+      </List>
+    </div>
+  );
 };
 
 export default ReviewFilter;
-
-
-const ReviewItem = ({ review }) => {
-    return (
-        <Card variant="outlined" className="tw-mb-4 tw-bg-white">
-            <CardContent>
-                <Typography variant="h6" color="text.secondary" gutterBottom>
-                    {review.reviewTitle}
-                </Typography>
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12} sm={6}>
-                        <Rating name="read-only" value={review.reviewRating} readOnly />
-                    </Grid>
-                    <Grid item xs={12} sm={6} className="tw-text-right">
-                        <Typography variant="body2" color="text.secondary">
-                            {review.dateOfExperience} 
-                        </Typography>
-                    </Grid>
-                </Grid>
-                <Typography variant="body2" component="p" className="tw-mt-2">
-                    {review.reviewDescription}
-                </Typography>
-                <Grid container spacing={1} className="tw-mt-2">
-                    <Grid item>
-                        <Button variant="outlined" size="small">Reply</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button variant="outlined" size="small">Share</Button>
-                    </Grid>
-                </Grid>
-                <Grid container spacing={1}>
-                    <Grid item xs={12} sm={10}>
-                        <TextField
-                            label="Write a reply..."
-                            multiline
-                            variant="outlined"
-                            fullWidth
-                            className="tw-mt-2"
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={2}>
-
-                        <Button variant="contained" fullWidth color="primary" className="tw-mt-2 tw-py-3 tw-px-4">
-                            Post reply
-                        </Button>
-                    </Grid>
-                </Grid>
-
-            </CardContent>
-        </Card>
-    );
-};

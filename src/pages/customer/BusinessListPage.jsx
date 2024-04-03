@@ -8,6 +8,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../../const/APIS";
 import axios from "axios";
 import { useSearchName } from "../../context/SearchNameContext";
+import { customerLoginPath } from "../../const/path";
 
 const BusinessListPage = () => {
   const { id } = useParams();
@@ -38,7 +39,7 @@ const BusinessListPage = () => {
       : "All Categories";
 
   if (!token) {
-    return <Navigate to="/customer/login" />;
+    return <Navigate to={customerLoginPath} />;
   }
 
   useEffect(() => {
@@ -46,9 +47,6 @@ const BusinessListPage = () => {
 
     const fetchBusinessList = async (params) => {
       try {
-        // Create a copy of queryParams for deletion logic
-        const newSearchParams = { ...params };
-
         console.log(params, "queryParams");
 
         if (params.category === undefined) {
@@ -66,32 +64,31 @@ const BusinessListPage = () => {
         console.log(`${BASE_URL}businesses/search?${queryString}`);
 
         const response = await axios.get(
-            `${BASE_URL}businesses/search?${queryString}`,
-            {
-              headers: {
-                // Assuming the token is a Bearer token; adjust if using a different scheme
-                Authorization: `Bearer ${token}`
-              }
-            }
+          `${BASE_URL}businesses/search?${queryString}`,
+          {
+            headers: {
+              // Assuming the token is a Bearer token; adjust if using a different scheme
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
-
 
         setData(response.data);
         console.log(response.data, "response.data");
 
         // Conditional deletion of the last property in newSearchParams
         if (
-          newSearchParams.rating === undefined &&
-          newSearchParams.location != undefined &&
-          newSearchParams.searchName != undefined
+          params.rating != undefined ||
+          params.location != undefined ||
+          params.searchName != undefined ||
+          params.sort != undefined &&
+          id === undefined
         ) {
-          console.log(params, "newSearchParams inside if");
-          delete params[Object.keys(params).pop()];
-          console.log(params, "newSearchParams");
+          // console.log(params, "newSearchParams");
 
           const updatedQueryString = new URLSearchParams(params).toString();
 
-          console.log(updatedQueryString, "updatedQueryString");
+          // console.log(updatedQueryString, "updatedQueryString");
 
           navigate(`/customer/search?${updatedQueryString}`);
         }
@@ -129,7 +126,7 @@ const BusinessListPage = () => {
       <ListHero category={businessCategory} />
       <BusinessesList
         data={data}
-        id={id}
+        id={id ? id : "all"}
         setLocation={setLocation}
         setRating={setRating}
         sort={sort}

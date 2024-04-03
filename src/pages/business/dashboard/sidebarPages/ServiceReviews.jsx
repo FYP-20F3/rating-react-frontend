@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
-import { customerLoginPath } from "../../../../const/path";
+import { businessLoginPath } from "../../../../const/path";
 import { Navigate } from "react-router-dom";
 
 const ServiceReviews = () => {
   const { token } = useSelector((state) => state.user);
 
   if (!token) {
-    return <Navigate to={customerLoginPath} />;
+    return <Navigate to={businessLoginPath} />;
   }
   return <div>ServiceReviews</div>;
 };

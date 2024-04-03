@@ -22,7 +22,7 @@ body {
 }
 
 .star-rating {
-  @apply tw-flex tw-items-center tw-mt-4;
+  @apply tw-flex tw-items-center tw-mt-2 -tw-m-2;
 }
 
 .star-rating a {
@@ -42,11 +42,11 @@ body {
 }
 
 .drawer-header {
-  @apply tw-px-6 tw-py-3 tw-bg-amber-100;
+  @apply tw-px-6 tw-py-3 tw-bg-cyan-500;
 }
 
 .drawer-header h2 {
-  @apply tw-text-xl tw-font-semibold tw-text-green-500;
+  @apply tw-text-xl tw-font-semibold tw-text-white;
 }
 
 .css-aysnnq {

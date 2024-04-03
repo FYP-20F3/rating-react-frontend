@@ -33,7 +33,7 @@ const InfoHero = ({ data }) => {
     const averageRating = data.overallRating;
     overallRating = parseFloat(averageRating.toFixed(0));
   }
-  console.log(overallRating, "data");
+  // console.log(overallRating, "data");
 
   // console.log(data, "data");
   // console.log(data.length > 0 ? data.businessLogoPath: "ok", data.length > 0, "data.businessLogoPath");
@@ -167,7 +167,7 @@ const InfoHero = ({ data }) => {
           />
         </Card>
       </Grid>
-      <Grid item xs={12} md={4} className="ml-auto mt-7">
+      <Grid item xs={12} md={4} className="tw-ml-auto tw-mt-7">
         <Box
           className="tw-mt-2 tw-rounded-md tw-border-indigo-600 tw-p-2"
           sx={{
@@ -176,11 +176,10 @@ const InfoHero = ({ data }) => {
               boxShadow: 4, // Enhance box shadow on hover
             },
           }}
-        
           onClick={handleClick}
         >
-          <Typography variant="h3" component="h2" className="text-blue-800">
-            www.dummywebsite.com
+          <Typography variant="h3" component="h2" className="tw-text-blue-800">
+            {data.websiteAddress}
           </Typography>
           <Typography
             variant="body2"
