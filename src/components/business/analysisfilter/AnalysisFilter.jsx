@@ -133,10 +133,10 @@ const AnalysisFilter = () => {
 
     return (
         <div style={{ height: "500px" }}>
-            <h1>Analysis Filter</h1>
-            <div className="legend flex justify-between	" >
+            <p className="legend-container" style={{ marginBottom: "10px" }}>Analysis Filter</p>
+            <div className="legend-container" >
                 {Object.keys(colors).map(rating => (
-                    <div key={rating} className="legend-item" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <div key={rating} className="legend-item " style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', marginLeft: '20px' }}>
                         <span className="legend-color" style={{ backgroundColor: colors[rating], width: '20px', height: '20px', display: 'inline-block', marginRight: '10px', borderRadius: '50%' }}></span>
                         <span className="legend-text">{rating}-star reviews</span>
                     </div>
