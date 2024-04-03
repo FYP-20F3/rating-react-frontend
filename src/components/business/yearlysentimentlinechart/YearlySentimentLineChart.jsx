@@ -198,8 +198,8 @@ const YearlySentimentLineChart = () => {
 
   return (
     <div style={{ height: "500px" }}>
-      <p className="legend-container " style={{ marginBottom: "10px" }}>Analysis for reviews based on sentiments</p>
-      <div className="legend-container">
+      <h1>Analysis for reviews based on sentiments</h1>
+      <div className="legend flex justify-between	">
         {Object.keys(colors).map((sentiment) => (
           <div
             key={sentiment}
@@ -208,7 +208,6 @@ const YearlySentimentLineChart = () => {
               display: "flex",
               alignItems: "center",
               marginBottom: "10px",
-              marginRight: "20px", // Adjust as needed for spacing between items
             }}
           >
             <span
@@ -222,7 +221,7 @@ const YearlySentimentLineChart = () => {
                 borderRadius: "50%",
               }}
             ></span>
-            <span className="legend-text" style={{ fontWeight: "bold" }}>{sentiment} sentiment</span>
+            <span className="legend-text">{sentiment} sentiment</span>
           </div>
         ))}
       </div>
@@ -248,20 +247,17 @@ export default YearlySentimentLineChart;
 const TotalReviewsCard = ({ totalReviews }) => {
   console.log(totalReviews);
   return (
-
-    <div className="legend-container total-reviews-card tw-flex ">
-      <p className=" tw-font-bold">Total Reviews in the last 12 month: &nbsp;</p>
+    <div className="total-reviews-card">
+      <h5>Total Reviews in the last 12 month</h5>
       <p>{totalReviews}</p>
     </div>
-
   );
 };
 
 const ReviewsTable = ({ data }) => {
   return (
     <div>
-      <p className="legend-container">Review Sentiments by Year</p>
-
+      <h3>Review Sentiments by Year</h3>
       <table className="reviews-table">
         <thead>
           <tr>

@@ -144,31 +144,12 @@ const MonthlySentimentB = () => {
 
     return (
         <div style={{ height: "500px" }}>
-            <p className="legend-container " style={{ marginBottom: "10px" }}>Analysis for reviews based on sentiments</p>
-            <div className="legend-container" >
-                {Object.keys(colors).map((sentiment) => (
-                    <div
-                        key={sentiment}
-                        className="legend-item"
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            marginBottom: "10px",
-                            marginRight: "20px", // Adjust as needed for spacing between items
-                        }}
-                    >
-                        <span
-                            className="legend-color"
-                            style={{
-                                backgroundColor: colors[sentiment],
-                                width: "20px",
-                                height: "20px",
-                                display: "inline-block",
-                                marginRight: "10px",
-                                borderRadius: "50%",
-                            }}
-                        ></span>
-                        <span className="legend-text" style={{ fontWeight: "bold" }}>{sentiment} sentiment</span>
+            <h1>Analysis for reviews based on sentiments</h1>
+            <div className="legend flex justify-between	" >
+                {Object.keys(colors).map(sentiment => (
+                    <div key={sentiment} className="legend-item" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                        <span className="legend-color" style={{ backgroundColor: colors[sentiment], width: '20px', height: '20px', display: 'inline-block', marginRight: '10px', borderRadius: '50%' }}></span>
+                        <span className="legend-text">{sentiment} sentiment</span>
                     </div>
                 ))}
             </div>
@@ -184,8 +165,8 @@ export default MonthlySentimentB;
 const TotalReviewsCard = ({ totalReviews }) => {
     console.log(totalReviews)
     return (
-        <div className="legend-container total-reviews-card tw-flex ">
-            <p className=" tw-font-bold">Total Reviews in the last 12 month: &nbsp;</p>
+        <div className="total-reviews-card">
+            <h2>Total Reviews in the last 12 month</h2>
             <p>{totalReviews}</p>
         </div>
     );
