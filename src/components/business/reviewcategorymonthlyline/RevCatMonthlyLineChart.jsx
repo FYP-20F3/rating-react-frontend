@@ -192,8 +192,8 @@ const RevCatMonthlyLineChart = () => {
   const pageHeight = reviews.length === 0 ? "tw-h-[80vh]" : "";
   return (
     <div className={`${pageHeight}`}>
-      <h1>Analysis for reviews based on sentiments</h1>
-      <div className="legend flex justify-between	">
+      {/* <p className="legend-container " style={{ marginBottom: "10px" }}>Analysis for reviews based on sentiments</p>
+      <div className="legend-container">
         {Object.keys(colors).map((sentiment) => (
           <div
             key={sentiment}
@@ -202,6 +202,7 @@ const RevCatMonthlyLineChart = () => {
               display: "flex",
               alignItems: "center",
               marginBottom: "10px",
+              marginRight: "20px", // Adjust as needed for spacing between items
             }}
           >
             <span
@@ -215,10 +216,10 @@ const RevCatMonthlyLineChart = () => {
                 borderRadius: "50%",
               }}
             ></span>
-            <span className="legend-text">{sentiment} sentiment</span>
+            <span className="legend-text" style={{ fontWeight: "bold" }}>{sentiment} sentiment</span>
           </div>
         ))}
-      </div>
+      </div> */}
       {reviews.length > 0 ? (
         <ReviewsTable data={reviewByYear} />
       ) : (
@@ -241,8 +242,8 @@ export default RevCatMonthlyLineChart;
 const TotalReviewsCard = ({ totalReviews }) => {
   console.log(totalReviews);
   return (
-    <div className="total-reviews-card">
-      <h5>Total Reviews in the last 12 month</h5>
+    <div className="legend-container total-reviews-card tw-flex tw-mt-2 ">
+      <p className=" tw-font-bold">Total Reviews in the last 12 month: &nbsp;</p>
       <p>{totalReviews}</p>
     </div>
   );
@@ -251,7 +252,7 @@ const TotalReviewsCard = ({ totalReviews }) => {
 const ReviewsTable = ({ data }) => {
   return (
     <div>
-      <h3>Review Counts by Type and Year</h3>
+      <p className="legend-container">Review Counts by Type and Year</p>
       <table className="reviews-table">
         <thead>
           <tr>

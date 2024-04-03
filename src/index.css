@@ -58,6 +58,10 @@ body {
   background-color: #f5f7fa !important;
   min-width: auto !important;
 }
+.legend-container {
+  display: flex;
+  justify-content: center;
+}
 
 .reviews-table {
   width: 100%;

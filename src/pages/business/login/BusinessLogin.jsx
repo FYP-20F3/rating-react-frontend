@@ -106,6 +106,10 @@ const BusinessLogin = () => {
       );
       console.log("response:", response);
       const { token, rest, role } = response.data;
+      console.log(response.data)
+      console.log(token)
+      console.log(rest)
+      console.log(role)
       dispatch(signInSuccess({ rest, token, role }));
       navigate("/business/dashboard");
     } catch (err) {
