@@ -269,7 +269,7 @@ const CustomerTable = ({ data, deleteCustomer, blockCustomer }) => {
                   }
                   className="header-cell tw-text-base"
                 >
-                  Block Time
+                  Last Blocked
                 </TableSortLabel>
               </TableCell>
               <TableCell

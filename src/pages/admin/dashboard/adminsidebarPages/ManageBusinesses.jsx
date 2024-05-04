@@ -199,8 +199,8 @@ const BusinessTable = ({ data, deleteBusiness, blockBusiness, open }) => {
           ? (a.block ? 1 : 0) - (b.block ? 1 : 0)
           : (b.block ? 1 : 0) - (a.block ? 1 : 0);
       case "name":
-        const nameA = `${a.firstName} ${a.lastName}`;
-        const nameB = `${b.firstName} ${b.lastName}`;
+        const nameA = `${a.businessName}`;
+        const nameB = `${b.businessName}`;
         return order === "asc"
           ? nameA.localeCompare(nameB)
           : nameB.localeCompare(nameA);
@@ -285,7 +285,7 @@ const BusinessTable = ({ data, deleteBusiness, blockBusiness, open }) => {
                   }
                   className="header-cell tw-text-base"
                 >
-                  Block Time
+                  Last Blocked
                 </TableSortLabel>
               </TableCell>
               <TableCell

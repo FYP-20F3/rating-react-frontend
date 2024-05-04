@@ -23,6 +23,7 @@ const ReviewBox = ({ review, businessName }) => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
 
+  console.log(review, "review");
   const handleClose = (reason) => {
     if (reason === "clickaway") {
       return;
@@ -88,6 +89,16 @@ const ReviewBox = ({ review, businessName }) => {
         className="tw-mb-4 tw-bg-white tw-mr-16 tw-px-4 tw-py-3"
       >
         <CardContent>
+          <Box className="tw-mb-4 tw-font-bold tw-text-base">
+            Review About
+            <Typography
+              className="tw-font-bold tw-text-base tw-ml-1 tw-text-cyan-700"
+              component="span"
+            >
+              {review.businessId?.businessName}
+            </Typography>
+          </Box>
+
           <Typography
             variant="h6"
             color="text.secondary"
@@ -240,7 +251,6 @@ const ReviewBox = ({ review, businessName }) => {
           variant="filled"
           sx={{ width: "100%" }}
           className="tw-bg-red-500"
-
         >
           <span>{error}</span>
         </Alert>
