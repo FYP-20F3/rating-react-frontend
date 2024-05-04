@@ -48,6 +48,7 @@ const FilterBox = ({
     setOpen(false);
   };
 
+  console.log(ratings);
   return (
     <Box
       sx={{
@@ -91,7 +92,7 @@ const FilterBox = ({
           component="span"
           className="star-rating-percentage"
         >
-          {ratings.rating5}
+          {ratings.rating5 || 0}
         </Typography>
       </Box>
       <Box className="star-rating">
@@ -117,7 +118,7 @@ const FilterBox = ({
           component="span"
           className="star-rating-percentage"
         >
-          {ratings.rating4}
+          {ratings.rating4 || 0}
         </Typography>
       </Box>
       <Box className="star-rating">
@@ -143,7 +144,7 @@ const FilterBox = ({
           component="span"
           className="star-rating-percentage"
         >
-          {ratings.rating3}
+          {ratings.rating3 || 0}
         </Typography>
       </Box>
       <Box className="star-rating">
@@ -169,7 +170,7 @@ const FilterBox = ({
           component="span"
           className="star-rating-percentage"
         >
-          {ratings.rating2}
+          {ratings.rating2 || 0}
         </Typography>
       </Box>
       <Box className="star-rating">
@@ -195,7 +196,7 @@ const FilterBox = ({
           component="span"
           className="star-rating-percentage"
         >
-          {ratings.rating1}
+          {ratings.rating1 || 0}
         </Typography>
       </Box>
       <Divider sx={{ mt: 3 }} />

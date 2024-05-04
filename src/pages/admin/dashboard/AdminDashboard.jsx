@@ -1,11 +1,15 @@
-import React from "react";
-import Sidebar from "../../../components/business/global/Sidebar";
+import { useState } from "react";
 import TopAppbar from "../../../components/business/global/TopAppbar";
 import { Outlet } from "react-router-dom";
 import { Box, styled } from "@mui/material";
 import { businessLoginPath } from "../../../const/path";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import AdminSidebar from "../../../components/admin/global/AdminSidebar";
+import {
+  OpenStateProvider,
+  useOpenState,
+} from "../../../context/AdminOpenContext";
 
 const drawerWidth = 285;
 
@@ -39,8 +43,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-const BusinessDashboard = () => {
-  const [open, setOpen] = React.useState(false);
+const AdminDashboard = () => {
+  const { open, setOpen } = useOpenState();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -63,18 +67,18 @@ const BusinessDashboard = () => {
         drawerWidth={drawerWidth}
         handleDrawerOpen={handleDrawerOpen}
       />
-      <Sidebar
+      <AdminSidebar
         handleDrawerClose={handleDrawerClose}
         open={open}
         drawerWidth={drawerWidth}
         DrawerHeader={DrawerHeader}
       />
       <Main open={open} className={`tw-mt-10 ${open ? "tw-pl-6" : "tw-pl-14"}`}>
-        {/* <DrawerHeader /> */}
-        <Outlet />
+          {/* <DrawerHeader /> */}
+          <Outlet />
       </Main>
     </Box>
   );
 };
 
-export default BusinessDashboard;
+export default AdminDashboard;

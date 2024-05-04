@@ -29,8 +29,10 @@ import {
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../../../redux/userSlice";
+import { GrUserManager } from "react-icons/gr";
+import { MdAddBusiness } from "react-icons/md";
 
-export default function Sidebar({
+export default function AdminSidebar({
   handleDrawerClose,
   open,
   drawerWidth,
@@ -40,6 +42,7 @@ export default function Sidebar({
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const name = currentUser?.firstName + " " + currentUser?.lastName;
 
   const CARD_PROPERTY = {
     borderRadius: 3,
@@ -48,14 +51,18 @@ export default function Sidebar({
     mx: 1.34,
   };
   const handleDashboard = () => {
-    navigate("/business/dashboard");
+    navigate("/admin/dashboard");
   };
   const handleReviews = () => {
-    navigate("/business/reviews");
+    navigate("/admin/manage/reviews");
   };
-  const handleAnalysis = () => {
-    navigate("/business/reviews/analysis");
+  const handleCustomers = () => {
+    navigate("/admin/manage/customers");
   };
+  const handleBusinesses = () => {
+    navigate("/admin/manage/businesses");
+  };
+
   return (
     <Drawer
       sx={{
@@ -100,9 +107,10 @@ export default function Sidebar({
             <Avatar
               variant="square"
               sx={{ bgcolor: "primary.main", width: 65, height: 65, mr: 2 }}
-              src={currentUser?.businessLogoPath}
+              src={currentUser?.picturePath}
             >
-              {currentUser?.businessName.slice(0, 1)}
+              {currentUser?.firstName.slice(0, 1)}
+              {currentUser?.lastName.slice(0, 1)}
             </Avatar>
             <Box>
               <Typography
@@ -110,7 +118,7 @@ export default function Sidebar({
                 sx={{ fontWeight: "bold" }}
                 color="primary"
               >
-                {currentUser?.businessName}
+                {name}
               </Typography>
               <Typography
                 variant="body3"
@@ -146,7 +154,7 @@ export default function Sidebar({
             </ListItemIcon>
             <ListItemText
               onClick={handleReviews}
-              primary={"Reviews"}
+              primary={"Manage Reviews"}
               sx={{ fontSize: "body4.fontSize" }}
             />
           </ListItemButton>
@@ -154,56 +162,73 @@ export default function Sidebar({
         <ListItem>
           <ListItemButton>
             <ListItemIcon>
-              <AutoGraph
-                sx={{ mr: 2, verticalAlign: "middle" }}
+              <GrUserManager
+                sx={{ verticalAlign: "middle" }}
+                size={26}
                 className="tw-text-orange-500"
               />
             </ListItemIcon>
             <ListItemText
-              onClick={handleAnalysis}
-              primary={"Analysis"}
+              onClick={handleCustomers}
+              primary={"Manage Customers"}
+              sx={{ fontSize: "body4.fontSize" }}
+            />
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton>
+            <ListItemIcon>
+              <MdAddBusiness
+                sx={{ verticalAlign: "middle" }}
+                size={26}
+                className="tw-text-orange-500"
+              />
+            </ListItemIcon>
+            <ListItemText
+              onClick={handleBusinesses}
+              primary={"Manage Businesses"}
               sx={{ fontSize: "body4.fontSize" }}
             />
           </ListItemButton>
         </ListItem>
         {/* <Accordion
-          sx={{
-            boxShadow: "none",
-            // pl: 1,
-            ml: 2,
-            alignItems: "flex-center",
-          }}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
             sx={{
-              "& .MuiAccordionSummary-content": {
-                // Target specific element
-                alignItems: "center",
-              },
+              boxShadow: "none",
+              // pl: 1,
+              ml: 2,
+              alignItems: "flex-center",
             }}
           >
-            <Reviews sx={{ mr: 2, verticalAlign: "middle" }} />
-            <Typography variant="h6" sx={{}}>
-              Manage Reviews
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Button sx={{ display: "block", width: "100%" }}>
-              Service Reviews
-            </Button>
-
-            <Button sx={{ display: "block", width: "100%" }}>
-              Service Reviews
-            </Button>
-
-            <Button sx={{ display: "block", width: "100%" }}>
-              Service Reviews
-            </Button>
-          </AccordionDetails>
-        </Accordion> */}
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+              sx={{
+                "& .MuiAccordionSummary-content": {
+                  // Target specific element
+                  alignItems: "center",
+                },
+              }}
+            >
+              <Reviews sx={{ mr: 2, verticalAlign: "middle" }} />
+              <Typography variant="h6" sx={{}}>
+                Manage Reviews
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Button sx={{ display: "block", width: "100%" }}>
+                Service Reviews
+              </Button>
+  
+              <Button sx={{ display: "block", width: "100%" }}>
+                Service Reviews
+              </Button>
+  
+              <Button sx={{ display: "block", width: "100%" }}>
+                Service Reviews
+              </Button>
+            </AccordionDetails>
+          </Accordion> */}
       </List>
       <Divider sx={{ mt: 18 }} />
       <List>

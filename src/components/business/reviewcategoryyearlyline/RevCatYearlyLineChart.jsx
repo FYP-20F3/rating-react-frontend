@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios"; // Import Axios
-import { Bar } from "@nivo/bar"; // Import Nivo ResponsiveBar
+import { ResponsiveBar } from "@nivo/bar"; // Import Nivo ResponsiveBar
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../../../const/APIS";
 import { Line } from "@nivo/line";
@@ -24,15 +24,17 @@ import {
   LastPage,
 } from "@mui/icons-material";
 
-const YearlySentimentLineChart = () => {
+export const RevCatYearlyLineChart = () => {
   const { currentUser, token } = useSelector((state) => state.user);
   const [reviewByYear, setReviewByYear] = useState([]);
+  const [totalReview, setTotalReview] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const colors = {
-    Positive: "#4caf50", // Green for positive sentiment
-    Negative: "#d32f2f", // Red for negative sentiment
-    Neutral: "#ffc107", // Amber for neutral sentiment
+    product: "#FF5733", // Orange
+    delivery: "#33FF57", // Green
+    packaging: "#3366FF", // Blue
+    service: "#FF33EA", // Pink
   };
 
   useEffect(() => {
@@ -44,7 +46,6 @@ const YearlySentimentLineChart = () => {
 
     try {
       setLoading(true);
-
       const response = await axios.get(
         `${BASE_URL}reviews/business/${currentUser._id}`,
         {
@@ -54,12 +55,12 @@ const YearlySentimentLineChart = () => {
         }
       );
       const processedData = processData(response.data);
+      setReviewByYear(processedData);
 
       const sortedData = processedData.sort((a, b) => {
         return a.year - b.year;
       });
 
-      setReviewByYear(sortedData);
       setReviews(sortedData); // Update this line
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -73,28 +74,31 @@ const YearlySentimentLineChart = () => {
 
     reviews.forEach((review) => {
       const reviewDate = new Date(review.createdAt);
-      const year = reviewDate.getFullYear().toString(); // Convert to string if needed
+      const year = reviewDate.getFullYear().toString();
 
+      // Initialize the year object if it doesn't exist
       if (!groupedData[year]) {
         groupedData[year] = {
           year,
-          Positive: 0,
-          Negative: 0,
-          Neutral: 0,
-          total: 0,
+          product: 0,
+          delivery: 0,
+          packaging: 0,
+          service: 0,
         };
       }
 
-      const sentiment = review.Sentiment;
-      if (groupedData[year][sentiment] !== undefined) {
-        groupedData[year][sentiment]++;
+      // Increment the count for the reviewType
+      const reviewType = review.reviewType;
+      if (reviewType in groupedData[year]) {
+        groupedData[year][reviewType]++;
       } else {
-        // Handle unexpected sentiment
-        console.error("Unexpected sentiment value:", sentiment);
+        console.error("Unexpected review type value:", reviewType);
+        // Initialize with 1 if the type is unexpected to account for this review
+        groupedData[year][reviewType] = 1;
       }
-      groupedData[year].total++;
     });
 
+    // Convert the object into an array of year objects
     return Object.values(groupedData);
   };
 
@@ -112,40 +116,67 @@ const YearlySentimentLineChart = () => {
     ];
     const lineChartData = [
       {
-        id: "Positive",
+        id: "Product",
         data: data.map((yearData) => ({
           x: yearData.year,
-          y: yearData.Positive,
+          y: yearData.product || 0, // Ensure a value is provided even if it's 0
         })),
-        color: colors.Positive,
+        color: colors.product,
       },
       {
-        id: "Negative",
+        id: "Delivery",
         data: data.map((yearData) => ({
           x: yearData.year,
-          y: yearData.Negative,
+          y: yearData.delivery || 0,
         })),
-        color: colors.Negative,
+        color: colors.delivery,
       },
       {
-        id: "Neutral",
+        id: "Packaging",
         data: data.map((yearData) => ({
           x: yearData.year,
-          y: yearData.Neutral,
+          y: yearData.packaging || 0,
         })),
-        color: colors.Neutral,
+        color: colors.packaging,
+      },
+      {
+        id: "Service",
+        data: data.map((yearData) => ({
+          x: yearData.year,
+          y: yearData.service || 0,
+        })),
+        color: colors.service,
       },
     ];
+    const CustomTooltip = ({ point }) => {
+      // Check the structure of `point` in your console to ensure correct data access
+      return (
+        <div
+          style={{
+            background: "white",
+            padding: "9px 12px",
+            border: "1px solid #ccc",
+          }}
+        >
+          <strong>{point.data.xFormatted}</strong>
+          <div>
+            {point.serieId}: {point.data.yFormatted}
+          </div>
+          <div>Total reviews: {point.data.y}</div>
+        </div>
+      );
+    };
 
     return (
       <div className="tw-flex tw-justify-center tw-items-center">
-        <div className="tw-bg-[#fffffc] tw-pt-5 tw-mt-5 tw-rounded-lg hover:tw-shadow-md tw-mr-8 tw-ml-4">
+        <div className=" tw-bg-[#fffffc] tw-pt-5 tw-mt-5 tw-rounded-lg hover:tw-shadow-md tw-mr-8 tw-ml-4">
           <Line
             width={980}
             defs={defs}
+            colors={{ datum: "color" }}
+            tooltip={CustomTooltip}
             height={400}
             data={lineChartData}
-            colors={{ datum: "color" }}
             margin={{ top: 40, right: 40, bottom: 55, left: 80 }}
             xScale={{ type: "point" }}
             yScale={{
@@ -182,55 +213,9 @@ const YearlySentimentLineChart = () => {
     );
   };
 
-  const BarChart = () => {
-    const tickValues = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-
-    return (
-      <Bar
-        data={reviews}
-        keys={["Positive", "Negative", "Neutral"]}
-        indexBy="monthYear"
-        colors={({ id, data }) => colors[id]}
-        margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
-        padding={0.3}
-        groupMode="grouped" // This is crucial for having separate bars for each review rating
-        minValue={0}
-        maxValue={100}
-        axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "Month",
-          legendPosition: "middle",
-          legendOffset: 32,
-        }}
-        enableLabel={false}
-        axisLeft={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "Number of Reviews",
-          legendPosition: "middle",
-          legendOffset: -40,
-          tickValues: tickValues, // Use the custom tick values array
-          // Modify this as needed to fit your data
-        }}
-        // Additional properties and configurations
-      />
-    );
-  };
-
   return (
-    <div className={`${loading ? "tw-h-[100vh]" : ""}`}>
-      {reviews.length == 0 && (
-        <p className="tw-text-xl tw-flex tw-justify-center tw-items-center tw-h-3/6">
-          No reviews data available
-        </p>
-      )}
-      {reviews.length > 0 && <ReviewsTable data={reviewByYear} />}
-      <p className="legend-container " style={{ marginBottom: "10px" }}>
-        Analysis for reviews based on sentiments
-      </p>
+    <Box className={`${loading ? "tw-h-[100vh]" : ""}`}>
+      {/* <p className="legend-container " style={{ marginBottom: "10px" }}>Analysis for reviews based on sentiments</p>
       <div className="legend-container">
         {Object.keys(colors).map((sentiment) => (
           <div
@@ -254,21 +239,24 @@ const YearlySentimentLineChart = () => {
                 borderRadius: "50%",
               }}
             ></span>
-            <span className="legend-text" style={{ fontWeight: "bold" }}>
-              {sentiment} sentiment
-            </span>
+            <span className="legend-text" style={{ fontWeight: "bold" }}>{sentiment} sentiment</span>
           </div>
         ))}
-      </div>
+      </div> */}
 
+      {reviews.length == 0 && loading && (
+        <p className="tw-text-xl tw-flex tw-justify-center tw-items-center tw-h-5/6">
+          No reviews data available
+        </p>
+      )}
+      {reviews.length > 0 && <ReviewsTable data={reviewByYear} />}
       {reviews.length > 0 && <LineChart data={reviews} />}
 
       {/* {reviews.length > 0 ? <BarChart /> : <p>No reviews data available</p>} */}
-    </div>
+    </Box>
   );
 };
 
-export default YearlySentimentLineChart;
 
 const ReviewsTable = ({ data }) => {
   const [orderBy, setOrderBy] = useState("year"); // Initial sort order by monthYear
@@ -302,16 +290,18 @@ const ReviewsTable = ({ data }) => {
         return order === "asc"
           ? a.year.localeCompare(b.year)
           : b.year.localeCompare(a.year);
-      case "Positive":
+      case "product":
+        return order === "asc" ? a.product - b.product : b.product - a.product;
+      case "delivery":
         return order === "asc"
-          ? a.Positive - b.Positive
-          : b.Positive - a.Positive;
-      case "Negative":
+          ? a.delivery - b.delivery
+          : b.delivery - a.delivery;
+      case "packaging":
         return order === "asc"
-          ? a.Negative - b.Negative
-          : b.Negative - a.Negative;
-      case "Neutral":
-        return order === "asc" ? a.Neutral - a.Neutral : b.Neutral - a.Neutral;
+          ? a.packaging - a.packaging
+          : b.packaging - a.packaging;
+      case "service":
+        return order === "asc" ? a.service - a.service : b.service - a.service;
       default:
         return 0;
     }
@@ -321,7 +311,9 @@ const ReviewsTable = ({ data }) => {
     <div className="tw-flex tw-justify-center tw-mt-6 tw-mb-7">
       <TableContainer className="tw-w-10/12 tw-overflow-x-auto tw-shadow-md reviews-table">
         <Table stickyHeader className="tw-text-left tw-text-sm">
-          <caption className="tw-bg-white">Review Sentiments by Month</caption>
+          <caption className="tw-bg-white">
+            Review Counts by Type and Year
+          </caption>
           <TableHead>
             <TableRow className="header-cell-div">
               <TableCell
@@ -335,49 +327,63 @@ const ReviewsTable = ({ data }) => {
                   onClick={(event) => handleRequestSort(event, "year")}
                   className="header-cell"
                 >
-                  Month
+                  Year
                 </TableSortLabel>
               </TableCell>
               <TableCell
-                key="Positive"
-                sortDirection={orderBy === "Positive" ? order : false}
+                key="product"
+                sortDirection={orderBy === "product" ? order : false}
                 className="header-cell-div"
               >
                 <TableSortLabel
-                  active={orderBy === "Positive"}
-                  direction={orderBy === "Positive" ? order : "asc"}
-                  onClick={(event) => handleRequestSort(event, "Positive")}
+                  active={orderBy === "product"}
+                  direction={orderBy === "product" ? order : "asc"}
+                  onClick={(event) => handleRequestSort(event, "product")}
                   className="header-cell"
                 >
-                  Positive
+                  Product
                 </TableSortLabel>
               </TableCell>
               <TableCell
-                key="Negative"
-                sortDirection={orderBy === "Negative" ? order : false}
+                key="delivery"
+                sortDirection={orderBy === "delivery" ? order : false}
                 className="header-cell-div"
               >
                 <TableSortLabel
-                  active={orderBy === "Negative"}
-                  direction={orderBy === "Negative" ? order : "asc"}
-                  onClick={(event) => handleRequestSort(event, "Negative")}
+                  active={orderBy === "delivery"}
+                  direction={orderBy === "delivery" ? order : "asc"}
+                  onClick={(event) => handleRequestSort(event, "delivery")}
                   className="header-cell"
                 >
-                  Negative
+                  Delivery
                 </TableSortLabel>
               </TableCell>
               <TableCell
-                key="Neutral"
-                sortDirection={orderBy === "Neutral" ? order : false}
+                key="packaging"
+                sortDirection={orderBy === "packaging" ? order : false}
                 className="header-cell-div"
               >
                 <TableSortLabel
-                  active={orderBy === "Neutral"}
-                  direction={orderBy === "Neutral" ? order : "asc"}
-                  onClick={(event) => handleRequestSort(event, "Neutral")}
+                  active={orderBy === "packaging"}
+                  direction={orderBy === "packaging" ? order : "asc"}
+                  onClick={(event) => handleRequestSort(event, "packaging")}
                   className="header-cell"
                 >
-                  Neutral
+                  Packaging
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                key="service"
+                sortDirection={orderBy === "service" ? order : false}
+                className="header-cell-div"
+              >
+                <TableSortLabel
+                  active={orderBy === "service"}
+                  direction={orderBy === "service" ? order : "asc"}
+                  onClick={(event) => handleRequestSort(event, "service")}
+                  className="header-cell"
+                >
+                  Service
                 </TableSortLabel>
               </TableCell>
             </TableRow>
@@ -395,13 +401,16 @@ const ReviewsTable = ({ data }) => {
                   {row.year}
                 </TableCell>
                 <TableCell className="tw-py-4 tw-px-6">
-                  {Math.round(row.Positive)}
+                  {Math.round(row.product)}
                 </TableCell>
                 <TableCell className="tw-py-4 tw-px-6">
-                  {Math.round(row.Negative)}
+                  {Math.round(row.delivery)}
                 </TableCell>
                 <TableCell className="tw-py-4 tw-px-6">
-                  {Math.round(row.Neutral)}
+                  {Math.round(row.packaging)}
+                </TableCell>
+                <TableCell className="tw-py-4 tw-px-6">
+                  {Math.round(row.service)}
                 </TableCell>
               </TableRow>
             ))}

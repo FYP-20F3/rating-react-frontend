@@ -22,33 +22,40 @@ body {
 }
 
 .star-rating {
-  @apply tw-flex tw-items-center tw-mt-2 -tw-m-2;
+  @apply tw-flex tw-items-center tw-mt-2 -tw-m-2 !important;
 }
 
 .star-rating a {
-  @apply tw-text-sm tw-font-medium tw-text-blue-600 hover:tw-underline;
+  @apply tw-text-sm tw-font-medium tw-text-blue-600 hover:tw-underline !important;
 }
 
 .star-rating-bar {
-  @apply tw-w-2/4 tw-h-5 tw-mx-4 tw-rounded;
+  @apply tw-w-2/4 tw-h-5 tw-mx-4 tw-rounded !important;
 }
 
 .star-rating-fill {
-  @apply tw-h-5 tw-rounded tw-bg-yellow-300;
+  @apply tw-h-5 tw-rounded tw-bg-yellow-300 !important;
 }
 
 .star-rating-percentage {
-  @apply tw-text-sm tw-font-medium tw-text-gray-500;
+  @apply tw-text-sm tw-font-medium tw-text-gray-500 !important;
 }
 
 .drawer-header {
-  @apply tw-px-6 tw-py-3 tw-bg-cyan-500;
+  @apply tw-px-6 tw-py-3 tw-bg-cyan-500 !important;
 }
 
 .drawer-header h2 {
-  @apply tw-text-xl tw-font-semibold tw-text-white;
+  @apply tw-text-xl tw-font-semibold tw-text-white !important;
 }
 
+.header-cell {
+  @apply tw-font-medium tw-text-rose-700 !important;
+}
+
+.header-cell-div {
+  background: lavender !important;
+}
 .css-aysnnq {
   padding: 0px !important;
 }
@@ -58,48 +65,24 @@ body {
   background-color: #f5f7fa !important;
   min-width: auto !important;
 }
+
+.MuiTableSortLabel-icon {
+  @apply tw-text-rose-700 !important;
+}
+
 .legend-container {
   display: flex;
   justify-content: center;
 }
 
-.reviews-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  /* subtle shadow to float the table */
-}
-
-.reviews-table th,
-.reviews-table td {
-  text-align: left;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  /* light border for cells */
-}
-
-.reviews-table thead {
-  background-color: #f4f4f4;
-  /* light grey background for the table header */
-  color: #333;
-  /* dark text for contrast */
-}
 
 .reviews-table tbody tr:nth-child(odd) {
-  background-color: #fafafa;
+  background-color: rgb(199, 194, 211, 0.3);
   /* zebra-striping for rows */
 }
 
 .reviews-table tbody tr:hover {
-  background-color: #f1f1f1;
+  background-color:rgb(221, 234, 238);
   /* hover effect for rows */
   cursor: pointer;
-}
-
-.reviews-table th {
-  position: sticky;
-  top: 0;
-  background-color: #fff;
-  z-index: 10;
 }

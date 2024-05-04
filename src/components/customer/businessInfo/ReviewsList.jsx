@@ -208,16 +208,16 @@ const ReviewsList = ({ businessData }) => {
                   <CardHeader
                     avatar={
                       <Avatar
-                        alt={`${item.customer.firstName} ${item.customer.lastName}`}
+                        alt={`${item.customerId.firstName} ${item.customerId.lastName}`}
                         sx={{
                           width: { xs: "50px", md: "58px" },
                           height: { xs: "50px", md: "58px" },
                           borderRadius: 50,
                         }}
-                        src={item.customer.picturePath}
+                        src={item.customerId.picturePath}
                       />
                     }
-                    title={`${item.customer.firstName} ${item.customer.lastName}`}
+                    title={`${item.customerId.firstName} ${item.customerId.lastName}`}
                   />
                   <Divider
                     className="tw-mx-5 tw-mb-2"

@@ -12,18 +12,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { StarRate, Reply } from "@mui/icons-material";
-import { useForm } from "react-hook-form";
+import { StarRate, Reply, Delete, Block } from "@mui/icons-material";
 import { useState } from "react";
+
 import axios from "axios";
 import { BASE_URL } from "../../../const/APIS";
 
-const ReviewItem = ({ review, businessName, businessId }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+const ReviewBox = ({ review, businessName }) => {
   const ratings = [1, 2, 3, 4, 5];
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
@@ -36,27 +31,52 @@ const ReviewItem = ({ review, businessName, businessId }) => {
     setOpen(false);
   };
 
-  const onSubmit = async (data) => {
-    console.log("data:", data);
+  const deleteReview = async () => {
+    let reviewId = review._id;
 
-    let payload = {
-      ...data,
-      businessId: businessId,
-      reviewId: review._id,
-    };
-
-    console.log(payload, "payload");
+    console.log(reviewId, "reviewId");
 
     try {
-      console.log(`${BASE_URL}reviews/replies`);
-      const response = await axios.post(`${BASE_URL}reviews/replies`, payload);
+      console.log(`${BASE_URL}reviews/${reviewId}`);
+      const response = await axios.delete(`${BASE_URL}reviews/${reviewId}`);
       console.log("response:", response);
 
-      // Refresh the page after successfully posting the reply
-      window.location.reload();
+      if (response.status === 200) {
+        console.log(`${response.data.msg}`);
+        setError(`${response.data.msg}`);
+        setOpen(true);
+        window.location.reload();
+      }
     } catch (error) {
-      //   console.log(error);
-      setError(error.response.data.error);
+      console.log(error);
+      setError(error.response.data.msg);
+      setOpen(true);
+    }
+  };
+
+  const blockReview = async () => {
+    let reviewId = review._id;
+    let block = "block";
+
+    if (review.block === true) {
+      block = "unblock";
+    }
+
+    try {
+      console.log(`${BASE_URL}reviews/${reviewId}/block`);
+      const response = await axios.put(`${BASE_URL}reviews/${reviewId}/block`, {
+        action: block,
+      });
+      console.log("response:", response);
+
+      if (response.status === 200) {
+        setError(`${response.data.msg}`);
+        setOpen(true);
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+      setError(error.response.data.msg);
       setOpen(true);
     }
   };
@@ -142,59 +162,13 @@ const ReviewItem = ({ review, businessName, businessId }) => {
                 className="tw-font-bold"
               >
                 by
-                <span className="tw-text-orange-500 tw-text-lg tw-ml-[2px] tw-align-text-top tw-font-medium ">
-                  {review.customer?.firstName} {review.customer?.lastName}
+                <span className="tw-text-orange-500 tw-text-lg tw-ml-[4px] tw-align-text-top tw-font-medium ">
+                  {review.customerId?.firstName} {review.customerId?.lastName}
                 </span>
               </Typography>
             }
             className="tw-mt-5 tw-py-5 tw-mb-3 tw-bg-purple-100 tw-rounded-full tw-px-2 hover:tw-shadow-md"
           />
-
-          {!review.reviewReply && (
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid container spacing={1} className="tw-mt-2">
-                <Grid item>
-                  <Button variant="outlined" size="small">
-                    Reply
-                  </Button>
-                </Grid>
-              </Grid>
-              <Grid container spacing={1} className="tw-mt-2">
-                <Grid item xs={12} sm={10}>
-                  <TextField
-                    label="Write a reply..."
-                    multiline
-                    variant="outlined"
-                    fullWidth
-                    rows={4}
-                    {...register("replyDescription", {
-                      required: "Please enter a description",
-                    })}
-                  />
-                  {errors.replyDescription && (
-                    <Typography
-                      variant="body2"
-                      color="error"
-                      className="tw-mt-2"
-                    >
-                      {errors.replyDescription.message}
-                    </Typography>
-                  )}
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    color="primary"
-                    type="submit"
-                    className="tw-py-3 tw-px-4 tw-ml-2"
-                  >
-                    Post reply
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-          )}
           {review.reviewReply && (
             <Box>
               <Divider
@@ -212,7 +186,7 @@ const ReviewItem = ({ review, businessName, businessId }) => {
                   <div className="tw-w-full">
                     <div className="tw-flex tw-items-center tw-justify-between tw-mb-2">
                       <Typography variant="h6">
-                        You({businessName}) Replied
+                        {businessName} Replied
                       </Typography>
                       <Typography variant="body2">
                         {new Date(
@@ -232,6 +206,32 @@ const ReviewItem = ({ review, businessName, businessId }) => {
               </Card>
             </Box>
           )}
+          {!review.reviewReply && (
+            <Divider
+              className="tw-mx-1 tw-mb-3 tw-border-zinc-900 tw-mt-5"
+              sx={{ border: "1px solid" }}
+            />
+          )}
+          <Box className="tw-mt-5 tw-flex tw-justify-end tw-items-center tw-gap-5">
+            <Button
+              variant="contained"
+              color="error"
+              startIcon={<Delete />}
+              aria-label="delete"
+              onClick={deleteReview}
+            >
+              Delete
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<Block />}
+              aria-label="block"
+              className="tw-bg-yellow-500"
+              onClick={blockReview}
+            >
+              {review.block ? "Unblock" : "Block"}
+            </Button>
+          </Box>
         </CardContent>
       </Card>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -240,6 +240,7 @@ const ReviewItem = ({ review, businessName, businessId }) => {
           variant="filled"
           sx={{ width: "100%" }}
           className="tw-bg-red-500"
+
         >
           <span>{error}</span>
         </Alert>
@@ -248,4 +249,4 @@ const ReviewItem = ({ review, businessName, businessId }) => {
   );
 };
 
-export default ReviewItem;
+export default ReviewBox;

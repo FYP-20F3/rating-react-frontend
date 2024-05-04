@@ -258,9 +258,9 @@ const ReviewForm = () => {
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
-          severity="error"
           variant="filled"
           sx={{ width: "100%" }}
+          className="tw-bg-red-500"
         >
           <span>{error}</span>
           {/* <span>Follow this</span>
