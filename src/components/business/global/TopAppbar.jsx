@@ -1,8 +1,24 @@
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Logout, Chat } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { signOut } from "../../../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
-const TopAppbar = ({ open, drawerWidth, handleDrawerOpen }) => {
+const TopAppbar = ({
+  open,
+  drawerWidth,
+  handleDrawerOpen,
+  from = "business",
+}) => {
   const Appbar = styled(Box, {
     shouldForwardProp: (prop) => prop !== "open",
   })(({ theme, open }) => ({
@@ -22,6 +38,9 @@ const TopAppbar = ({ open, drawerWidth, handleDrawerOpen }) => {
     }),
   }));
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return (
     <>
       <Appbar position="fixed" open={open}>
@@ -35,9 +54,34 @@ const TopAppbar = ({ open, drawerWidth, handleDrawerOpen }) => {
           >
             <MenuIcon />
           </IconButton>
-          {/* <Typography variant="h6" noWrap component="div">
-            Persistent drawer
-          </Typography> */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              gap: 2,
+            }}
+            className={open ? `tw-w-[78%]` : `tw-w-[97%]`}
+          >
+            {from === "business" && (
+              <Button
+                variant="text"
+                startIcon={<Chat className="tw-text-orange-500" />}
+                className="tw-text-orange-500 tw-text-base"
+                onClick={() => navigate("/business/chat")}
+              >
+                Chat
+              </Button>
+            )}
+            <Button
+              variant="text"
+              endIcon={<Logout />}
+              className="tw-text-base"
+              onClick={() => dispatch(signOut())}
+            >
+              Logout
+            </Button>
+          </Box>
         </Toolbar>
       </Appbar>
     </>

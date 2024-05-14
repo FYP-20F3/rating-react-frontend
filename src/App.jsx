@@ -10,7 +10,6 @@ import BusinessLogin from "./pages/business/login/BusinessLogin";
 import BusinessRegister from "./pages/business/register/BusinessRegister";
 import BusinessDashboard from "./pages/business/dashboard/BusinessDashboard";
 import BusinessHome from "./pages/business/dashboard/sidebarPages/BusinessHome";
-import ServiceReviews from "./pages/business/dashboard/sidebarPages/ServiceReviews";
 import PrivateRoute from "./PrivateRoute";
 import {
   customerLoginPath,
@@ -30,6 +29,8 @@ import ManageReviews from "./pages/admin/dashboard/adminsidebarPages/ManageRevie
 import ManageCustomers from "./pages/admin/dashboard/adminsidebarPages/ManageCustomers";
 import ManageBusinesses from "./pages/admin/dashboard/adminsidebarPages/ManageBusinesses";
 import { OpenStateProvider } from "./context/AdminOpenContext";
+import BusinessChat from "./pages/business/dashboard/sidebarPages/BusinessChat";
+import CustomerChat from "./pages/customer/CustomerChat";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
           >
             <Route element={<SearchNameProvider />}>
               <Route path="home" element={<Home />} />
+              <Route path="chat" element={<CustomerChat />} />
               <Route path="category/:id" element={<BusinessListPage />} />
               <Route path="search" element={<BusinessListPage />} />
             </Route>
@@ -79,9 +81,9 @@ function App() {
             <Route element={<BusinessDashboard />}>
               <Route path="dashboard" element={<BusinessHome />} />
               <Route path="reviews" element={<Reviews />} />
-              <Route path="reviews/service" element={<ServiceReviews />} />
               <Route path="reviews/analysis" element={<Analysis />} />
             </Route>
+            <Route path="chat" element={<BusinessChat />} />
           </Route>
         </Route>
 

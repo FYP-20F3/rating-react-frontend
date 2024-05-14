@@ -98,7 +98,7 @@ const ReviewFilter = () => {
           ...queryParams,
         };
         fetchBusinessReviews(updatedQueryParams);
-      }, 1000);
+      }, 3000);
     } else {
       fetchBusinessReviews(queryParams);
     }
@@ -167,7 +167,7 @@ const ReviewFilter = () => {
     filterReviews();
   };
 
-  const pageHeight = reviews.length === 0 ? "tw-h-[80vh]" : "";
+  const pageHeight = reviews.length === 0 ? "tw-h-[86vh]" : "";
   return (
     <div className={`tw-p-4 ${pageHeight}`}>
       <Grid container spacing={2} alignItems="center">

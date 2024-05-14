@@ -21,6 +21,8 @@ body {
   overflow-x: hidden;
 }
 
+
+
 .star-rating {
   @apply tw-flex tw-items-center tw-mt-2 -tw-m-2 !important;
 }
@@ -75,14 +77,50 @@ body {
   justify-content: center;
 }
 
-
 .reviews-table tbody tr:nth-child(odd) {
   background-color: rgb(199, 194, 211, 0.3);
   /* zebra-striping for rows */
 }
 
 .reviews-table tbody tr:hover {
-  background-color:rgb(221, 234, 238);
+  background-color: rgb(221, 234, 238);
   /* hover effect for rows */
   cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the handle */
+  border-radius: 6px; /* Rounded corners */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker color when hovered */
+}
+
+.scrollable-div {
+  overflow-y: auto; 
+  border-right: 1px solid #ccc; /* Just for visual clarity */
+}
+
+.overlay {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 2;
+  background-color: rgba(40, 30, 16, 0.7);
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  z-index: 1;
 }

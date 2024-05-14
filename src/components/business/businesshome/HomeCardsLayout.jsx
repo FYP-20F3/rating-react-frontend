@@ -173,7 +173,7 @@ const HomeCardsLayout = ({ id, token }) => {
                       sx={{ bgcolor: deepOrange[500], width: 100, height: 100 }}
                       src={data?.businessLogoPath}
                     >
-                     {data?.businessName?.slice(0, 1)}
+                      {data?.businessName?.slice(0, 1)}
                     </Avatar>
                     <Tooltip title={data?.websiteAddress}>
                       <Typography
@@ -194,7 +194,7 @@ const HomeCardsLayout = ({ id, token }) => {
                     </Typography>
                     <Box className="tw-mt-8">
                       <Typography className="tw-mt-5 tw-font-medium tw-text-slate-600 tw-text-base ">
-                        {data?.businessDescripiton}
+                        {data?.businessDescription}
                       </Typography>
                     </Box>
                     <Tooltip title={data?.location} className="tw-pb-5">

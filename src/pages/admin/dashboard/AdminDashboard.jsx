@@ -66,6 +66,7 @@ const AdminDashboard = () => {
         open={open}
         drawerWidth={drawerWidth}
         handleDrawerOpen={handleDrawerOpen}
+        from="admin"
       />
       <AdminSidebar
         handleDrawerClose={handleDrawerClose}
@@ -74,8 +75,8 @@ const AdminDashboard = () => {
         DrawerHeader={DrawerHeader}
       />
       <Main open={open} className={`tw-mt-10 ${open ? "tw-pl-6" : "tw-pl-14"}`}>
-          {/* <DrawerHeader /> */}
-          <Outlet />
+        {/* <DrawerHeader /> */}
+        <Outlet />
       </Main>
     </Box>
   );

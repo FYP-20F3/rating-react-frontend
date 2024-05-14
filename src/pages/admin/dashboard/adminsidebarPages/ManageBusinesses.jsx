@@ -28,7 +28,7 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../../../const/APIS";
-import moment from "moment/moment";
+import moment from "moment";
 import { useOpenState } from "../../../../context/AdminOpenContext";
 
 const ManageBusinesses = () => {
@@ -188,12 +188,24 @@ const BusinessTable = ({ data, deleteBusiness, blockBusiness, open }) => {
     switch (orderBy) {
       case "createdAt":
         return order === "asc"
-          ? moment(a.createdAt).diff(moment(b.createdAt))
-          : moment(b.createdAt).diff(moment(a.createdAt));
+          ? moment
+              .utc(a.createdAt)
+              .local()
+              .diff(moment.utc(b.createdAt).local())
+          : moment
+              .utc(b.createdAt)
+              .local()
+              .diff(moment.utc(a.createdAt).local());
       case "blockTimeStamp":
         return order === "asc"
-          ? moment(a.blockTimeStamp).diff(moment(b.blockTimeStamp))
-          : moment(b.blockTimeStamp).diff(moment(a.blockTimeStamp));
+          ? moment
+              .utc(a.blockTimeStamp)
+              .local()
+              .diff(moment.utc(b.blockTimeStamp).local())
+          : moment
+              .utc(b.blockTimeStamp)
+              .local()
+              .diff(moment.utc(a.blockTimeStamp).local());
       case "block":
         return order === "asc"
           ? (a.block ? 1 : 0) - (b.block ? 1 : 0)
@@ -355,11 +367,14 @@ const BusinessTable = ({ data, deleteBusiness, blockBusiness, open }) => {
                 </TableCell>
                 <TableCell className="tw-py-3 tw-px-4">{row.email}</TableCell>
                 <TableCell className="tw-py-3 tw-px-4">
-                  {moment(row.createdAt).format("MM/DD/YYYY")}
+                  {moment.utc(row.createdAt).local().format("MM/DD/YYYY")}
                 </TableCell>
                 <TableCell className="tw-py-3 tw-px-4">
                   {row.blockTimeStamp
-                    ? moment(row.blockTimeStamp).format("MM/DD/YYYY")
+                    ? moment
+                        .utc(row.blockTimeStamp)
+                        .local()
+                        .format("MM/DD/YYYY")
                     : "-"}
                 </TableCell>
                 <TableCell className="tw-py-3 tw-px-4">

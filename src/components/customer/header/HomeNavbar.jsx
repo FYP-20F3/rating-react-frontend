@@ -25,14 +25,16 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { useSelector, useDispatch } from "react-redux";
 import { signOut } from "../../../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
-const navItems = ["Reviews", "Complaints", "Surveys"];
+const navItems = ["Reviews", "Complaint Chat"];
 
 export default function HomeNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -50,15 +52,36 @@ export default function HomeNavbar() {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText
-                primary={<Typography variant="body3">{item}</Typography>}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {navItems.map((item) => {
+          if (item == "Complaint Chat") {
+            return (
+              <ListItemButton
+                key={item}
+                disablePadding
+                onClick={() => {
+                  console.log("hello");
+                  navigate("/customer/chat");
+                }}
+              >
+                <ListItemButton sx={{ textAlign: "center" }}>
+                  <ListItemText
+                    primary={<Typography variant="body3">{item}</Typography>}
+                  />
+                </ListItemButton>
+              </ListItemButton>
+            );
+          } else {
+            return (
+              <ListItem key={item} disablePadding>
+                <ListItemButton sx={{ textAlign: "center" }}>
+                  <ListItemText
+                    primary={<Typography variant="body3">{item}</Typography>}
+                  />
+                </ListItemButton>
+              </ListItem>
+            );
+          }
+        })}
       </List>
     </Box>
   );
@@ -80,15 +103,29 @@ export default function HomeNavbar() {
               mr: "auto",
             }}
           >
-            {navItems.map((item) => (
-              <Button
-                key={item}
-                sx={{ color: "text.primary", mr: 4 }}
-                variant="body2"
-              >
-                {item}
-              </Button>
-            ))}
+            {navItems.map((item) =>
+              item == "Complaint Chat" ? (
+                <Button
+                  key={item}
+                  sx={{ color: "text.primary", mr: 4 }}
+                  variant="body2"
+                  onClick={() => {
+                    console.log("hello");
+                    navigate("/customer/chat");
+                  }}
+                >
+                  {item}
+                </Button>
+              ) : (
+                <Button
+                  key={item}
+                  sx={{ color: "text.primary", mr: 4 }}
+                  variant="body2"
+                >
+                  {item}
+                </Button>
+              )
+            )}
           </Box>
           <Box
             sx={{
