@@ -328,14 +328,13 @@ const ReviewsList = ({ businessData }) => {
                                 Reply from {businessName}
                               </Typography>
                               <Typography variant="body2">
-                                {new Date(item.reviewReply.createdAt).toLocaleDateString(
-                                  "en-US",
-                                  {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                  }
-                                )}
+                                {new Date(
+                                  item.reviewReply.createdAt
+                                ).toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })}
                               </Typography>
                             </div>
                             <Typography variant="body1">
@@ -354,15 +353,18 @@ const ReviewsList = ({ businessData }) => {
               <CardHeader title="Company Activity" />
               <Divider />
               <CardContent>
-                <Link underline="none">
-                  <Typography
-                    variant="body2"
-                    component="p"
-                    className="tw-text-blue-600 hover:tw-underline"
-                  >
-                    Progress Dashboard
-                  </Typography>
-                </Link>
+                <Typography
+                  variant="body2"
+                  component="p"
+                  className="tw-text-blue-600 hover:tw-underline"
+                  onClick={() =>
+                    navigate(
+                      `/customer/reviews/dashboard/${businessId}/${businessName}`
+                    )
+                  }
+                >
+                  Progress Dashboard
+                </Typography>
               </CardContent>
             </Card>
           </Grid>

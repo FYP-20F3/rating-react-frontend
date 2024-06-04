@@ -26,6 +26,7 @@ import {
   AutoGraph,
   Dashboard,
   Logout,
+  Settings,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../../../redux/userSlice";
@@ -53,8 +54,12 @@ export default function Sidebar({
   const handleReviews = () => {
     navigate("/business/reviews");
   };
+
   const handleAnalysis = () => {
     navigate("/business/reviews/analysis");
+  };
+  const handleSettings = () => {
+    navigate("/business/settings");
   };
   return (
     <Drawer
@@ -162,6 +167,21 @@ export default function Sidebar({
             <ListItemText
               onClick={handleAnalysis}
               primary={"Analysis"}
+              sx={{ fontSize: "body4.fontSize" }}
+            />
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton>
+            <ListItemIcon>
+              <Settings
+                sx={{ mr: 2, verticalAlign: "middle" }}
+                className="tw-text-orange-500"
+              />
+            </ListItemIcon>
+            <ListItemText
+              onClick={handleSettings}
+              primary={"Settings"}
               sx={{ fontSize: "body4.fontSize" }}
             />
           </ListItemButton>

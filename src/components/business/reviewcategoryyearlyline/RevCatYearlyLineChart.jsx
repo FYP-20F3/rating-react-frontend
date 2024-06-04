@@ -31,10 +31,10 @@ export const RevCatYearlyLineChart = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const colors = {
-    product: "#FF5733", // Orange
-    delivery: "#33FF57", // Green
-    packaging: "#3366FF", // Blue
-    service: "#FF33EA", // Pink
+    Product: "#FF5733", // Orange
+    Delivery: "#33FF57", // Green
+    Packaging: "#3366FF", // Blue
+    Service: "#FF33EA", // Pink
   };
 
   useEffect(() => {
@@ -121,7 +121,7 @@ export const RevCatYearlyLineChart = () => {
           x: yearData.year,
           y: yearData.product || 0, // Ensure a value is provided even if it's 0
         })),
-        color: colors.product,
+        color: colors.Product,
       },
       {
         id: "Delivery",
@@ -129,7 +129,7 @@ export const RevCatYearlyLineChart = () => {
           x: yearData.year,
           y: yearData.delivery || 0,
         })),
-        color: colors.delivery,
+        color: colors.Delivery,
       },
       {
         id: "Packaging",
@@ -137,7 +137,7 @@ export const RevCatYearlyLineChart = () => {
           x: yearData.year,
           y: yearData.packaging || 0,
         })),
-        color: colors.packaging,
+        color: colors.Packaging,
       },
       {
         id: "Service",
@@ -145,7 +145,7 @@ export const RevCatYearlyLineChart = () => {
           x: yearData.year,
           y: yearData.service || 0,
         })),
-        color: colors.service,
+        color: colors.Service,
       },
     ];
     const CustomTooltip = ({ point }) => {
@@ -250,13 +250,44 @@ export const RevCatYearlyLineChart = () => {
         </p>
       )}
       {reviews.length > 0 && <ReviewsTable data={reviewByYear} />}
+      <p className="legend-container tw-mb-4 tw-mt-7">
+        Analysis for reviews based on review categories
+      </p>
+      <div className="legend-container">
+        {Object.keys(colors).map((category) => (
+          <div
+            key={category}
+            className="legend-item"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "10px",
+              marginRight: "20px", // Adjust as needed for spacing between items
+            }}
+          >
+            <span
+              className="legend-color"
+              style={{
+                backgroundColor: colors[category],
+                width: "20px",
+                height: "20px",
+                display: "inline-block",
+                marginRight: "10px",
+                borderRadius: "50%",
+              }}
+            ></span>
+            <span className="legend-text" style={{ fontWeight: "bold" }}>
+              {category} Review
+            </span>
+          </div>
+        ))}
+      </div>
       {reviews.length > 0 && <LineChart data={reviews} />}
 
       {/* {reviews.length > 0 ? <BarChart /> : <p>No reviews data available</p>} */}
     </Box>
   );
 };
-
 
 const ReviewsTable = ({ data }) => {
   const [orderBy, setOrderBy] = useState("year"); // Initial sort order by monthYear
@@ -397,9 +428,7 @@ const ReviewsTable = ({ data }) => {
               : sortedData
             ).map((row) => (
               <TableRow key={row.year}>
-                <TableCell className="tw-py-4 tw-px-6">
-                  {row.year}
-                </TableCell>
+                <TableCell className="tw-py-4 tw-px-6">{row.year}</TableCell>
                 <TableCell className="tw-py-4 tw-px-6">
                   {Math.round(row.product)}
                 </TableCell>

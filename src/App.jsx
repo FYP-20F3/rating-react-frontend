@@ -31,6 +31,12 @@ import ManageBusinesses from "./pages/admin/dashboard/adminsidebarPages/ManageBu
 import { OpenStateProvider } from "./context/AdminOpenContext";
 import BusinessChat from "./pages/business/dashboard/sidebarPages/BusinessChat";
 import CustomerChat from "./pages/customer/CustomerChat";
+import ReviewHistory from "./pages/customer/ReviewHistory";
+import EditReviewPage from "./pages/customer/EditReviewPage";
+import BusinessSettings from "./pages/business/dashboard/sidebarPages/BusinessSettings";
+import CustomerSettings from "./pages/customer/CustomerSettings";
+import AdminSettings from "./pages/admin/dashboard/adminsidebarPages/AdminSettings";
+import ProgressDashboard from "./pages/customer/ProgressDashboard";
 
 function App() {
   return (
@@ -51,7 +57,6 @@ function App() {
           >
             <Route element={<SearchNameProvider />}>
               <Route path="home" element={<Home />} />
-              <Route path="chat" element={<CustomerChat />} />
               <Route path="category/:id" element={<BusinessListPage />} />
               <Route path="search" element={<BusinessListPage />} />
             </Route>
@@ -60,9 +65,17 @@ function App() {
               element={<BusinessInfoPage />}
             />
             <Route
+              path="reviews/dashboard/:businessId/:businessName"
+              element={<ProgressDashboard />}
+            />
+            <Route
               path="evaluate/:businessId/:businessName"
               element={<CreateReviewPage />}
             />
+            <Route path="edit-review/:reviewId" element={<EditReviewPage />} />
+            <Route path="chat" element={<CustomerChat />} />
+            <Route path="reviewsHistory" element={<ReviewHistory />} />
+            <Route path="settings" element={<CustomerSettings />} />
           </Route>
         </Route>
 
@@ -82,6 +95,7 @@ function App() {
               <Route path="dashboard" element={<BusinessHome />} />
               <Route path="reviews" element={<Reviews />} />
               <Route path="reviews/analysis" element={<Analysis />} />
+              <Route path="settings" element={<BusinessSettings />} />
             </Route>
             <Route path="chat" element={<BusinessChat />} />
           </Route>
@@ -106,6 +120,7 @@ function App() {
               <Route path="manage/reviews" element={<ManageReviews />} />
               <Route path="manage/customers" element={<ManageCustomers />} />
               <Route path="manage/businesses" element={<ManageBusinesses />} />
+              <Route path="settings" element={<AdminSettings />} />
             </Route>
           </Route>
         </Route>

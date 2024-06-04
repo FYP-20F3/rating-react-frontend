@@ -121,6 +121,10 @@ export default function HomeNavbar() {
                   key={item}
                   sx={{ color: "text.primary", mr: 4 }}
                   variant="body2"
+                  onClick={() => {
+                    console.log("hello");
+                    navigate("/customer/reviewsHistory");
+                  }}
                 >
                   {item}
                 </Button>
@@ -195,6 +199,7 @@ export default function HomeNavbar() {
                 sx={{
                   color: "text.primary",
                 }}
+                onClick={() => navigate("/customer/settings")}
               >
                 Settings
               </Typography>

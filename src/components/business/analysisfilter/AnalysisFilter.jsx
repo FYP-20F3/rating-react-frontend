@@ -4,7 +4,7 @@ import { Bar } from "@nivo/bar"; // Import Nivo ResponsiveBar
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../../../const/APIS";
 
-const AnalysisFilter = () => {
+const AnalysisFilter = ({ id, from }) => {
   const { currentUser, token } = useSelector((state) => state.user);
 
   const [reviews, setReviews] = useState([]);
@@ -24,14 +24,25 @@ const AnalysisFilter = () => {
     // Assuming currentUser and token are defined somewhere in your component or context
     try {
       setLoading(true);
-      const response = await axios.get(
-        `${BASE_URL}reviews/business/${currentUser._id}`,
-        {
+      let response;
+      if (from == "business") {
+        response = await axios.get(
+          `${BASE_URL}reviews/business/${currentUser._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        // console.log(response.data, "response");
+      } else if (from == "customer") {
+        response = await axios.get(`${BASE_URL}reviews/business/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
-      );
+        });
+        // console.log(response.data, "response");
+      }
       const processedData = processData(response.data);
       const sortedData = processedData.sort((a, b) => {
         const partsA = a.monthYear.split(" ");

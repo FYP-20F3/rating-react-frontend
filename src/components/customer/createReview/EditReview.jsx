@@ -9,36 +9,63 @@ import {
   Snackbar,
   Grid,
   Avatar,
-  IconButton,
   Alert,
 } from "@mui/material";
 import StarRateIcon from "@mui/icons-material/StarRate";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../../const/APIS";
-import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import CloseIcon from "@mui/icons-material/Close";
 
-const ReviewForm = () => {
+const EditReview = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    control,
     formState: { errors },
   } = useForm();
 
   const [rating, setRating] = useState(0); // Initial rating state
   const [ratingError, setRatingError] = useState("");
-  const { businessId, businessName } = useParams();
+  const { reviewId } = useParams();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
-  const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch the review data when the component mounts
+    const fetchReviewData = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}reviews/single-review/${reviewId}`
+        );
+        const reviewData = response.data;
+
+        // Convert dateOfExperience to YYYY-MM-DD format
+        const dateOfExperience = new Date(reviewData.dateOfExperience)
+          .toISOString()
+          .split("T")[0];
+
+        // Set the default values for the form fields
+        setValue("reviewDescription", reviewData.reviewDescription);
+        setValue("reviewTitle", reviewData.reviewTitle);
+        setValue("reviewType", reviewData.reviewType);
+        setValue("dateOfExperience", dateOfExperience);
+        setRating(reviewData.reviewRating);
+      } catch (error) {
+        console.error("Error fetching review data:", error);
+        setError("Failed to fetch review data.");
+        setOpen(true);
+      }
+    };
+
+    fetchReviewData();
+  }, [reviewId, setValue]);
 
   // Function to handle click on a star
   const handleStarClick = (clickedRating) => {
-    // If the same star is clicked again, reset the rating
     const newRating = clickedRating === rating ? 0 : clickedRating;
     setRating(newRating);
     setRatingError("");
@@ -53,36 +80,33 @@ const ReviewForm = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log("data:", data);
-
-    // Manually validate the rating field before form submission
     if (rating === 0) {
-      // Set an error message for the rating field
       setRatingError("Please select a rating");
       return;
     }
 
     let payload = {
       ...data,
-      customerId: currentUser._id,
-      businessId: businessId,
       reviewRating: rating,
     };
 
-    console.log(payload, "payload");
-
     try {
-      const response = await axios.post(`${BASE_URL}reviews/create`, payload);
-      console.log("response:", response);
+      const response = await axios.post(
+        `${BASE_URL}reviews/edit/${reviewId}`,
+        payload
+      );
       if (response.data.semantics) {
+        setError(`Review edit failed. Seems to be ${response.data.semantics}.`);
+        setOpen(true);
+      } else if (response.data.msg) {
+        setError(`${response.data.msg}.`);
+        setOpen(true);
       } else {
-        navigate(`/customer/reviews/${businessId}/${businessName}`);
+        navigate(`/customer/reviewsHistory`);
       }
     } catch (error) {
-      const semantics = `Review submission failed. Seems to be ${error.response.data.semantics}.\n`;
-      // const msg = error.response.data.details.suggestions;
-      setError(semantics);
-      // setSuggestions(msg);
+      console.log(error);
+      setError(`Review edit failed. ${error.response?.data?.msg}`);
       setOpen(true);
     }
   };
@@ -90,26 +114,6 @@ const ReviewForm = () => {
   const renderStars = () => {
     return [1, 2, 3, 4, 5].map((star) => (
       <Grid item key={star}>
-        {/* {console.log(rating, "rating")}
-              {console.log(star, "star")}
-              {console.log(
-                star,
-                "<=",
-                rating,
-                star <= rating,
-                star <= rating
-                  ? rating === 1
-                    ? "box.red"
-                    : rating === 2
-                    ? "box.orange"
-                    : rating === 3
-                    ? "box.yellow"
-                    : rating === 4
-                    ? "box.lime"
-                    : "box.green"
-                  : "box.default",
-                "color"
-              )} */}
         <Avatar
           aria-label={`star-${star}`}
           variant="square"
@@ -174,19 +178,23 @@ const ReviewForm = () => {
           <Typography variant="body1" className="tw-block tw-mb-1">
             Select the Review you want to give
           </Typography>
-          <Select
-            {...register("reviewType", {
-              required: "Please select a review type",
-            })}
-            defaultValue="service"
-            size="small"
-            className="tw-w-full tw-py-0.5 tw-px-0.5 tw-border tw-border-gray-300"
-          >
-            <MenuItem value="service">Service</MenuItem>
-            <MenuItem value="delivery">Delivery</MenuItem>
-            <MenuItem value="product">Product</MenuItem>
-            <MenuItem value="packaging">Packaging</MenuItem>
-          </Select>
+          <Controller
+            name="reviewType"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <Select
+                {...field}
+                size="small"
+                className="tw-w-full tw-py-0.5 tw-px-0.5 tw-border tw-border-gray-300"
+              >
+                <MenuItem value="service">Service</MenuItem>
+                <MenuItem value="delivery">Delivery</MenuItem>
+                <MenuItem value="product">Product</MenuItem>
+                <MenuItem value="packaging">Packaging</MenuItem>
+              </Select>
+            )}
+          />
           {errors.reviewType && (
             <Typography variant="body2" color="error" className="tw-mt-2">
               {errors.reviewType.message}
@@ -230,12 +238,17 @@ const ReviewForm = () => {
           <Typography variant="body1" className="tw-block tw-mb-1">
             Date of experience
           </Typography>
-          <TextField
-            {...register("dateOfExperience", {
-              required: "Please select a date",
-            })}
-            type="date"
-            className="tw-w-full tw-py-0.5 tw-px-0.5 tw-border tw-border-gray-300"
+          <Controller
+            name="dateOfExperience"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                {...field}
+                type="date"
+                className="tw-w-full tw-py-0.5 tw-px-0.5 tw-border tw-border-gray-300"
+              />
+            )}
           />
           {errors.dateOfExperience && (
             <Typography variant="body2" color="error" className="tw-mt-2">
@@ -262,15 +275,10 @@ const ReviewForm = () => {
           className="tw-bg-red-500"
         >
           <span>{error}</span>
-          {/* <span>Follow this</span>
-          <Typography variant="body3" onClick={()=>}>
-             Link 
-          </Typography>
-          <span>to make your review more </span> */}
         </Alert>
       </Snackbar>
     </>
   );
 };
 
-export default ReviewForm;
+export default EditReview;

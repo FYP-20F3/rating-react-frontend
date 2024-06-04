@@ -178,7 +178,12 @@ const InfoHero = ({ data }) => {
           }}
           onClick={handleClick}
         >
-          <Typography variant="h3" component="h2" className="tw-text-blue-800">
+          <Typography variant="h3" component="h2" className="tw-
+          
+          
+          
+          
+          text-blue-800">
             {data.websiteAddress}
           </Typography>
           <Typography

@@ -143,7 +143,7 @@ const ReviewItem = ({ review, businessName, businessId }) => {
               >
                 by
                 <span className="tw-text-orange-500 tw-text-lg tw-ml-[2px] tw-align-text-top tw-font-medium ">
-                  {review.customer?.firstName} {review.customer?.lastName}
+                  {review.customerId?.firstName} {review.customerId?.lastName}
                 </span>
               </Typography>
             }

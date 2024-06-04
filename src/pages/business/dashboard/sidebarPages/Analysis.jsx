@@ -85,7 +85,7 @@ const Analysis = () => {
         <YearlySentimentLineChart />
       )}
       {selectedChart === "RevCatYearlyLineChart" && <RevCatYearlyLineChart />}
-      {selectedChart === "AnalysisFilter" && <AnalysisFilter />}
+      {selectedChart === "AnalysisFilter" && <AnalysisFilter from="business" />}
     </Box>
   );
 };

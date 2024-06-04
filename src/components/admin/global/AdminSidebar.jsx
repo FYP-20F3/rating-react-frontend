@@ -25,6 +25,7 @@ import {
   ArrowCircleRight,
   AutoGraph,
   Dashboard,
+  Settings,
   Logout,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
@@ -61,6 +62,10 @@ export default function AdminSidebar({
   };
   const handleBusinesses = () => {
     navigate("/admin/manage/businesses");
+  };
+
+  const handleSettings = () => {
+    navigate("/admin/settings");
   };
 
   return (
@@ -191,6 +196,21 @@ export default function AdminSidebar({
             />
           </ListItemButton>
         </ListItem>
+        <ListItem>
+          <ListItemButton>
+            <ListItemIcon>
+              <Settings
+                sx={{ mr: 2, verticalAlign: "middle" }}
+                className="tw-text-orange-500"
+              />
+            </ListItemIcon>
+            <ListItemText
+              onClick={handleSettings}
+              primary={"Settings"}
+              sx={{ fontSize: "body4.fontSize" }}
+            />
+          </ListItemButton>
+        </ListItem>
         {/* <Accordion
             sx={{
               boxShadow: "none",
@@ -230,7 +250,7 @@ export default function AdminSidebar({
             </AccordionDetails>
           </Accordion> */}
       </List>
-      <Divider sx={{ mt: 18 }} />
+      <Divider sx={{ mt: 25 }} />
       <List>
         <ListItem>
           <ListItemButton>

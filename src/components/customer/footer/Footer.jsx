@@ -12,7 +12,7 @@ const Footer = () => {
         backgroundColor: "secondary.main",
         display: "flex",
         position: "relative",
-        bottom: 0
+        bottom: 0,
       }}
     >
       <Grid container spacing={2}>
