@@ -23,7 +23,7 @@ import Doodles from "../../assets/jpg/doodles.jpg";
 import moment from "moment";
 
 import { customerLoginPath } from "../../const/path";
-import useChatData from "../../components/customer/common/useChatData";
+import useChatData from "@components/customer/common/useChatData";
 import axios from "axios";
 import { BASE_URL } from "../../const/APIS";
 

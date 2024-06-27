@@ -1,6 +1,6 @@
 import React from "react";
-import Sidebar from "../../../components/business/global/Sidebar";
-import TopAppbar from "../../../components/business/global/TopAppbar";
+import Sidebar from "@components/business/global/Sidebar";
+import TopAppbar from "@components/business/global/TopAppbar";
 import { Outlet } from "react-router-dom";
 import { Box, styled } from "@mui/material";
 import { businessLoginPath } from "../../../const/path";

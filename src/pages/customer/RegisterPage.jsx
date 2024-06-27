@@ -1,6 +1,6 @@
-import Footer from "../../components/customer/footer/Footer";
-import RegisterNavbar from "../../components/customer/header/RegisterNavbar";
-import SignUp from "../../components/customer/register/SignUp";
+import Footer from "@components/customer/footer/Footer";
+import RegisterNavbar from "@components/customer/header/RegisterNavbar";
+import SignUp from "@components/customer/register/SignUp";
 
 const RegisterPage = () => {
   return (

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import HomeNavbar from "../../components/customer/header/HomeNavbar";
-import ListHero from "../../components/customer/businessList/ListHero";
-import Footer from "../../components/customer/footer/Footer";
-import BusinessesList from "../../components/customer/businessList/BusinessesList";
+import HomeNavbar from "@components/customer/header/HomeNavbar";
+import ListHero from "@components/customer/businessList/ListHero";
+import Footer from "@components/customer/footer/Footer";
+import BusinessesList from "@components/customer/businessList/BusinessesList";
 import { useSelector } from "react-redux";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../../const/APIS";

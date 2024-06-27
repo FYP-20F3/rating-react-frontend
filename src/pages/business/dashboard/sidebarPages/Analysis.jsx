@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Box, ButtonGroup, Button, Typography } from "@mui/material";
-import AnalysisFilter from "../../../../components/business/analysisfilter/analysisFilter";
-import MonthlySentimentB from "../../../../components/business/monthlysentimentbarchart/MonthlySentimentB";
-import YearlySentimentLineChart from "../../../../components/business/yearlysentimentlinechart/YearlySentimentLineChart";
-import MonthlySentimentLineChart from "../../../../components/business/monthlysentimentlinechart/MonthlySentimentLineChart";
-import { RevCatYearlyLineChart } from "../../../../components/business/reviewcategoryyearlyline/RevCatYearlyLineChart";
+import AnalysisFilter from "@components/business/analysisfilter/analysisFilter";
+import MonthlySentimentB from "@components/business/monthlysentimentbarchart/MonthlySentimentB";
+import YearlySentimentLineChart from "@components/business/yearlysentimentlinechart/YearlySentimentLineChart";
+import MonthlySentimentLineChart from "@components/business/monthlysentimentlinechart/MonthlySentimentLineChart";
+import { RevCatYearlyLineChart } from "@components/business/reviewcategoryyearlyline/RevCatYearlyLineChart";
 
 const Analysis = () => {
   const [selectedChart, setSelectedChart] = useState(

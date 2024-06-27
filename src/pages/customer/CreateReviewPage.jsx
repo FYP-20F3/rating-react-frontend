@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import ReviewForm from "../../components/customer/createReview/ReviewForm";
+import ReviewForm from "@components/customer/createReview/ReviewForm";
 
 const CreateReviewPage = () => {
   

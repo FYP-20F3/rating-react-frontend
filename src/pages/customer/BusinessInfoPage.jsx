@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import InfoHero from "../../components/customer/businessInfo/InfoHero";
-import ReviewsList from "../../components/customer/businessInfo/ReviewsList";
-import Footer from "../../components/customer/footer/Footer";
-import HomeNavbar from "../../components/customer/header/HomeNavbar";
+import InfoHero from "@components/customer/businessInfo/InfoHero";
+import ReviewsList from "@components/customer/businessInfo/ReviewsList";
+import Footer from "@components/customer/footer/Footer";
+import HomeNavbar from "@components/customer/header/HomeNavbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../const/APIS";

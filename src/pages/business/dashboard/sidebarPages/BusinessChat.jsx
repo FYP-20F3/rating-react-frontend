@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import Doodles from "../../../../assets/jpg/doodles.jpg";
 import moment from "moment";
-import useChatData from "../../../../components/customer/common/useChatData";
+import useChatData from "@components/customer/common/useChatData";
 import axios from "axios";
 import { BASE_URL } from "../../../../const/APIS";
 

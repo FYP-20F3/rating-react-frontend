@@ -1,11 +1,11 @@
 import { Box, Card, CardContent, Typography } from "@mui/material";
-import HomeNavbar from "../../components/customer/header/HomeNavbar";
+import HomeNavbar from "@components/customer/header/HomeNavbar";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../../const/APIS";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import AnalysisFilter from "../../components/business/analysisfilter/analysisFilter";
+import AnalysisFilter from "@components/business/analysisfilter/analysisFilter";
 
 const ProgressDashboard = () => {
   const { businessId, businessName } = useParams();

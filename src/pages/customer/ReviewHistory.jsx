@@ -10,8 +10,8 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import Footer from "../../components/customer/footer/Footer";
-import HomeNavbar from "../../components/customer/header/HomeNavbar";
+import Footer from "@components/customer/footer/Footer";
+import HomeNavbar from "@components/customer/header/HomeNavbar";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../../const/APIS";

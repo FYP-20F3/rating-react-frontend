@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 
-import ReviewFilter from "../../../../components/business/reviewfilter/ReviewFilter";
+import ReviewFilter from "@components/business/reviewfilter/ReviewFilter";
 
 const Reviews = () => {
   return (

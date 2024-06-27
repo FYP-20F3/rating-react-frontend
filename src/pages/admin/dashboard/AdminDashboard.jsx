@@ -1,11 +1,11 @@
 import { useState } from "react";
-import TopAppbar from "../../../components/business/global/TopAppbar";
+import TopAppbar from "@components/business/global/TopAppbar";
 import { Outlet } from "react-router-dom";
 import { Box, styled } from "@mui/material";
 import { businessLoginPath } from "../../../const/path";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import AdminSidebar from "../../../components/admin/global/AdminSidebar";
+import AdminSidebar from "@components/admin/global/AdminSidebar";
 import {
   OpenStateProvider,
   useOpenState,

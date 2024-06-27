@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import EditReview from "../../components/customer/createReview/EditReview";
+import EditReview from "@components/customer/createReview/EditReview";
 
 const EditReviewPage = () => {
   return (

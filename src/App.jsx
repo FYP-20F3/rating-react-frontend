@@ -1,42 +1,42 @@
 import { ThemeProvider } from "@mui/system";
 import theme from "./themeStyles";
-import MainLanding from "./pages/customer/MainLanding";
+import MainLanding from "@pages/customer/MainLanding";
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/customer/Home";
-import RegisterPage from "./pages/customer/RegisterPage";
-import LoginPage from "./pages/customer/LoginPage";
-import BusinessListPage from "./pages/customer/BusinessListPage";
-import BusinessLogin from "./pages/business/login/BusinessLogin";
-import BusinessRegister from "./pages/business/register/BusinessRegister";
-import BusinessDashboard from "./pages/business/dashboard/BusinessDashboard";
-import BusinessHome from "./pages/business/dashboard/sidebarPages/BusinessHome";
+import Home from "@pages/customer/Home";
+import RegisterPage from "@pages/customer/RegisterPage";
+import LoginPage from "@pages/customer/LoginPage";
+import BusinessListPage from "@pages/customer/BusinessListPage";
+import BusinessLogin from "@pages/business/login/BusinessLogin";
+import BusinessRegister from "@pages/business/register/BusinessRegister";
+import BusinessDashboard from "@pages/business/dashboard/BusinessDashboard";
+import BusinessHome from "@pages/business/dashboard/sidebarPages/BusinessHome";
 import PrivateRoute from "./PrivateRoute";
 import {
   customerLoginPath,
   businessLoginPath,
   AdminLoginPath,
 } from "./const/path";
-import ErrorPage from "./pages/ErrorPage";
-import Reviews from "./pages/business/dashboard/sidebarPages/Reviews";
-import BusinessInfoPage from "./pages/customer/BusinessInfoPage";
+import ErrorPage from "@pages/ErrorPage";
+import Reviews from "@pages/business/dashboard/sidebarPages/Reviews";
+import BusinessInfoPage from "@pages/customer/BusinessInfoPage";
 import { SearchNameProvider } from "./context/SearchNameContext";
-import CreateReviewPage from "./pages/customer/CreateReviewPage";
-import Analysis from "./pages/business/dashboard/sidebarPages/Analysis";
-import AdminLogin from "./pages/admin/login/AdminLogin";
-import AdminDashboard from "./pages/admin/dashboard/AdminDashboard";
-import AdminHome from "./pages/admin/dashboard/adminsidebarPages/AdminHome";
-import ManageReviews from "./pages/admin/dashboard/adminsidebarPages/ManageReviews";
-import ManageCustomers from "./pages/admin/dashboard/adminsidebarPages/ManageCustomers";
-import ManageBusinesses from "./pages/admin/dashboard/adminsidebarPages/ManageBusinesses";
+import CreateReviewPage from "@pages/customer/CreateReviewPage";
+import Analysis from "@pages/business/dashboard/sidebarPages/Analysis";
+import AdminLogin from "@pages/admin/login/AdminLogin";
+import AdminDashboard from "@pages/admin/dashboard/AdminDashboard";
+import AdminHome from "@pages/admin/dashboard/adminsidebarPages/AdminHome";
+import ManageReviews from "@pages/admin/dashboard/adminsidebarPages/ManageReviews";
+import ManageCustomers from "@pages/admin/dashboard/adminsidebarPages/ManageCustomers";
+import ManageBusinesses from "@pages/admin/dashboard/adminsidebarPages/ManageBusinesses";
 import { OpenStateProvider } from "./context/AdminOpenContext";
-import BusinessChat from "./pages/business/dashboard/sidebarPages/BusinessChat";
-import CustomerChat from "./pages/customer/CustomerChat";
-import ReviewHistory from "./pages/customer/ReviewHistory";
-import EditReviewPage from "./pages/customer/EditReviewPage";
-import BusinessSettings from "./pages/business/dashboard/sidebarPages/BusinessSettings";
-import CustomerSettings from "./pages/customer/CustomerSettings";
-import AdminSettings from "./pages/admin/dashboard/adminsidebarPages/AdminSettings";
-import ProgressDashboard from "./pages/customer/ProgressDashboard";
+import BusinessChat from "@pages/business/dashboard/sidebarPages/BusinessChat";
+import CustomerChat from "@pages/customer/CustomerChat";
+import ReviewHistory from "@pages/customer/ReviewHistory";
+import EditReviewPage from "@pages/customer/EditReviewPage";
+import BusinessSettings from "@pages/business/dashboard/sidebarPages/BusinessSettings";
+import CustomerSettings from "@pages/customer/CustomerSettings";
+import AdminSettings from "@pages/admin/dashboard/adminsidebarPages/AdminSettings";
+import ProgressDashboard from "@pages/customer/ProgressDashboard";
 
 function App() {
   return (

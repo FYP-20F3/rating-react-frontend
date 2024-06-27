@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { businessLoginPath } from "../../../../const/path";
 import { Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
-import HomeCardsLayout from "../../../../components/business/businesshome/HomeCardsLayout";
+import HomeCardsLayout from "@components/business/businesshome/HomeCardsLayout";
 
 const BusinessHome = () => {
   const { token, currentUser } = useSelector((state) => state.user);

@@ -1,7 +1,7 @@
 import React from "react";
-import LoginNavbar from "../../components/customer/header/LoginNavbar";
-import Footer from "../../components/customer/footer/Footer";
-import Login from "../../components/customer/login/Login";
+import LoginNavbar from "@components/customer/header/LoginNavbar";
+import Footer from "@components/customer/footer/Footer";
+import Login from "@components/customer/login/Login";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
