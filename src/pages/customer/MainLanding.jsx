@@ -6,7 +6,7 @@ import Review from "@components/customer/main/Review";
 import WhyUs from "@components/customer/main/WhyUs";
 import Footer from "@components/customer/footer/Footer";
 import MainNavbar from "@components/customer/header/MainNavbar";
-import LoginAdminBox from '@components/customer/main/loginAdminBox';
+import LoginAdminBox from '@components/customer/main/LoginAdminBox';
 
 const MainLanding = () => {
   return (
