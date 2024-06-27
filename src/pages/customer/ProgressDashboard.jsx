@@ -5,7 +5,7 @@ import axios from "axios";
 import { BASE_URL } from "../../const/APIS";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import AnalysisFilter from "@components/business/analysisfilter/analysisFilter";
+import AnalysisFilter from "@components/business/analysisfilter/AnalysisFilter";
 
 const ProgressDashboard = () => {
   const { businessId, businessName } = useParams();

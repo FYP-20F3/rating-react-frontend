@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@mui/system";
 import theme from "./themeStyles";
-import MainLanding from "./pages/customer/MainLanding";
+import MainLanding from "@pages/customer/MainLanding";
 import { Route, Routes } from "react-router-dom";
 import Home from "@pages/customer/Home";
 import RegisterPage from "@pages/customer/RegisterPage";
